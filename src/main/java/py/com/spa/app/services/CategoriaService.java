@@ -28,6 +28,10 @@ public class CategoriaService {
 	public List<Categorias> findAll(){
 		return (List<Categorias>) categoriaDao.findAll();
 	}
+	@Transactional(readOnly=true)
+	public List<Categorias> findNothing(){
+		return (List<Categorias>) categoriaDao.findAll();
+	}
 	
 	@Transactional
 	public void addCategoria(Categorias categoria) {
