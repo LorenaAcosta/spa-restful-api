@@ -22,6 +22,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -51,6 +53,7 @@ public class Categorias implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private List<Servicios> serviciosList;
 

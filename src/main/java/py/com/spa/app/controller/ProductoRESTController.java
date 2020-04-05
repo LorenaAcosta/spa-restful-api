@@ -60,15 +60,15 @@ public class ProductoRESTController {
 	
 	
 	@PutMapping("/modificar/{id}")
-	public void modificarProducto(@PathVariable Integer id, @RequestBody Productos p) {
+	public void modificarProducto(@PathVariable Integer id, @RequestBody Productos producto) {
 		Productos prod= null;
 		prod = productoService.findProductoById(id);
 		if (prod!=null) {
-			prod.setCodigo(p.getCodigo());
-			prod.setCosto(p.getCosto());
-			prod.setDescripcion(p.getDescripcion());
-			prod.setPrecioVenta(p.getPrecioVenta());
-			prod.setStockActual(p.getStockActual());
+			prod.setCodigo(producto.getCodigo());
+			prod.setCosto(producto.getCosto());
+			prod.setDescripcion(producto.getDescripcion());
+			prod.setPrecioVenta(producto.getPrecioVenta());
+			prod.setStockActual(producto.getStockActual());
 			productoService.updateProducto(prod);
 		}
 		

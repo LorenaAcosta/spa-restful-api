@@ -57,16 +57,16 @@ public class ServicioRESTController {
 	
 	
 	@PutMapping("/modificar/{id}")
-	public void modificarProducto(@PathVariable Integer id, @RequestBody Servicios s) {
-		Servicios servicio= servicioService.findServicioById(id);
-		if (servicio!=null) {
+	public void modificarProducto(@PathVariable Integer id, @RequestBody Servicios servicio) {
+		Servicios s= servicioService.findServicioById(id);
+		if (s!=null) {
 			s.setNombre(servicio.getNombre());
 			s.setDescripcion(servicio.getDescripcion());
-			s.setCosto(servicio.getCosto());
-			s.setDuracion(servicio.getDuracion());
-			s.setEstado(servicio.getEstado());
 			s.setFechaVigenciaIni(servicio.getFechaVigenciaIni());
 			s.setFechaVigenciaFin(servicio.getFechaVigenciaFin());
+			s.setEstado(servicio.getEstado());
+			s.setDuracion(servicio.getDuracion());
+			s.setCosto(servicio.getCosto());
 			servicioService.updateServicio(s);
 		}	
 	} 
