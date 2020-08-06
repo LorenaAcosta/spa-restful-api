@@ -28,10 +28,6 @@ public class CategoriaService {
 	public List<Categorias> findAll(){
 		return (List<Categorias>) categoriaDao.findAll();
 	}
-	@Transactional(readOnly=true)
-	public List<Categorias> findNothing(){
-		return (List<Categorias>) categoriaDao.findAll();
-	}
 	
 	@Transactional
 	public void addCategoria(Categorias categoria) {
@@ -72,6 +68,11 @@ public class CategoriaService {
 	                PaginadoResult<Categorias> result = new PaginadoResult<>(lista);
 	                return result;
 		
+	}
+
+	@Transactional
+	public List<Categorias> findByDataType(String dataType) {
+		return (List<Categorias>) categoriaDao.findByDataType(dataType);
 	}
 	
 }

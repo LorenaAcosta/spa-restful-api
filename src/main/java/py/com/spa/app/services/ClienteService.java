@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IClienteDao;
 import py.com.spa.app.entities.Clientes	;
-import py.com.spa.app.entities.Reservas;
+import py.com.spa.app.entities.ReservaDetalle;
 
 @Service
 public class ClienteService {
@@ -37,8 +37,8 @@ public class ClienteService {
 	}
 	
 	@Transactional
-	public List<Reservas> getReservasByClienteId(Integer id){
-		List<Reservas> reservas= clienteDao.getReservasByClienteId(id);
+	public List<ReservaDetalle> getReservasByClienteId(Integer id){
+		List<ReservaDetalle> reservas= clienteDao.getReservasByClienteId(id);
 		return reservas;
 	}
 
@@ -46,6 +46,7 @@ public class ClienteService {
 	public Clientes findClienteById(Integer id) {
 		return (Clientes) clienteDao.findById(id).orElse(null);
 	}
+
 
 
 }

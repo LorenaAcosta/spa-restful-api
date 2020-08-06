@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
-
+import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -29,6 +29,18 @@ public class CategoriaRESTController  {
 	
 	@GetMapping("/listar")
 	public List<Categorias> listarCategorias(){
+		return categoriaService.findAll();
+	}
+	
+	@GetMapping("/getDataType/{dataType}")
+	public List<Categorias> getDataType(@PathVariable(value="dataType") String dataType){
+		return (List<Categorias>) categoriaService.findByDataType(dataType);
+	}
+
+	
+	
+	@GetMapping("/getServicios")
+	public List<Categorias> getServicios(){
 		return categoriaService.findAll();
 	}
 	
@@ -48,6 +60,7 @@ public class CategoriaRESTController  {
 		if(c!=null) {
 			c.setDescripcion(categoria.getDescripcion());
 			c.setCodigo(categoria.getCodigo());
+			c.setImageName(categoria.getImageName());
 			categoriaService.updateCategoria(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
@@ -66,27 +79,4 @@ public class CategoriaRESTController  {
 		}
 		
 	}
-	
-	
-	@PostMapping("/categorias-list")
-	public ResponseEntity<?> listarPaginado (@RequestBody PaginadoParam<Categorias> categoria){
-		try {
-			PaginadoResult<Categorias> clista = categoriaService.listar(categoria);
-			if (clista.getLista().size()==0) {
-				return new ResponseEntity<PaginadoResult<?>>(clista, HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<PaginadoResult<?>>(clista, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		}
-		
-	}
-	
-	
-	
-	
-	
-	
-
-
 }

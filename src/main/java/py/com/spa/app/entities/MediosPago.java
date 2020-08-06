@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -52,7 +53,7 @@ public class MediosPago implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
-    private List<Reservas> reservasList;
+    private List<ReservaDetalle> reservaDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
     private List<Pagos> pagosList;
 
@@ -94,12 +95,12 @@ public class MediosPago implements Serializable {
     }
 
     @XmlTransient
-    public List<Reservas> getReservasList() {
-        return reservasList;
+    public List<ReservaDetalle> getReservaDetalleList() {
+        return reservaDetalleList;
     }
 
-    public void setReservasList(List<Reservas> reservasList) {
-        this.reservasList = reservasList;
+    public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
+        this.reservaDetalleList = reservaDetalleList;
     }
 
     @XmlTransient
@@ -133,7 +134,7 @@ public class MediosPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.MediosPago[ medioPagoId=" + medioPagoId + " ]";
+        return "py.com.spa.app.entities.MediosPago[ medioPagoId=" + medioPagoId + " ]";
     }
     
 }

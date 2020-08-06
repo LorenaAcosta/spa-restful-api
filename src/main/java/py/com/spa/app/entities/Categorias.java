@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -23,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -35,7 +37,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion")})
+    @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
+    @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,9 +57,26 @@ public class Categorias implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
-    @JsonBackReference
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "data_type")
+    private String dataType;
+    @Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;
+    
+    @JsonBackReference(value="servicios")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private List<Servicios> serviciosList;
+    
+    @JsonBackReference(value="serv-emp")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    private List<ServiciosEmpleados> serviciosEmpleadosList;
+
+    @JsonBackReference(value="productos") 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    private List<Productos> productosList;
 
     public Categorias() {
     }
@@ -64,10 +85,18 @@ public class Categorias implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String codigo, String descripcion) {
+    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType) {
         this.categoriaId = categoriaId;
         this.codigo = codigo;
         this.descripcion = descripcion;
+        this.dataType = dataType;
+    }
+    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType, String imageName) {
+        this.categoriaId = categoriaId;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.dataType = dataType;
+        this.imageName = imageName;
     }
 
     public Integer getCategoriaId() {
@@ -94,6 +123,22 @@ public class Categorias implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     @XmlTransient
     public List<Servicios> getServiciosList() {
         return serviciosList;
@@ -101,6 +146,24 @@ public class Categorias implements Serializable {
 
     public void setServiciosList(List<Servicios> serviciosList) {
         this.serviciosList = serviciosList;
+    }
+
+    @XmlTransient
+    public List<ServiciosEmpleados> getServiciosEmpleadosList() {
+        return serviciosEmpleadosList;
+    }
+
+    public void setServiciosEmpleadosList(List<ServiciosEmpleados> serviciosEmpleadosList) {
+        this.serviciosEmpleadosList = serviciosEmpleadosList;
+    }
+
+    @XmlTransient
+    public List<Productos> getProductosList() {
+        return productosList;
+    }
+
+    public void setProductosList(List<Productos> productosList) {
+        this.productosList = productosList;
     }
 
     @Override
@@ -125,7 +188,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }

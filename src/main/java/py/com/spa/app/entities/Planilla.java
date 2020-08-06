@@ -130,7 +130,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Planilla[ cedula=" + cedula + " ]";
+        return "py.com.spa.app.entities.Planilla[ cedula=" + cedula + " ]";
     }
     
 }

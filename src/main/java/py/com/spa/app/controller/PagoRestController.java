@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Pagos;
-import py.com.spa.app.entities.Reservas;
 import py.com.spa.app.services.PagoService;
 
 @RestController

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IReservaDao;
 import py.com.spa.app.entities.Clientes;
-import py.com.spa.app.entities.Reservas;
+import py.com.spa.app.entities.ReservaDetalle;
 
 @Service
 public class ReservaService {
@@ -17,27 +17,27 @@ public class ReservaService {
 	private IReservaDao reservaDao;
 	
 	@Transactional(readOnly=true)
-	public List<Reservas> findAll(){
-		return (List<Reservas>) reservaDao.findAll();
+	public List<ReservaDetalle> findAll(){
+		return (List<ReservaDetalle>) reservaDao.findAll();
 	}
 	
 	@Transactional
-	public void agregarReserva(Reservas reserva) {
+	public void agregarReserva(ReservaDetalle reserva) {
 		reservaDao.save(reserva);
 	}
 	
 	@Transactional(readOnly=true)
-	public List<Reservas> getReservasCliente(Integer id){
-		return (List<Reservas>) reservaDao.findByClienteId(id);
+	public List<ReservaDetalle> getReservasCliente(Integer id){
+		return (List<ReservaDetalle>) reservaDao.findByClienteId(id);
 	}
 	
 	@Transactional(readOnly=true)	
-	public Reservas  findReservaById(Integer id) {
-		return (Reservas) reservaDao.findById(id).orElse(null);
+	public ReservaDetalle  findReservaById(Integer id) {
+		return (ReservaDetalle) reservaDao.findById(id).orElse(null);
 	}
 	
 	@Transactional
-	public void updateReserva(Reservas reserva) {
+	public void updateReserva(ReservaDetalle reserva) {
 		reservaDao.save(reserva);
 	}
 	

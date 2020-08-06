@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
+import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.ProductoService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -28,36 +30,21 @@ public class ProductoRESTController {
 	@Autowired
 	private ProductoService productoService;
 	
+	@GetMapping("/listar")
+	public List<Productos> listarProductos(){
+		return productoService.findAll();
+	}
+	
 	
 	@PostMapping("/agregar")
 	public void agregarProducto(@RequestBody Productos producto) {
-		productoService.saveProducto(producto);
+		productoService.addProducto(producto);
 	}
 
-	@GetMapping("/listar")
-	public ResponseEntity<?> listarProductos(){
-		List<Productos> productos = productoService.findAll();
-		if ( productos!= null ) {
-			if (productos.size()!=0) {
-			return new ResponseEntity<>( productos, HttpStatus.OK);
-			}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-			}
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
-	}
-	
 	@GetMapping("/encontrar/{id}")
-	public Productos encontrarProducto(@PathVariable Integer id) {
+	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
 		return (Productos) productoService.findProductoById(id);
 	}
-	
-	@DeleteMapping("/eliminar/{id}")
-	public void eliminarProducto(@PathVariable(value="id") Integer id) {
-		productoService.deleteProducto(id);
-	}
-	
 	
 	@PutMapping("/modificar/{id}")
 	public void modificarProducto(@PathVariable Integer id, @RequestBody Productos producto) {
@@ -69,15 +56,22 @@ public class ProductoRESTController {
 			prod.setDescripcion(producto.getDescripcion());
 			prod.setPrecioVenta(producto.getPrecioVenta());
 			prod.setStockActual(producto.getStockActual());
+			prod.setEstado(producto.getEstado());
+			prod.setImageName(producto.getImageName());
 			productoService.updateProducto(prod);
 		}
 		
 	} 
+	@DeleteMapping("/eliminar/{id}")
+	public void eliminarProducto(@PathVariable(value="id") Integer id) {
+		productoService.deleteProducto(id);
+	}
+
 	
-	@PostMapping("/producto-list")
-	public ResponseEntity<?> listarPaginado (@RequestBody PaginadoParam<Productos> productos){
+	@PostMapping("/productos-list")
+	public ResponseEntity<?> listarPaginado (@RequestBody PaginadoParam<Productos> producto){
 		try {
-			PaginadoResult<Productos> clista = productoService.listar(productos);
+			PaginadoResult<Productos> clista = productoService.listar(producto);
 			if (clista.getLista().size()==0) {
 				return new ResponseEntity<PaginadoResult<?>>(clista, HttpStatus.NOT_FOUND);
 			}
@@ -88,6 +82,5 @@ public class ProductoRESTController {
 		
 	}
 	
-	
-	
+
 }

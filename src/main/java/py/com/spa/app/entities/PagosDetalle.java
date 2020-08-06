@@ -154,7 +154,7 @@ public class PagosDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.PagosDetalle[ pagoDetalleId=" + pagoDetalleId + " ]";
+        return "py.com.spa.app.entities.PagosDetalle[ pagoDetalleId=" + pagoDetalleId + " ]";
     }
     
 }

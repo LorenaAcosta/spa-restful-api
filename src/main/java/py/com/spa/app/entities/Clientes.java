@@ -34,13 +34,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Clientes.findAll", query = "SELECT c FROM Clientes c"),
     @NamedQuery(name = "Clientes.findByClienteId", query = "SELECT c FROM Clientes c WHERE c.clienteId = :clienteId"),
     @NamedQuery(name = "Clientes.findByNombre", query = "SELECT c FROM Clientes c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Clientes.findByNombreUsuario", query = "SELECT c FROM Clientes c WHERE c.nombreUsuario = :nombreUsuario"),
-    @NamedQuery(name = "Clientes.findByContrasenha", query = "SELECT c FROM Clientes c WHERE c.contrasenha = :contrasenha"),
+    @NamedQuery(name = "Clientes.findByUsername", query = "SELECT c FROM Clientes c WHERE c.username = :username"),
+    @NamedQuery(name = "Clientes.findByPassword", query = "SELECT c FROM Clientes c WHERE c.password = :password"),
     @NamedQuery(name = "Clientes.findByApellido", query = "SELECT c FROM Clientes c WHERE c.apellido = :apellido"),
     @NamedQuery(name = "Clientes.findByCorreo", query = "SELECT c FROM Clientes c WHERE c.correo = :correo"),
     @NamedQuery(name = "Clientes.findByRuc", query = "SELECT c FROM Clientes c WHERE c.ruc = :ruc"),
     @NamedQuery(name = "Clientes.findByTelefono", query = "SELECT c FROM Clientes c WHERE c.telefono = :telefono"),
-    @NamedQuery(name = "Clientes.findBySexo", query = "SELECT c FROM Clientes c WHERE c.sexo = :sexo")})
+    @NamedQuery(name = "Clientes.findBySexo", query = "SELECT c FROM Clientes c WHERE c.sexo = :sexo"),
+    @NamedQuery(name = "Clientes.findByEstado", query = "SELECT c FROM Clientes c WHERE c.estado = :estado")})
 public class Clientes implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,13 +57,13 @@ public class Clientes implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_usuario")
-    private String nombreUsuario;
+    @Column(name = "username")
+    private String username;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "contrasenha")
-    private String contrasenha;
+    @Column(name = "password")
+    private String password;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -88,8 +89,12 @@ public class Clientes implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "sexo")
     private String sexo;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "estado")
+    private int estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId")
-    private List<Reservas> reservasList;
+    private List<ReservaDetalle> reservaDetalleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId")
     private List<Pagos> pagosList;
 
@@ -100,16 +105,17 @@ public class Clientes implements Serializable {
         this.clienteId = clienteId;
     }
 
-    public Clientes(Integer clienteId, String nombre, String nombreUsuario, String contrasenha, String apellido, String correo, String ruc, String telefono, String sexo) {
+    public Clientes(Integer clienteId, String nombre, String username, String password, String apellido, String correo, String ruc, String telefono, String sexo, int estado) {
         this.clienteId = clienteId;
         this.nombre = nombre;
-        this.nombreUsuario = nombreUsuario;
-        this.contrasenha = contrasenha;
+        this.username = username;
+        this.password = password;
         this.apellido = apellido;
         this.correo = correo;
         this.ruc = ruc;
         this.telefono = telefono;
         this.sexo = sexo;
+        this.estado = estado;
     }
 
     public Integer getClienteId() {
@@ -128,20 +134,20 @@ public class Clientes implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getContrasenha() {
-        return contrasenha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasenha(String contrasenha) {
-        this.contrasenha = contrasenha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getApellido() {
@@ -184,13 +190,21 @@ public class Clientes implements Serializable {
         this.sexo = sexo;
     }
 
-    @XmlTransient
-    public List<Reservas> getReservasList() {
-        return reservasList;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setReservasList(List<Reservas> reservasList) {
-        this.reservasList = reservasList;
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    @XmlTransient
+    public List<ReservaDetalle> getReservaDetalleList() {
+        return reservaDetalleList;
+    }
+
+    public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
+        this.reservaDetalleList = reservaDetalleList;
     }
 
     @XmlTransient
@@ -224,7 +238,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Clientes[ clienteId=" + clienteId + " ]";
+        return "py.com.spa.app.entities.Clientes[ clienteId=" + clienteId + " ]";
     }
     
 }

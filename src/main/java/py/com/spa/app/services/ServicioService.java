@@ -46,6 +46,10 @@ public class ServicioService {
 		servicioDao.save(p);
 	}   
 	
+	@Transactional
+	public List<Servicios> findByCategoriaId(Categorias categoria) {
+		return (List<Servicios>) servicioDao.findByCategoriaId(categoria);
+	}
 	
 
 }

@@ -6,7 +6,6 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,13 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findByApellido", query = "SELECT e FROM Empleados e WHERE e.apellido = :apellido"),
     @NamedQuery(name = "Empleados.findByDireccion", query = "SELECT e FROM Empleados e WHERE e.direccion = :direccion"),
     @NamedQuery(name = "Empleados.findByTelefono", query = "SELECT e FROM Empleados e WHERE e.telefono = :telefono"),
-    @NamedQuery(name = "Empleados.findByFechaNac", query = "SELECT e FROM Empleados e WHERE e.fechaNac = :fechaNac")})
+    @NamedQuery(name = "Empleados.findByFechaNac", query = "SELECT e FROM Empleados e WHERE e.fechaNac = :fechaNac"),
+    @NamedQuery(name = "Empleados.findByImageName", query = "SELECT e FROM Empleados e WHERE e.imageName = :imageName")})
 public class Empleados implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,8 +67,11 @@ public class Empleados implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "fecha_nac")
     private String fechaNac;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
-    private List<Reservas> reservasList;
+    @Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
+    private ServiciosEmpleados serviciosEmpleados;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
     private Planilla planilla;
 
@@ -138,13 +139,20 @@ public class Empleados implements Serializable {
         this.fechaNac = fechaNac;
     }
 
-    @XmlTransient
-    public List<Reservas> getReservasList() {
-        return reservasList;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setReservasList(List<Reservas> reservasList) {
-        this.reservasList = reservasList;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public ServiciosEmpleados getServiciosEmpleados() {
+        return serviciosEmpleados;
+    }
+
+    public void setServiciosEmpleados(ServiciosEmpleados serviciosEmpleados) {
+        this.serviciosEmpleados = serviciosEmpleados;
     }
 
     public Planilla getPlanilla() {
@@ -177,7 +185,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Empleados[ cedula=" + cedula + " ]";
+        return "py.com.spa.app.entities.Empleados[ cedula=" + cedula + " ]";
     }
     
 }

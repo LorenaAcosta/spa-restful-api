@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.services.ClienteService;
@@ -31,20 +32,22 @@ public class EmpleadoRESTController {
 		return empleados;
 	}
 	
-	@PostMapping("/encontrar-empleado")
-	public ResponseEntity<?> encontrarEmpleado (@RequestBody Empleados empleado){
-		Empleados e =  empleadoService.findEmpleadoById(empleado.getCedula());
-		if (e !=null) {
-			return new ResponseEntity<>(e, HttpStatus.OK);
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
+	@GetMapping("/encontrar/{id}")
+	public Empleados obtenerEmpleadoId(@PathVariable(value="id") Integer id) {
+		return (Empleados) empleadoService.findEmpleadoById(id);
 	}
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<Void> agregarEmpleado(@RequestBody Empleados empleado) {
-		empleadoService.addEmpleado(empleado);
-		 return new ResponseEntity<Void>(HttpStatus.CREATED);
+		Empleados e = empleadoService.findEmpleadoById(empleado.getCedula());
+		if(e==null) {
+			empleadoService.addEmpleado(empleado);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.CONFLICT );
+		}
+		
+	
 	}
 	
 	@PutMapping("/modificar/{id}")

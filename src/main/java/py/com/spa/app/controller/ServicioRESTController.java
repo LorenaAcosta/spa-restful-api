@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.ServicioService;
 
@@ -33,10 +35,10 @@ public class ServicioRESTController {
 
 	@GetMapping("/listar")
 	public ResponseEntity<?> listarServicios(){
-		List<Servicios> Servicios = servicioService.findAll();
-		if ( Servicios!= null ) {
-			if (Servicios.size()!=0) {
-			return new ResponseEntity<>( Servicios, HttpStatus.OK);
+		List<Servicios> servicios = servicioService.findAll();
+		if ( servicios!= null ) {
+			if (servicios.size()!=0) {
+			return new ResponseEntity<>( servicios, HttpStatus.OK);
 			}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 			}
@@ -44,6 +46,12 @@ public class ServicioRESTController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@PostMapping("/listarByCategoria")
+	public List<Servicios> getDataType(@RequestBody Categorias categoria){
+		return (List<Servicios>) servicioService.findByCategoriaId(categoria);
+	}
+
 	
 	@GetMapping("/encontrar/{id}")
 	public Servicios encontrarProducto(@PathVariable Integer id) {
@@ -62,11 +70,11 @@ public class ServicioRESTController {
 		if (s!=null) {
 			s.setNombre(servicio.getNombre());
 			s.setDescripcion(servicio.getDescripcion());
-			s.setFechaVigenciaIni(servicio.getFechaVigenciaIni());
-			s.setFechaVigenciaFin(servicio.getFechaVigenciaFin());
+			s.setCategoriaId(servicio.getCategoriaId());
 			s.setEstado(servicio.getEstado());
 			s.setDuracion(servicio.getDuracion());
 			s.setCosto(servicio.getCosto());
+			s.setImageName(servicio.getImageName());
 			servicioService.updateServicio(s);
 		}	
 	} 

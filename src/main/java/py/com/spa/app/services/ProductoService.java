@@ -32,7 +32,10 @@ public class ProductoService {
 	public List<Productos> findAll(){
 		return (List<Productos>) productoDao.findAll(); 
 	}
-	
+	@Transactional
+	public void addProducto(Productos producto) {
+		productoDao.save(producto);
+	}
 	
 	@Transactional(readOnly=true)
 	public Productos findProductoById(Integer id){
@@ -40,22 +43,21 @@ public class ProductoService {
 	}
 	
 	@Transactional
-	public void saveProducto(Productos prod){
-		productoDao.save(prod);
-	}
+	public void updateProducto(Productos producto) {
+		productoDao.save(producto);
+	} 
 	
 	@Transactional
 	public void deleteProducto(Integer id) {
 		productoDao.deleteById(id);
 	}
 	
-	@Transactional
-	public void updateProducto(Productos producto) {
-		productoDao.save(producto);
-	}   
+	  
 	
 	@Transactional(readOnly=true)
 	public PaginadoResult<Productos> listar (PaginadoParam<Productos> param) {
+		
+		
 		ExampleMatcher matcher = ExampleMatcher.matching()
 	            .withStringMatcher(StringMatcher.CONTAINING);
 	        Example<Productos> example = Example.of(param.getFiltros(),matcher);
@@ -71,7 +73,6 @@ public class ProductoService {
 	                return result;
 		
 	}
-	
 	
 
 }

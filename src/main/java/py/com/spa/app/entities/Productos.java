@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,6 +24,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -37,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Productos.findByCosto", query = "SELECT p FROM Productos p WHERE p.costo = :costo"),
     @NamedQuery(name = "Productos.findByPrecioVenta", query = "SELECT p FROM Productos p WHERE p.precioVenta = :precioVenta"),
-    @NamedQuery(name = "Productos.findByStockActual", query = "SELECT p FROM Productos p WHERE p.stockActual = :stockActual")})
+    @NamedQuery(name = "Productos.findByStockActual", query = "SELECT p FROM Productos p WHERE p.stockActual = :stockActual"),
+    @NamedQuery(name = "Productos.findByImageName", query = "SELECT p FROM Productos p WHERE p.imageName = :imageName"),
+    @NamedQuery(name = "Productos.findByEstado", query = "SELECT p FROM Productos p WHERE p.estado = :estado")})
 public class Productos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,8 +74,23 @@ public class Productos implements Serializable {
     @NotNull
     @Column(name = "stock_actual")
     private int stockActual;
+    @Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "estado")
+    private String estado;
+    
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private List<PagosDetalle> pagosDetalleList;
+    
+    @JsonManagedReference(value="productos")
+    @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
+    @ManyToOne(optional = false)
+    private Categorias categoriaId;
 
     public Productos() {
     }
@@ -77,13 +99,14 @@ public class Productos implements Serializable {
         this.productoId = productoId;
     }
 
-    public Productos(Integer productoId, String codigo, String descripcion, int costo, int precioVenta, int stockActual) {
+    public Productos(Integer productoId, String codigo, String descripcion, int costo, int precioVenta, int stockActual, String estado) {
         this.productoId = productoId;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.costo = costo;
         this.precioVenta = precioVenta;
         this.stockActual = stockActual;
+        this.estado = estado;
     }
 
     public Integer getProductoId() {
@@ -134,6 +157,22 @@ public class Productos implements Serializable {
         this.stockActual = stockActual;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @XmlTransient
     public List<PagosDetalle> getPagosDetalleList() {
         return pagosDetalleList;
@@ -141,6 +180,14 @@ public class Productos implements Serializable {
 
     public void setPagosDetalleList(List<PagosDetalle> pagosDetalleList) {
         this.pagosDetalleList = pagosDetalleList;
+    }
+
+    public Categorias getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Categorias categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     @Override
@@ -165,7 +212,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Productos[ productoId=" + productoId + " ]";
+        return "py.com.spa.app.entities.Productos[ productoId=" + productoId + " ]";
     }
     
 }

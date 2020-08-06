@@ -1,14 +1,18 @@
 package py.com.spa.app.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import py.com.spa.app.entities.Clientes;
-import py.com.spa.app.entities.Reservas;
+import py.com.spa.app.entities.ReservaDetalle;
 
 public interface IClienteDao extends JpaRepository<Clientes, Integer> {
 
-	public List<Reservas> getReservasByClienteId(Integer Id);
+	public List<ReservaDetalle> getReservasByClienteId(Integer Id);
+	
+	public Clientes findByUsername(String username);
+	
 	
 }

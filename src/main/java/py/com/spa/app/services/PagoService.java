@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import py.com.spa.app.dao.IPagoDao;
 import py.com.spa.app.entities.Pagos;
-import py.com.spa.app.entities.Reservas;
 
 @Service
 public class PagoService {

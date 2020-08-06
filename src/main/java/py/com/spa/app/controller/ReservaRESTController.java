@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.entities.MediosPago;
-import py.com.spa.app.entities.Reservas;
+import py.com.spa.app.entities.Productos;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.services.MediosPagoService;
 import py.com.spa.app.services.ReservaService;
 
@@ -32,7 +33,7 @@ public class ReservaRESTController {
 	
 	@GetMapping("/listar")
 	public  ResponseEntity<?> listarReservas(){
-		List<Reservas> reservas = reservaService.findAll();
+		List<ReservaDetalle> reservas = reservaService.findAll();
 		if (reservas!=null) {
 			if (reservas.size()!=0) {
 				return new ResponseEntity<>(reservas, HttpStatus.OK);
@@ -44,23 +45,28 @@ public class ReservaRESTController {
 		}
 	}
 	
-	
 	@PostMapping("/agregar")
-	public ResponseEntity<?> agregarReserva (@RequestBody Reservas reserva){		
+	public ResponseEntity<?> agregarReserva (@RequestBody ReservaDetalle reserva){		
 		reservaService.agregarReserva(reserva);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/encontrar/{id}")
+	public ReservaDetalle obtenerReservaId(@PathVariable(value="id") Integer id) {
+		return (ReservaDetalle) reservaService.findReservaById(id);
+	}
+	
+	
 
 	@PutMapping("/modificar/{id}/{id}")
 	public ResponseEntity<Void> modificarReserva (@PathVariable(value="id") Integer reservaId,
-			@RequestBody Reservas reserva) {
-	    Reservas rs = null;
+			@RequestBody ReservaDetalle reserva) {
+		ReservaDetalle rs = null;
 	    
 	    rs = reservaService.findReservaById(reservaId);
 	    
 		if(rs!=null) {
-			rs.setEstado(reserva.getEstado());
+			rs.setEstadoItem(reserva.getEstadoItem());
 			rs.setFecha(reserva.getFecha());
 			reservaService.updateReserva(rs);	
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -72,7 +78,7 @@ public class ReservaRESTController {
 	
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<Void> eliminarReserva (@PathVariable(value="id") Integer id) {
-		Reservas rs= reservaService.findReservaById(id);
+		ReservaDetalle rs= reservaService.findReservaById(id);
 		if (rs!=null) {
 			reservaService.eliminarReserva(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);

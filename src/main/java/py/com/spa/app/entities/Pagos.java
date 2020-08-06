@@ -146,7 +146,7 @@ public class Pagos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.app.py.Pagos[ pagoId=" + pagoId + " ]";
+        return "py.com.spa.app.entities.Pagos[ pagoId=" + pagoId + " ]";
     }
     
 }
