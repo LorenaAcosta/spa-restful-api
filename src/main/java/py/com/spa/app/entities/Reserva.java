@@ -44,7 +44,7 @@ public class Reserva implements Serializable {
     
     @Basic(optional = false)
     @Column(name = "usuario_id")
-    private String usuarioId;
+    private Integer usuarioId;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "reserva")
     private ReservaDetalle reservaDetalle;
@@ -86,11 +86,11 @@ public class Reserva implements Serializable {
         this.reservaDetalle = reservaDetalle;
     }
 
-    public String getUsuarioId() {
+    public Integer getUsuarioId() {
 		return usuarioId;
 	}
 
-	public void setUsuarioId(String usuarioId) {
+	public void setUsuarioId(Integer usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 

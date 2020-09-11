@@ -55,7 +55,7 @@ public class Pagos implements Serializable {
     
     @Basic(optional = false)
     @Column(name = "usuario_id")
-    private String usuarioId;
+    private Integer usuarioId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagos")
     private List<PagosDetalle> pagosDetalleList;
@@ -122,11 +122,11 @@ public class Pagos implements Serializable {
         this.medioPagoId = medioPagoId;
     }
 
-    public String getUsuarioId() {
+    public Integer getUsuarioId() {
 		return usuarioId;
 	}
 
-	public void setUsuarioId(String usuarioId) {
+	public void setUsuarioId(Integer usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 
