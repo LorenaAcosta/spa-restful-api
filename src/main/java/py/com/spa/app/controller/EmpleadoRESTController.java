@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.entities.Empleados;
-import py.com.spa.app.services.ClienteService;
 import py.com.spa.app.services.EmpleadoService;
 
 @RestController

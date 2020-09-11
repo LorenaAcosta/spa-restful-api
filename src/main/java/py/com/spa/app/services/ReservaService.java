@@ -1,4 +1,4 @@
-package py.com.spa.app.services;
+/*package py.com.spa.app.services;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IReservaDao;
-import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.entities.ReservaDetalle;
 
 @Service
@@ -47,4 +46,4 @@ public class ReservaService {
 	}
 
 	
-}
+}*/

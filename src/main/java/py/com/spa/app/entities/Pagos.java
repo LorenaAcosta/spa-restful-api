@@ -20,14 +20,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "pagos")
@@ -38,29 +36,37 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pagos.findByFecha", query = "SELECT p FROM Pagos p WHERE p.fecha = :fecha"),
     @NamedQuery(name = "Pagos.findByTotal", query = "SELECT p FROM Pagos p WHERE p.total = :total")})
 public class Pagos implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "pago_id")
     private Integer pagoId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "fecha")
     private String fecha;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "total")
     private int total;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagoId")
+    
+    @Basic(optional = false)
+    @Column(name = "usuario_id")
+    private String usuarioId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagos")
     private List<PagosDetalle> pagosDetalleList;
-    @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")
-    @ManyToOne(optional = false)
-    private Clientes clienteId;
+
     @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
     @ManyToOne(optional = false)
     private MediosPago medioPagoId;
+    
+    /*@JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioId;*/
 
     public Pagos() {
     }
@@ -108,14 +114,6 @@ public class Pagos implements Serializable {
         this.pagosDetalleList = pagosDetalleList;
     }
 
-    public Clientes getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Clientes clienteId) {
-        this.clienteId = clienteId;
-    }
-
     public MediosPago getMedioPagoId() {
         return medioPagoId;
     }
@@ -124,7 +122,15 @@ public class Pagos implements Serializable {
         this.medioPagoId = medioPagoId;
     }
 
-    @Override
+    public String getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(String usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (pagoId != null ? pagoId.hashCode() : 0);
@@ -146,7 +152,7 @@ public class Pagos implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Pagos[ pagoId=" + pagoId + " ]";
+        return "entities.Pagos[ pagoId=" + pagoId + " ]";
     }
-    
+
 }

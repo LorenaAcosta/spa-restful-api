@@ -8,80 +8,76 @@ package py.com.spa.app.entities;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "pagos_detalle")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PagosDetalle.findAll", query = "SELECT p FROM PagosDetalle p"),
-    @NamedQuery(name = "PagosDetalle.findByPagoDetalleId", query = "SELECT p FROM PagosDetalle p WHERE p.pagoDetalleId = :pagoDetalleId"),
+    @NamedQuery(name = "PagosDetalle.findByPagoDetalleId", query = "SELECT p FROM PagosDetalle p WHERE p.pagosDetallePK.pagoDetalleId = :pagoDetalleId"),
+    @NamedQuery(name = "PagosDetalle.findByPagoId", query = "SELECT p FROM PagosDetalle p WHERE p.pagosDetallePK.pagoId = :pagoId"),
     @NamedQuery(name = "PagosDetalle.findByMonto", query = "SELECT p FROM PagosDetalle p WHERE p.monto = :monto"),
     @NamedQuery(name = "PagosDetalle.findByCantidad", query = "SELECT p FROM PagosDetalle p WHERE p.cantidad = :cantidad"),
     @NamedQuery(name = "PagosDetalle.findBySubtotal", query = "SELECT p FROM PagosDetalle p WHERE p.subtotal = :subtotal")})
 public class PagosDetalle implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @EmbeddedId
+    protected PagosDetallePK pagosDetallePK;
+
     @Basic(optional = false)
-    @Column(name = "pago_detalle_id")
-    private Integer pagoDetalleId;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "monto")
     private int monto;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cantidad")
     private int cantidad;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "subtotal")
     private int subtotal;
-    @JoinColumn(name = "pago_id", referencedColumnName = "pago_id")
+
+    @JoinColumn(name = "pago_id", referencedColumnName = "pago_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Pagos pagoId;
-    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id")
-    @ManyToOne(optional = false)
-    private Productos productoId;
-    @JoinColumn(name = "servicio_id", referencedColumnName = "servicio_id")
-    @ManyToOne(optional = false)
-    private Servicios servicioId;
+    private Pagos pagos;
 
     public PagosDetalle() {
     }
 
-    public PagosDetalle(Integer pagoDetalleId) {
-        this.pagoDetalleId = pagoDetalleId;
+    public PagosDetalle(PagosDetallePK pagosDetallePK) {
+        this.pagosDetallePK = pagosDetallePK;
     }
 
-    public PagosDetalle(Integer pagoDetalleId, int monto, int cantidad, int subtotal) {
-        this.pagoDetalleId = pagoDetalleId;
+    public PagosDetalle(PagosDetallePK pagosDetallePK, int monto, int cantidad, int subtotal) {
+        this.pagosDetallePK = pagosDetallePK;
         this.monto = monto;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
 
-    public Integer getPagoDetalleId() {
-        return pagoDetalleId;
+    public PagosDetalle(int pagoDetalleId, int pagoId) {
+        this.pagosDetallePK = new PagosDetallePK(pagoDetalleId, pagoId);
     }
 
-    public void setPagoDetalleId(Integer pagoDetalleId) {
-        this.pagoDetalleId = pagoDetalleId;
+    public PagosDetallePK getPagosDetallePK() {
+        return pagosDetallePK;
+    }
+
+    public void setPagosDetallePK(PagosDetallePK pagosDetallePK) {
+        this.pagosDetallePK = pagosDetallePK;
     }
 
     public int getMonto() {
@@ -108,34 +104,18 @@ public class PagosDetalle implements Serializable {
         this.subtotal = subtotal;
     }
 
-    public Pagos getPagoId() {
-        return pagoId;
+    public Pagos getPagos() {
+        return pagos;
     }
 
-    public void setPagoId(Pagos pagoId) {
-        this.pagoId = pagoId;
-    }
-
-    public Productos getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Productos productoId) {
-        this.productoId = productoId;
-    }
-
-    public Servicios getServicioId() {
-        return servicioId;
-    }
-
-    public void setServicioId(Servicios servicioId) {
-        this.servicioId = servicioId;
+    public void setPagos(Pagos pagos) {
+        this.pagos = pagos;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pagoDetalleId != null ? pagoDetalleId.hashCode() : 0);
+        hash += (pagosDetallePK != null ? pagosDetallePK.hashCode() : 0);
         return hash;
     }
 
@@ -146,7 +126,7 @@ public class PagosDetalle implements Serializable {
             return false;
         }
         PagosDetalle other = (PagosDetalle) object;
-        if ((this.pagoDetalleId == null && other.pagoDetalleId != null) || (this.pagoDetalleId != null && !this.pagoDetalleId.equals(other.pagoDetalleId))) {
+        if ((this.pagosDetallePK == null && other.pagosDetallePK != null) || (this.pagosDetallePK != null && !this.pagosDetallePK.equals(other.pagosDetallePK))) {
             return false;
         }
         return true;
@@ -154,7 +134,7 @@ public class PagosDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.PagosDetalle[ pagoDetalleId=" + pagoDetalleId + " ]";
+        return "entities.PagosDetalle[ pagosDetallePK=" + pagosDetallePK + " ]";
     }
-    
+
 }

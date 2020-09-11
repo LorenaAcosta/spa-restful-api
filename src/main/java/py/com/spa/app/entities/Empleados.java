@@ -6,28 +6,38 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "empleados")
 @XmlRootElement
+@JsonIgnoreProperties("inspection")
 @NamedQueries({
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
+    @NamedQuery(name = "Empleados.findByEmpleadoId", query = "SELECT e FROM Empleados e WHERE e.empleadoId = :empleadoId"),
     @NamedQuery(name = "Empleados.findByCedula", query = "SELECT e FROM Empleados e WHERE e.cedula = :cedula"),
     @NamedQuery(name = "Empleados.findByNombre", query = "SELECT e FROM Empleados e WHERE e.nombre = :nombre"),
     @NamedQuery(name = "Empleados.findByApellido", query = "SELECT e FROM Empleados e WHERE e.apellido = :apellido"),
@@ -36,53 +46,68 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Empleados.findByFechaNac", query = "SELECT e FROM Empleados e WHERE e.fechaNac = :fechaNac"),
     @NamedQuery(name = "Empleados.findByImageName", query = "SELECT e FROM Empleados e WHERE e.imageName = :imageName")})
 public class Empleados implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cedula")
-    private Integer cedula;
+    @Column(name = "empleado_id")
+    private Integer empleadoId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Column(name = "cedula")
+    private int cedula;
+
+    @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "apellido")
     private String apellido;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
     private String direccion;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "telefono")
     private String telefono;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "fecha_nac")
     private String fechaNac;
-    @Size(max = 2147483647)
+
     @Column(name = "image_name")
     private String imageName;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private ServiciosEmpleados serviciosEmpleados;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private Planilla planilla;
+    
+    
+    // relaciones
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="servicios_empleados", joinColumns = @JoinColumn(name="empleado_id"),
+	inverseJoinColumns = @JoinColumn(name="servicio_id"),
+	uniqueConstraints = { @UniqueConstraint (columnNames = {"empleado_id", "servicio_id"})})
+	private List <Servicios> serviciosList;
+	
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planillaId")
+    private List<Planilla> planillaList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservaId")
+    private List<ReservaDetalle> reservaDetalleList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "horarioId")
+    private List<Horario> horarioList;
+    
 
     public Empleados() {
     }
 
-    public Empleados(Integer cedula) {
-        this.cedula = cedula;
+    public Empleados(Integer empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
-    public Empleados(Integer cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
+    public Empleados(Integer empleadoId, int cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
+        this.empleadoId = empleadoId;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -91,11 +116,53 @@ public class Empleados implements Serializable {
         this.fechaNac = fechaNac;
     }
 
-    public Integer getCedula() {
+    // Getters and setters relaciones
+    @JsonBackReference
+	public List<Servicios> getServiciosList() {
+		return serviciosList;
+	}
+
+	public void setServiciosList(List<Servicios> serviciosList) {
+		this.serviciosList = serviciosList;
+	}
+
+	public List<Planilla> getPlanillaList() {
+		return planillaList;
+	}
+
+	public void setPlanillaList(List<Planilla> planillaList) {
+		this.planillaList = planillaList;
+	}
+
+	public List<ReservaDetalle> getReservaDetalleList() {
+		return reservaDetalleList;
+	}
+
+	public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
+		this.reservaDetalleList = reservaDetalleList;
+	}
+
+	public List<Horario> getHorarioList() {
+		return horarioList;
+	}
+
+	public void setHorarioList(List<Horario> horarioList) {
+		this.horarioList = horarioList;
+	}
+
+	public void setEmpleadoId(Integer empleadoId) {
+        this.empleadoId = empleadoId;
+    }
+	
+    public Integer getEmpleadoId() {
+        return empleadoId;
+    }
+
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(Integer cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 
@@ -147,26 +214,10 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    public ServiciosEmpleados getServiciosEmpleados() {
-        return serviciosEmpleados;
-    }
-
-    public void setServiciosEmpleados(ServiciosEmpleados serviciosEmpleados) {
-        this.serviciosEmpleados = serviciosEmpleados;
-    }
-
-    public Planilla getPlanilla() {
-        return planilla;
-    }
-
-    public void setPlanilla(Planilla planilla) {
-        this.planilla = planilla;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cedula != null ? cedula.hashCode() : 0);
+        hash += (empleadoId != null ? empleadoId.hashCode() : 0);
         return hash;
     }
 
@@ -177,7 +228,7 @@ public class Empleados implements Serializable {
             return false;
         }
         Empleados other = (Empleados) object;
-        if ((this.cedula == null && other.cedula != null) || (this.cedula != null && !this.cedula.equals(other.cedula))) {
+        if ((this.empleadoId == null && other.empleadoId != null) || (this.empleadoId != null && !this.empleadoId.equals(other.empleadoId))) {
             return false;
         }
         return true;
@@ -185,7 +236,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Empleados[ cedula=" + cedula + " ]";
+        return "entities.Empleados[ empleadoId=" + empleadoId + " ]";
     }
-    
+
 }

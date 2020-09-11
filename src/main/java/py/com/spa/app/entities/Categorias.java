@@ -18,21 +18,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "categorias")
 @XmlRootElement
+@JsonIgnoreProperties("inspection")
 @NamedQueries({
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
@@ -41,40 +40,33 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
     @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "codigo")
     private String codigo;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "data_type")
     private String dataType;
-    @Size(max = 2147483647)
+
     @Column(name = "image_name")
     private String imageName;
-    
-    @JsonBackReference(value="servicios")
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private List<Servicios> serviciosList;
-    
-    @JsonBackReference(value="serv-emp")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private List<ServiciosEmpleados> serviciosEmpleadosList;
 
-    @JsonBackReference(value="productos") 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private List<Productos> productosList;
 
@@ -90,13 +82,6 @@ public class Categorias implements Serializable {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
-    }
-    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType, String imageName) {
-        this.categoriaId = categoriaId;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.dataType = dataType;
-        this.imageName = imageName;
     }
 
     public Integer getCategoriaId() {
@@ -139,6 +124,7 @@ public class Categorias implements Serializable {
         this.imageName = imageName;
     }
 
+    //@JsonBackReference
     @XmlTransient
     public List<Servicios> getServiciosList() {
         return serviciosList;
@@ -148,15 +134,7 @@ public class Categorias implements Serializable {
         this.serviciosList = serviciosList;
     }
 
-    @XmlTransient
-    public List<ServiciosEmpleados> getServiciosEmpleadosList() {
-        return serviciosEmpleadosList;
-    }
-
-    public void setServiciosEmpleadosList(List<ServiciosEmpleados> serviciosEmpleadosList) {
-        this.serviciosEmpleadosList = serviciosEmpleadosList;
-    }
-
+    @JsonBackReference
     @XmlTransient
     public List<Productos> getProductosList() {
         return productosList;
@@ -188,7 +166,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "entities.Categorias[ categoriaId=" + categoriaId + " ]";
     }
-    
+
 }

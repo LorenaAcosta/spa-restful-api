@@ -18,14 +18,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "medios_pago")
@@ -36,24 +34,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MediosPago.findByCodigo", query = "SELECT m FROM MediosPago m WHERE m.codigo = :codigo"),
     @NamedQuery(name = "MediosPago.findByDescripcion", query = "SELECT m FROM MediosPago m WHERE m.descripcion = :descripcion")})
 public class MediosPago implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "medio_pago_id")
     private Integer medioPagoId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "codigo")
     private String codigo;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
-    private List<ReservaDetalle> reservaDetalleList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
     private List<Pagos> pagosList;
 
@@ -95,15 +92,6 @@ public class MediosPago implements Serializable {
     }
 
     @XmlTransient
-    public List<ReservaDetalle> getReservaDetalleList() {
-        return reservaDetalleList;
-    }
-
-    public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
-        this.reservaDetalleList = reservaDetalleList;
-    }
-
-    @XmlTransient
     public List<Pagos> getPagosList() {
         return pagosList;
     }
@@ -134,7 +122,7 @@ public class MediosPago implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.MediosPago[ medioPagoId=" + medioPagoId + " ]";
+        return "entities.MediosPago[ medioPagoId=" + medioPagoId + " ]";
     }
-    
+
 }

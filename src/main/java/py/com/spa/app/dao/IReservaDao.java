@@ -1,4 +1,4 @@
-package py.com.spa.app.dao;
+/*package py.com.spa.app.dao;
 
 import java.util.List;
 
@@ -11,3 +11,4 @@ public interface IReservaDao extends JpaRepository<ReservaDetalle, Integer>{
 	public List<ReservaDetalle> findByClienteId(Integer id);
 
 }
+*/

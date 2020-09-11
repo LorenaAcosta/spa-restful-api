@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
-import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.ProductoService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;

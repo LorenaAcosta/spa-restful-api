@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.services.CategoriaService;
-import py.com.spa.params.PaginadoParam;
-import py.com.spa.result.PaginadoResult;
 
 @RestController
 @RequestMapping("/categoria")

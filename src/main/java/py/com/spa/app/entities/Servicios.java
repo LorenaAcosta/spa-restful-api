@@ -21,20 +21,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
- * @author Lore
+ * @author PC
  */
 @Entity
 @Table(name = "servicios")
+@JsonIgnoreProperties("inspection")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Servicios.findAll", query = "SELECT s FROM Servicios s"),
@@ -47,55 +46,48 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name = "Servicios.findByPorcComision", query = "SELECT s FROM Servicios s WHERE s.porcComision = :porcComision"),
     @NamedQuery(name = "Servicios.findByImageName", query = "SELECT s FROM Servicios s WHERE s.imageName = :imageName")})
 public class Servicios implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "servicio_id")
     private Integer servicioId;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
+
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "duracion")
     private String duracion;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "costo")
     private int costo;
+
     @Basic(optional = false)
-    @NotNull
     @Column(name = "porc_comision")
     private BigInteger porcComision;
-    @Size(max = 2147483647)
+
     @Column(name = "image_name")
     private String imageName;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private List<ReservaDetalle> reservaDetalleList;
-    
-    @JsonManagedReference(value="servicios")
+
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
-    
- 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private List<PagosDetalle> pagosDetalleList;
 
     public Servicios() {
     }
@@ -177,7 +169,8 @@ public class Servicios implements Serializable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
-
+    
+    @JsonBackReference
     @XmlTransient
     public List<ReservaDetalle> getReservaDetalleList() {
         return reservaDetalleList;
@@ -187,21 +180,13 @@ public class Servicios implements Serializable {
         this.reservaDetalleList = reservaDetalleList;
     }
 
+    @JsonBackReference
     public Categorias getCategoriaId() {
         return categoriaId;
     }
 
     public void setCategoriaId(Categorias categoriaId) {
         this.categoriaId = categoriaId;
-    }
-
-    @XmlTransient
-    public List<PagosDetalle> getPagosDetalleList() {
-        return pagosDetalleList;
-    }
-
-    public void setPagosDetalleList(List<PagosDetalle> pagosDetalleList) {
-        this.pagosDetalleList = pagosDetalleList;
     }
 
     @Override
@@ -226,7 +211,7 @@ public class Servicios implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Servicios[ servicioId=" + servicioId + " ]";
+        return "entities.Servicios[ servicioId=" + servicioId + " ]";
     }
-    
+
 }

@@ -1,4 +1,4 @@
-package py.com.spa.app.controller;
+/*package py.com.spa.app.controller;
 
 import java.util.List;
 
@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Clientes;
-import py.com.spa.app.entities.MediosPago;
-import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.services.MediosPagoService;
 import py.com.spa.app.services.ReservaService;
@@ -89,4 +86,4 @@ public class ReservaRESTController {
 	
 
 	
-}
+}*/
