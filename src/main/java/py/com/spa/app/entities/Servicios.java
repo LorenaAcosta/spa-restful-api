@@ -6,8 +6,8 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.List;
+import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,13 +21,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  *
@@ -42,10 +44,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name = "Servicios.findByNombre", query = "SELECT s FROM Servicios s WHERE s.nombre = :nombre"),
     @NamedQuery(name = "Servicios.findByEstado", query = "SELECT s FROM Servicios s WHERE s.estado = :estado"),
     @NamedQuery(name = "Servicios.findByDescripcion", query = "SELECT s FROM Servicios s WHERE s.descripcion = :descripcion"),
-    @NamedQuery(name = "Servicios.findByDuracion", query = "SELECT s FROM Servicios s WHERE s.duracion = :duracion"),
     @NamedQuery(name = "Servicios.findByCosto", query = "SELECT s FROM Servicios s WHERE s.costo = :costo"),
-    @NamedQuery(name = "Servicios.findByPorcComision", query = "SELECT s FROM Servicios s WHERE s.porcComision = :porcComision"),
-    @NamedQuery(name = "Servicios.findByImageName", query = "SELECT s FROM Servicios s WHERE s.imageName = :imageName")})
+    @NamedQuery(name = "Servicios.findByImageName", query = "SELECT s FROM Servicios s WHERE s.imageName = :imageName"),
+    @NamedQuery(name = "Servicios.findByDuracion", query = "SELECT s FROM Servicios s WHERE s.duracion = :duracion")})
 public class Servicios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,7 +57,7 @@ public class Servicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre")
+    @Column(name = "nombre", unique=true)
     private String nombre;
     @Basic(optional = false)
     @NotNull
@@ -70,32 +71,24 @@ public class Servicios implements Serializable {
     private String descripcion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "duracion")
-    private String duracion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "costo")
     private int costo;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "porc_comision")
-    private BigInteger porcComision;
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
-    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "duracion")
+    @JsonFormat(pattern="HH:mm")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date duracion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private List<ReservaDetalle> reservaDetalleList;
-    
-    @JsonManagedReference(value="servicios")
+    private Collection<VentasDetalle> ventasDetalleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
+    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
-    
- 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private List<PagosDetalle> pagosDetalleList;
 
     public Servicios() {
     }
@@ -104,14 +97,13 @@ public class Servicios implements Serializable {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, String duracion, int costo, BigInteger porcComision) {
+    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Date duracion) {
         this.servicioId = servicioId;
         this.nombre = nombre;
         this.estado = estado;
         this.descripcion = descripcion;
-        this.duracion = duracion;
         this.costo = costo;
-        this.porcComision = porcComision;
+        this.duracion = duracion;
     }
 
     public Integer getServicioId() {
@@ -146,28 +138,12 @@ public class Servicios implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(String duracion) {
-        this.duracion = duracion;
-    }
-
     public int getCosto() {
         return costo;
     }
 
     public void setCosto(int costo) {
         this.costo = costo;
-    }
-
-    public BigInteger getPorcComision() {
-        return porcComision;
-    }
-
-    public void setPorcComision(BigInteger porcComision) {
-        this.porcComision = porcComision;
     }
 
     public String getImageName() {
@@ -178,30 +154,39 @@ public class Servicios implements Serializable {
         this.imageName = imageName;
     }
 
+    public Date getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(Date duracion) {
+        this.duracion = duracion;
+    }
+
     @XmlTransient
-    public List<ReservaDetalle> getReservaDetalleList() {
-        return reservaDetalleList;
+    public Collection<VentasDetalle> getVentasDetalleCollection() {
+        return ventasDetalleCollection;
     }
 
-    public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
-        this.reservaDetalleList = reservaDetalleList;
+    public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
+        this.ventasDetalleCollection = ventasDetalleCollection;
     }
 
+    @XmlTransient
+    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
+        return empleadoDisponibleCollection;
+    }
+
+    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
+        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
+    }
+
+    
     public Categorias getCategoriaId() {
         return categoriaId;
     }
 
     public void setCategoriaId(Categorias categoriaId) {
         this.categoriaId = categoriaId;
-    }
-
-    @XmlTransient
-    public List<PagosDetalle> getPagosDetalleList() {
-        return pagosDetalleList;
-    }
-
-    public void setPagosDetalleList(List<PagosDetalle> pagosDetalleList) {
-        this.pagosDetalleList = pagosDetalleList;
     }
 
     @Override
@@ -226,7 +211,7 @@ public class Servicios implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Servicios[ servicioId=" + servicioId + " ]";
+        return "com.Servicios[ servicioId=" + servicioId + " ]";
     }
     
 }

@@ -3,21 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.com.spa.app.entities;
+package  py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  *
@@ -28,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
+    @NamedQuery(name = "Empleados.findByEmpleadoId", query = "SELECT e FROM Empleados e WHERE e.empleadoId = :empleadoId"),
     @NamedQuery(name = "Empleados.findByCedula", query = "SELECT e FROM Empleados e WHERE e.cedula = :cedula"),
     @NamedQuery(name = "Empleados.findByNombre", query = "SELECT e FROM Empleados e WHERE e.nombre = :nombre"),
     @NamedQuery(name = "Empleados.findByApellido", query = "SELECT e FROM Empleados e WHERE e.apellido = :apellido"),
@@ -38,10 +46,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Empleados implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "empleado_id")
+    private Integer empleadoId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cedula")
-    private Integer cedula;
+    @Column(name = "cedula", unique=true, nullable=false)
+    private int cedula;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -70,19 +82,22 @@ public class Empleados implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<Horario> horarioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<Planilla> planillaCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private ServiciosEmpleados serviciosEmpleados;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private Planilla planilla;
+    private EmpleadoDisponible empleadoDisponible;
 
     public Empleados() {
     }
 
-    public Empleados(Integer cedula) {
-        this.cedula = cedula;
+    public Empleados(Integer empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
-    public Empleados(Integer cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
+    public Empleados(Integer empleadoId, int cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
+        this.empleadoId = empleadoId;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -91,11 +106,19 @@ public class Empleados implements Serializable {
         this.fechaNac = fechaNac;
     }
 
-    public Integer getCedula() {
+    public Integer getEmpleadoId() {
+        return empleadoId;
+    }
+
+    public void setEmpleadoId(Integer empleadoId) {
+        this.empleadoId = empleadoId;
+    }
+
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(Integer cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 
@@ -147,26 +170,38 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    public ServiciosEmpleados getServiciosEmpleados() {
-        return serviciosEmpleados;
+    @JsonBackReference(value="horario")
+    @XmlTransient
+    public Collection<Horario> getHorarioCollection() {
+        return horarioCollection;
     }
 
-    public void setServiciosEmpleados(ServiciosEmpleados serviciosEmpleados) {
-        this.serviciosEmpleados = serviciosEmpleados;
+    public void setHorarioCollection(Collection<Horario> horarioCollection) {
+        this.horarioCollection = horarioCollection;
     }
 
-    public Planilla getPlanilla() {
-        return planilla;
+    @JsonBackReference
+    @XmlTransient
+    public Collection<Planilla> getPlanillaCollection() {
+        return planillaCollection;
     }
 
-    public void setPlanilla(Planilla planilla) {
-        this.planilla = planilla;
+    public void setPlanillaCollection(Collection<Planilla> planillaCollection) {
+        this.planillaCollection = planillaCollection;
+    }
+
+    public EmpleadoDisponible getEmpleadoDisponible() {
+        return empleadoDisponible;
+    }
+
+    public void setEmpleadoDisponible(EmpleadoDisponible empleadoDisponible) {
+        this.empleadoDisponible = empleadoDisponible;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cedula != null ? cedula.hashCode() : 0);
+        hash += (empleadoId != null ? empleadoId.hashCode() : 0);
         return hash;
     }
 
@@ -177,7 +212,7 @@ public class Empleados implements Serializable {
             return false;
         }
         Empleados other = (Empleados) object;
-        if ((this.cedula == null && other.cedula != null) || (this.cedula != null && !this.cedula.equals(other.cedula))) {
+        if ((this.empleadoId == null && other.empleadoId != null) || (this.empleadoId != null && !this.empleadoId.equals(other.empleadoId))) {
             return false;
         }
         return true;
@@ -185,7 +220,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Empleados[ cedula=" + cedula + " ]";
+        return "com.Empleados[ empleadoId=" + empleadoId + " ]";
     }
     
 }

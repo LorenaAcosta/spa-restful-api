@@ -20,8 +20,8 @@ public class EmpleadoService {
 	}
 	
 	@Transactional
-	public void addEmpleado(Empleados empleado) {
-		empleadoDao.save(empleado);
+	public Empleados saveEmpleado(Empleados empleado) {
+		return empleadoDao.save(empleado);
 	}
 
 	@Transactional

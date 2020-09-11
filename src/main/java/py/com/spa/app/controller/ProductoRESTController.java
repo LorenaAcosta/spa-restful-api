@@ -52,12 +52,13 @@ public class ProductoRESTController {
 		prod = productoService.findProductoById(id);
 		if (prod!=null) {
 			prod.setCodigo(producto.getCodigo());
-			prod.setCosto(producto.getCosto());
 			prod.setDescripcion(producto.getDescripcion());
+			prod.setCosto(producto.getCosto());
 			prod.setPrecioVenta(producto.getPrecioVenta());
 			prod.setStockActual(producto.getStockActual());
-			prod.setEstado(producto.getEstado());
+			prod.setCategoriaId(producto.getCategoriaId());
 			prod.setImageName(producto.getImageName());
+			prod.setEstado(producto.getEstado());
 			productoService.updateProducto(prod);
 		}
 		

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Clientes;
 
 @SpringBootApplication
 public class SpaAppApplication {

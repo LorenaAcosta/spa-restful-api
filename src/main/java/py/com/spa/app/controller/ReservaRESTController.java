@@ -14,79 +14,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Clientes;
-import py.com.spa.app.entities.MediosPago;
-import py.com.spa.app.entities.Productos;
-import py.com.spa.app.entities.ReservaDetalle;
-import py.com.spa.app.services.MediosPagoService;
+import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Reserva;
 import py.com.spa.app.services.ReservaService;
 
 @RestController
 @RequestMapping("/reserva")
 public class ReservaRESTController {
-
-	@Autowired
-	private ReservaService reservaService;
 	
 	@Autowired
-	public MediosPagoService mediosPagoService;
+	public ReservaService reservaService;
 	
 	@GetMapping("/listar")
-	public  ResponseEntity<?> listarReservas(){
-		List<ReservaDetalle> reservas = reservaService.findAll();
-		if (reservas!=null) {
-			if (reservas.size()!=0) {
-				return new ResponseEntity<>(reservas, HttpStatus.OK);
-			}else {
-				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-			}
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
+	public List<Reserva> listarReserva(){
+		return reservaService.findAll();
 	}
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<?> agregarReserva (@RequestBody ReservaDetalle reserva){		
-		reservaService.agregarReserva(reserva);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public void agregarReserva(@RequestBody Reserva reserva) {
+		reservaService.addReserva(reserva);
 	}
-	
 	@GetMapping("/encontrar/{id}")
-	public ReservaDetalle obtenerReservaId(@PathVariable(value="id") Integer id) {
-		return (ReservaDetalle) reservaService.findReservaById(id);
+	public Reserva obtenerReservaId(@PathVariable(value="id") Integer id) {
+		return (Reserva) reservaService.findByReservaId(id);
 	}
-	
-	
-
-	@PutMapping("/modificar/{id}/{id}")
-	public ResponseEntity<Void> modificarReserva (@PathVariable(value="id") Integer reservaId,
-			@RequestBody ReservaDetalle reserva) {
-		ReservaDetalle rs = null;
-	    
-	    rs = reservaService.findReservaById(reservaId);
-	    
-		if(rs!=null) {
-			rs.setEstadoItem(reserva.getEstadoItem());
-			rs.setFecha(reserva.getFecha());
-			reservaService.updateReserva(rs);	
-			return new ResponseEntity<Void>(HttpStatus.OK);
-			
-		}else{
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		} 
-	} 
 	
 	@DeleteMapping("/eliminar/{id}")
-	public ResponseEntity<Void> eliminarReserva (@PathVariable(value="id") Integer id) {
-		ReservaDetalle rs= reservaService.findReservaById(id);
-		if (rs!=null) {
-			reservaService.eliminarReserva(id);
+	public ResponseEntity<?> eliminarReserva(@PathVariable(value="id") Integer id) {
+		Reserva c = reservaService.findByReservaId(id);
+		if (c!=null) {
+			reservaService.deleteReserva(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
+		
 	}
-	
 
-	
 }

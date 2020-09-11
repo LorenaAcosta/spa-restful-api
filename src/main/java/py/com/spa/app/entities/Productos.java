@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.com.spa.app.entities;
+package  py.com.spa.app.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,9 +24,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -55,7 +52,7 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
+    @Column(name = "codigo", unique=true)
     private String codigo;
     @Basic(optional = false)
     @NotNull
@@ -82,12 +79,10 @@ public class Productos implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
-    private List<PagosDetalle> pagosDetalleList;
-    
-    @JsonManagedReference(value="productos")
+    private Collection<VentasDetalle> ventasDetalleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
+    private Collection<ComprasDetalle> comprasDetalleCollection;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
@@ -174,12 +169,21 @@ public class Productos implements Serializable {
     }
 
     @XmlTransient
-    public List<PagosDetalle> getPagosDetalleList() {
-        return pagosDetalleList;
+    public Collection<VentasDetalle> getVentasDetalleCollection() {
+        return ventasDetalleCollection;
     }
 
-    public void setPagosDetalleList(List<PagosDetalle> pagosDetalleList) {
-        this.pagosDetalleList = pagosDetalleList;
+    public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
+        this.ventasDetalleCollection = ventasDetalleCollection;
+    }
+
+    @XmlTransient
+    public Collection<ComprasDetalle> getComprasDetalleCollection() {
+        return comprasDetalleCollection;
+    }
+
+    public void setComprasDetalleCollection(Collection<ComprasDetalle> comprasDetalleCollection) {
+        this.comprasDetalleCollection = comprasDetalleCollection;
     }
 
     public Categorias getCategoriaId() {
@@ -212,7 +216,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Productos[ productoId=" + productoId + " ]";
+        return "com.Productos[ productoId=" + productoId + " ]";
     }
     
 }

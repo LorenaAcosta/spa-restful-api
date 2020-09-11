@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.com.spa.app.entities;
+package  py.com.spa.app.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,9 +53,7 @@ public class MediosPago implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
-    private List<ReservaDetalle> reservaDetalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
-    private List<Pagos> pagosList;
+    private Collection<Ventas> ventasCollection;
 
     public MediosPago() {
     }
@@ -95,21 +93,12 @@ public class MediosPago implements Serializable {
     }
 
     @XmlTransient
-    public List<ReservaDetalle> getReservaDetalleList() {
-        return reservaDetalleList;
+    public Collection<Ventas> getVentasCollection() {
+        return ventasCollection;
     }
 
-    public void setReservaDetalleList(List<ReservaDetalle> reservaDetalleList) {
-        this.reservaDetalleList = reservaDetalleList;
-    }
-
-    @XmlTransient
-    public List<Pagos> getPagosList() {
-        return pagosList;
-    }
-
-    public void setPagosList(List<Pagos> pagosList) {
-        this.pagosList = pagosList;
+    public void setVentasCollection(Collection<Ventas> ventasCollection) {
+        this.ventasCollection = ventasCollection;
     }
 
     @Override
@@ -134,7 +123,7 @@ public class MediosPago implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.MediosPago[ medioPagoId=" + medioPagoId + " ]";
+        return "com.MediosPago[ medioPagoId=" + medioPagoId + " ]";
     }
     
 }

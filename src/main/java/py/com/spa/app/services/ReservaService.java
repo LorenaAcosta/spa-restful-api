@@ -7,44 +7,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IReservaDao;
-import py.com.spa.app.entities.Clientes;
-import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Reserva;
+import py.com.spa.app.entities.Usuario;
 
 @Service
 public class ReservaService {
-	
-	@Autowired 
+
+	@Autowired
 	private IReservaDao reservaDao;
 	
+	
 	@Transactional(readOnly=true)
-	public List<ReservaDetalle> findAll(){
-		return (List<ReservaDetalle>) reservaDao.findAll();
+	public List<Reserva> findAll(){
+		return (List<Reserva>) reservaDao.findAll();
 	}
 	
 	@Transactional
-	public void agregarReserva(ReservaDetalle reserva) {
+	public void addReserva(Reserva reserva) {
 		reservaDao.save(reserva);
 	}
 	
 	@Transactional(readOnly=true)
-	public List<ReservaDetalle> getReservasCliente(Integer id){
-		return (List<ReservaDetalle>) reservaDao.findByClienteId(id);
+	public Reserva findByReservaId(Integer id) {
+		return (Reserva) reservaDao.findById(id).orElse(null);
 	}
-	
-	@Transactional(readOnly=true)	
-	public ReservaDetalle  findReservaById(Integer id) {
-		return (ReservaDetalle) reservaDao.findById(id).orElse(null);
-	}
-	
+
 	@Transactional
-	public void updateReserva(ReservaDetalle reserva) {
+	public void updateReserva(Reserva reserva) {
 		reservaDao.save(reserva);
 	}
 	
-	@Transactional 
-	public void eliminarReserva(Integer id) {
+	@Transactional
+	public void deleteReserva(Integer id) {
 		reservaDao.deleteById(id);
 	}
+	
 
 	
 }

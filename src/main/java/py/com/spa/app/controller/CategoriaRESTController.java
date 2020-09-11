@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Clientes;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -32,12 +31,10 @@ public class CategoriaRESTController  {
 		return categoriaService.findAll();
 	}
 	
-	@GetMapping("/getDataType/{dataType}")
-	public List<Categorias> getDataType(@PathVariable(value="dataType") String dataType){
-		return (List<Categorias>) categoriaService.findByDataType(dataType);
+	@GetMapping("/obtener-por-tipo/{tipo}")
+	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
+		return (List<Categorias>) categoriaService.obtenerPorTipo(tipo);
 	}
-
-	
 	
 	@GetMapping("/getServicios")
 	public List<Categorias> getServicios(){
@@ -61,6 +58,7 @@ public class CategoriaRESTController  {
 			c.setDescripcion(categoria.getDescripcion());
 			c.setCodigo(categoria.getCodigo());
 			c.setImageName(categoria.getImageName());
+			c.setDataType(categoria.getDataType());
 			categoriaService.updateCategoria(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {

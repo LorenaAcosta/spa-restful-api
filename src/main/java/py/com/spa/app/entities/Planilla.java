@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.com.spa.app.entities;
+package  py.com.spa.app.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,17 +29,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Planilla.findAll", query = "SELECT p FROM Planilla p"),
-    @NamedQuery(name = "Planilla.findByCedula", query = "SELECT p FROM Planilla p WHERE p.cedula = :cedula"),
+    @NamedQuery(name = "Planilla.findByPlanillaId", query = "SELECT p FROM Planilla p WHERE p.planillaId = :planillaId"),
     @NamedQuery(name = "Planilla.findBySalarioBase", query = "SELECT p FROM Planilla p WHERE p.salarioBase = :salarioBase"),
     @NamedQuery(name = "Planilla.findByBonificacionVentas", query = "SELECT p FROM Planilla p WHERE p.bonificacionVentas = :bonificacionVentas"),
     @NamedQuery(name = "Planilla.findByLiquidoCobrado", query = "SELECT p FROM Planilla p WHERE p.liquidoCobrado = :liquidoCobrado")})
 public class Planilla implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "cedula")
-    private Integer cedula;
+    @Column(name = "planilla_id")
+    private Integer planillaId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "salario_base")
@@ -50,30 +52,30 @@ public class Planilla implements Serializable {
     @NotNull
     @Column(name = "liquido_cobrado")
     private int liquidoCobrado;
-    @JoinColumn(name = "cedula", referencedColumnName = "cedula", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Empleados empleados;
+    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
+    @ManyToOne(optional = false)
+    private Empleados empleadoId;
 
     public Planilla() {
     }
 
-    public Planilla(Integer cedula) {
-        this.cedula = cedula;
+    public Planilla(Integer planillaId) {
+        this.planillaId = planillaId;
     }
 
-    public Planilla(Integer cedula, int salarioBase, int bonificacionVentas, int liquidoCobrado) {
-        this.cedula = cedula;
+    public Planilla(Integer planillaId, int salarioBase, int bonificacionVentas, int liquidoCobrado) {
+        this.planillaId = planillaId;
         this.salarioBase = salarioBase;
         this.bonificacionVentas = bonificacionVentas;
         this.liquidoCobrado = liquidoCobrado;
     }
 
-    public Integer getCedula() {
-        return cedula;
+    public Integer getPlanillaId() {
+        return planillaId;
     }
 
-    public void setCedula(Integer cedula) {
-        this.cedula = cedula;
+    public void setPlanillaId(Integer planillaId) {
+        this.planillaId = planillaId;
     }
 
     public int getSalarioBase() {
@@ -100,18 +102,18 @@ public class Planilla implements Serializable {
         this.liquidoCobrado = liquidoCobrado;
     }
 
-    public Empleados getEmpleados() {
-        return empleados;
+    public Empleados getEmpleadoId() {
+        return empleadoId;
     }
 
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
+    public void setEmpleadoId(Empleados empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cedula != null ? cedula.hashCode() : 0);
+        hash += (planillaId != null ? planillaId.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +124,7 @@ public class Planilla implements Serializable {
             return false;
         }
         Planilla other = (Planilla) object;
-        if ((this.cedula == null && other.cedula != null) || (this.cedula != null && !this.cedula.equals(other.cedula))) {
+        if ((this.planillaId == null && other.planillaId != null) || (this.planillaId != null && !this.planillaId.equals(other.planillaId))) {
             return false;
         }
         return true;
@@ -130,7 +132,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Planilla[ cedula=" + cedula + " ]";
+        return "com.Planilla[ planillaId=" + planillaId + " ]";
     }
     
 }

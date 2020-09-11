@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Planilla;
 import py.com.spa.app.services.PlanillaService;
 
@@ -39,11 +40,15 @@ public class PlanillaRESTController  {
 		return (Planilla) planillaService.findByPlanillaId(id);
 	}
 	
+	
 	@PutMapping("/modificar/{id}")
-	public ResponseEntity<?> modificarplanilla (@PathVariable(value="id") Integer id, @RequestBody Planilla planilla) {
+	public ResponseEntity<?> modificarCategoria (@PathVariable(value="id") Integer id, @RequestBody Planilla planilla) {
 		Planilla c = planillaService.findByPlanillaId(id);
 		if(c!=null) {
-			planillaService.updatePlanilla(planilla);
+			c.setEmpleadoId(planilla.getEmpleadoId());
+			c.setBonificacionVentas(planilla.getBonificacionVentas());
+			c.setSalarioBase(planilla.getSalarioBase());
+			planillaService.updatePlanilla(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

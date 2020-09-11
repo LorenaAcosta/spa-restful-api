@@ -25,26 +25,16 @@ public class ServicioRESTController {
 
 	@Autowired
 	private ServicioService servicioService;
-	
+
+	@GetMapping("/listar")
+	public List<Servicios> listarServicios(){
+		return servicioService.findAll();
+	}
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarServicio(@RequestBody Servicios p) {
 		servicioService.agregarServicio(p);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
-	}
-
-	@GetMapping("/listar")
-	public ResponseEntity<?> listarServicios(){
-		List<Servicios> servicios = servicioService.findAll();
-		if ( servicios!= null ) {
-			if (servicios.size()!=0) {
-			return new ResponseEntity<>( servicios, HttpStatus.OK);
-			}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-			}
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
 	}
 	
 	@PostMapping("/listarByCategoria")

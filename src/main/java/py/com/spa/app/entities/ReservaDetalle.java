@@ -3,20 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package py.com.spa.app.entities;
+package  py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,132 +33,90 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ReservaDetalle.findAll", query = "SELECT r FROM ReservaDetalle r"),
-    @NamedQuery(name = "ReservaDetalle.findByReservaDetalleId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaDetalleId = :reservaDetalleId"),
-    @NamedQuery(name = "ReservaDetalle.findByFecha", query = "SELECT r FROM ReservaDetalle r WHERE r.fecha = :fecha"),
-    @NamedQuery(name = "ReservaDetalle.findByHoraInicio", query = "SELECT r FROM ReservaDetalle r WHERE r.horaInicio = :horaInicio"),
-    @NamedQuery(name = "ReservaDetalle.findByHoraFin", query = "SELECT r FROM ReservaDetalle r WHERE r.horaFin = :horaFin"),
-    @NamedQuery(name = "ReservaDetalle.findByEstadoItem", query = "SELECT r FROM ReservaDetalle r WHERE r.estadoItem = :estadoItem")})
+    @NamedQuery(name = "ReservaDetalle.findByReservaId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaId = :reservaId"),
+    @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
+    @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
 public class ReservaDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "reserva_id")
+    private Integer reservaId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "reserva_detalle_id")
-    private String reservaDetalleId;
+    @Column(name = "fecha_reserva")
+    @Temporal(TemporalType.DATE)
+    private Date fechaReserva;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "fecha")
-    private String fecha;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "hora_inicio")
-    private String horaInicio;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "hora_fin")
-    private String horaFin;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "estado_item")
-    private String estadoItem;
-    @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")
+    @Column(name = "hora")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date hora;
+    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
-    private Clientes clienteId;
-    @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
-    @ManyToOne(optional = false)
-    private MediosPago medioPagoId;
-    @JoinColumn(name = "servicio_id", referencedColumnName = "servicio_id")
-    @ManyToOne(optional = false)
-    private Servicios servicioId;
+    private EmpleadoDisponible empleadoId;
+    @JoinColumn(name = "reserva_id", referencedColumnName = "reserva_id", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private Reserva reserva;
 
     public ReservaDetalle() {
     }
 
-    public ReservaDetalle(String reservaDetalleId) {
-        this.reservaDetalleId = reservaDetalleId;
+    public ReservaDetalle(Integer reservaId) {
+        this.reservaId = reservaId;
     }
 
-    public ReservaDetalle(String reservaDetalleId, String fecha, String horaInicio, String horaFin, String estadoItem) {
-        this.reservaDetalleId = reservaDetalleId;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.estadoItem = estadoItem;
+    public ReservaDetalle(Integer reservaId, Date fechaReserva, Date hora) {
+        this.reservaId = reservaId;
+        this.fechaReserva = fechaReserva;
+        this.hora = hora;
     }
 
-    public String getReservaDetalleId() {
-        return reservaDetalleId;
+    public Integer getReservaId() {
+        return reservaId;
     }
 
-    public void setReservaDetalleId(String reservaDetalleId) {
-        this.reservaDetalleId = reservaDetalleId;
+    public void setReservaId(Integer reservaId) {
+        this.reservaId = reservaId;
     }
 
-    public String getFecha() {
-        return fecha;
+    public Date getFechaReserva() {
+        return fechaReserva;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaReserva(Date fechaReserva) {
+        this.fechaReserva = fechaReserva;
     }
 
-    public String getHoraInicio() {
-        return horaInicio;
+    public Date getHora() {
+        return hora;
     }
 
-    public void setHoraInicio(String horaInicio) {
-        this.horaInicio = horaInicio;
+    public void setHora(Date hora) {
+        this.hora = hora;
     }
 
-    public String getHoraFin() {
-        return horaFin;
+    public EmpleadoDisponible getEmpleadoId() {
+        return empleadoId;
     }
 
-    public void setHoraFin(String horaFin) {
-        this.horaFin = horaFin;
+    public void setEmpleadoId(EmpleadoDisponible empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
-    public String getEstadoItem() {
-        return estadoItem;
+    public Reserva getReserva() {
+        return reserva;
     }
 
-    public void setEstadoItem(String estadoItem) {
-        this.estadoItem = estadoItem;
-    }
-
-    public Clientes getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Clientes clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public MediosPago getMedioPagoId() {
-        return medioPagoId;
-    }
-
-    public void setMedioPagoId(MediosPago medioPagoId) {
-        this.medioPagoId = medioPagoId;
-    }
-
-    public Servicios getServicioId() {
-        return servicioId;
-    }
-
-    public void setServicioId(Servicios servicioId) {
-        this.servicioId = servicioId;
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (reservaDetalleId != null ? reservaDetalleId.hashCode() : 0);
+        hash += (reservaId != null ? reservaId.hashCode() : 0);
         return hash;
     }
 
@@ -164,7 +127,7 @@ public class ReservaDetalle implements Serializable {
             return false;
         }
         ReservaDetalle other = (ReservaDetalle) object;
-        if ((this.reservaDetalleId == null && other.reservaDetalleId != null) || (this.reservaDetalleId != null && !this.reservaDetalleId.equals(other.reservaDetalleId))) {
+        if ((this.reservaId == null && other.reservaId != null) || (this.reservaId != null && !this.reservaId.equals(other.reservaId))) {
             return false;
         }
         return true;
@@ -172,7 +135,7 @@ public class ReservaDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.ReservaDetalle[ reservaDetalleId=" + reservaDetalleId + " ]";
+        return "com.ReservaDetalle[ reservaId=" + reservaId + " ]";
     }
     
 }

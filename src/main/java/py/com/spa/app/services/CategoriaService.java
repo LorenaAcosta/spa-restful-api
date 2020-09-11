@@ -3,19 +3,11 @@ package py.com.spa.app.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.params.PaginadoParam;
-import py.com.spa.result.PaginadoResult;
 
 @Service
 public class CategoriaService {
@@ -49,30 +41,9 @@ public class CategoriaService {
 		categoriaDao.deleteById(id);
 	}
 	
-	@Transactional(readOnly=true)
-	public PaginadoResult<Categorias> listar (PaginadoParam<Categorias> param) {
-		
-		
-		
-		ExampleMatcher matcher = ExampleMatcher.matching()
-	            .withStringMatcher(StringMatcher.CONTAINING);
-	        Example<Categorias> example = Example.of(param.getFiltros(),matcher);
-	            Page<Categorias> lista = categoriaDao.findAll(example,
-	                PageRequest.of(
-	                        param.getPagina(), 
-	                        param.getCantidad(), 
-	                        Sort.by(
-	                                param.getOrderDir().equals("ASC")? Sort.Direction.ASC:Sort.Direction.DESC,
-	                                param.getOrderBy())
-	                        ));
-	                PaginadoResult<Categorias> result = new PaginadoResult<>(lista);
-	                return result;
-		
-	}
-
 	@Transactional
-	public List<Categorias> findByDataType(String dataType) {
-		return (List<Categorias>) categoriaDao.findByDataType(dataType);
+	public List<Categorias> obtenerPorTipo(String tipo) {
+		return (List<Categorias>) categoriaDao.obtenerPorTipo(tipo);
 	}
 	
 }

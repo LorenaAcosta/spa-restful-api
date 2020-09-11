@@ -6,7 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
+    @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
+    @Column(name = "codigo", unique=true)
     private String codigo;
     @Basic(optional = false)
     @NotNull
@@ -65,18 +65,10 @@ public class Categorias implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
-    
-    @JsonBackReference(value="servicios")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private List<Servicios> serviciosList;
-    
-    @JsonBackReference(value="serv-emp")
+    private Collection<Servicios> serviciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private List<ServiciosEmpleados> serviciosEmpleadosList;
-
-    @JsonBackReference(value="productos") 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private List<Productos> productosList;
+    private Collection<Productos> productosCollection;
 
     public Categorias() {
     }
@@ -90,13 +82,6 @@ public class Categorias implements Serializable {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
-    }
-    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType, String imageName) {
-        this.categoriaId = categoriaId;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.dataType = dataType;
-        this.imageName = imageName;
     }
 
     public Integer getCategoriaId() {
@@ -139,31 +124,24 @@ public class Categorias implements Serializable {
         this.imageName = imageName;
     }
 
+    @JsonBackReference(value="servicios")
     @XmlTransient
-    public List<Servicios> getServiciosList() {
-        return serviciosList;
+    public Collection<Servicios> getServiciosCollection() {
+        return serviciosCollection;
     }
 
-    public void setServiciosList(List<Servicios> serviciosList) {
-        this.serviciosList = serviciosList;
+    public void setServiciosCollection(Collection<Servicios> serviciosCollection) {
+        this.serviciosCollection = serviciosCollection;
     }
 
+    @JsonBackReference
     @XmlTransient
-    public List<ServiciosEmpleados> getServiciosEmpleadosList() {
-        return serviciosEmpleadosList;
+    public Collection<Productos> getProductosCollection() {
+        return productosCollection;
     }
 
-    public void setServiciosEmpleadosList(List<ServiciosEmpleados> serviciosEmpleadosList) {
-        this.serviciosEmpleadosList = serviciosEmpleadosList;
-    }
-
-    @XmlTransient
-    public List<Productos> getProductosList() {
-        return productosList;
-    }
-
-    public void setProductosList(List<Productos> productosList) {
-        this.productosList = productosList;
+    public void setProductosCollection(Collection<Productos> productosCollection) {
+        this.productosCollection = productosCollection;
     }
 
     @Override
@@ -188,7 +166,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "com.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }
