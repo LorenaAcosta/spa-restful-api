@@ -170,7 +170,7 @@ public class Servicios implements Serializable {
         this.imageName = imageName;
     }
     
-    @JsonBackReference
+    @JsonBackReference(value="reserva-detalle-list")
     @XmlTransient
     public List<ReservaDetalle> getReservaDetalleList() {
         return reservaDetalleList;
@@ -180,7 +180,7 @@ public class Servicios implements Serializable {
         this.reservaDetalleList = reservaDetalleList;
     }
 
-    @JsonBackReference
+    @JsonBackReference(value="categoria-id-list")
     public Categorias getCategoriaId() {
         return categoriaId;
     }

@@ -117,7 +117,7 @@ public class Empleados implements Serializable {
     }
 
     // Getters and setters relaciones
-    @JsonBackReference
+    @JsonBackReference(value="servicio-list")
 	public List<Servicios> getServiciosList() {
 		return serviciosList;
 	}

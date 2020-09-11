@@ -44,8 +44,6 @@ public class UsuarioRestControler {
 		try {
 			validatorImpl.validator(usuario);
 		} catch (ApiUnprocessableEntity e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
 			log.error(e.getMessage() + " controler");
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 			
