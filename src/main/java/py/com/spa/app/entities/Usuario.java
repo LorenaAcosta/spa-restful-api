@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -57,7 +57,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "username", unique=true)
+    @Column(name = "username")
     private String username;
     @Basic(optional = false)
     @NotNull
@@ -237,7 +237,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Usuario[ usuarioId=" + usuarioId + " ]";
+        return "com.spa.Usuario[ usuarioId=" + usuarioId + " ]";
     }
     
 }

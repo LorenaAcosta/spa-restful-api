@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -136,7 +136,7 @@ public class Reserva implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Reserva[ reservaId=" + reservaId + " ]";
+        return "com.spa.Reserva[ reservaId=" + reservaId + " ]";
     }
     
 }

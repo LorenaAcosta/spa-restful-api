@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.EmpleadoDisponible;
 import py.com.spa.app.services.EmpleadoDisponibleService;
 
@@ -57,5 +58,11 @@ public class EmpleadoDisponibleRESTController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 		
+	}
+	
+
+	@GetMapping("/listar-por-empleado-id/{empleadoId}")
+	public List<EmpleadoDisponible> obtenerPorTipo(@PathVariable(value="empleadoId") Integer empleadoId){
+		return (List<EmpleadoDisponible>) edService.findByEmpleadoId(empleadoId);
 	}
 }

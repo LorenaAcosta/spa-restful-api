@@ -7,6 +7,8 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -35,10 +36,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
+    @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
     @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -50,7 +52,7 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo", unique=true)
+    @Column(name = "codigo")
     private String codigo;
     @Basic(optional = false)
     @NotNull
@@ -134,7 +136,7 @@ public class Categorias implements Serializable {
         this.serviciosCollection = serviciosCollection;
     }
 
-    @JsonBackReference
+    @JsonBackReference(value="productos")
     @XmlTransient
     public Collection<Productos> getProductosCollection() {
         return productosCollection;
@@ -166,7 +168,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "com.spa.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }

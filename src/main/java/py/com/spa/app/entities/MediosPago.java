@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -123,7 +123,7 @@ public class MediosPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.MediosPago[ medioPagoId=" + medioPagoId + " ]";
+        return "com.spa.MediosPago[ medioPagoId=" + medioPagoId + " ]";
     }
     
 }

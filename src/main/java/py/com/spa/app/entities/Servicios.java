@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -57,7 +58,7 @@ public class Servicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre", unique=true)
+    @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
@@ -162,6 +163,7 @@ public class Servicios implements Serializable {
         this.duracion = duracion;
     }
 
+    @JsonBackReference(value="ventas")
     @XmlTransient
     public Collection<VentasDetalle> getVentasDetalleCollection() {
         return ventasDetalleCollection;
@@ -170,7 +172,9 @@ public class Servicios implements Serializable {
     public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
         this.ventasDetalleCollection = ventasDetalleCollection;
     }
+    
 
+    @JsonBackReference(value="empleado")
     @XmlTransient
     public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
         return empleadoDisponibleCollection;
@@ -180,7 +184,7 @@ public class Servicios implements Serializable {
         this.empleadoDisponibleCollection = empleadoDisponibleCollection;
     }
 
-    
+    @JsonManagedReference(value="servicios")
     public Categorias getCategoriaId() {
         return categoriaId;
     }
@@ -211,7 +215,7 @@ public class Servicios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Servicios[ servicioId=" + servicioId + " ]";
+        return "com.spa.Servicios[ servicioId=" + servicioId + " ]";
     }
     
 }

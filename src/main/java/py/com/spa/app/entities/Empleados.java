@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,7 +51,7 @@ public class Empleados implements Serializable {
     private Integer empleadoId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cedula", unique=true, nullable=false)
+    @Column(name = "cedula")
     private int cedula;
     @Basic(optional = false)
     @NotNull
@@ -86,8 +85,8 @@ public class Empleados implements Serializable {
     private Collection<Horario> horarioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "empleados")
-    private EmpleadoDisponible empleadoDisponible;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
 
     public Empleados() {
     }
@@ -170,7 +169,7 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference(value="horario")
+    @JsonBackReference
     @XmlTransient
     public Collection<Horario> getHorarioCollection() {
         return horarioCollection;
@@ -180,7 +179,6 @@ public class Empleados implements Serializable {
         this.horarioCollection = horarioCollection;
     }
 
-    @JsonBackReference
     @XmlTransient
     public Collection<Planilla> getPlanillaCollection() {
         return planillaCollection;
@@ -190,12 +188,14 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    public EmpleadoDisponible getEmpleadoDisponible() {
-        return empleadoDisponible;
+    @JsonBackReference
+    @XmlTransient
+    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
+        return empleadoDisponibleCollection;
     }
 
-    public void setEmpleadoDisponible(EmpleadoDisponible empleadoDisponible) {
-        this.empleadoDisponible = empleadoDisponible;
+    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
+        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
     }
 
     @Override
@@ -220,7 +220,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Empleados[ empleadoId=" + empleadoId + " ]";
+        return "com.spa.Empleados[ empleadoId=" + empleadoId + " ]";
     }
     
 }

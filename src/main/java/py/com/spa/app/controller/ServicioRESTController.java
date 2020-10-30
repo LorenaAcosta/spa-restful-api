@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
 
 @RestController
@@ -25,7 +26,9 @@ public class ServicioRESTController {
 
 	@Autowired
 	private ServicioService servicioService;
-
+	@Autowired
+	private CategoriaService categoriaService;
+	
 	@GetMapping("/listar")
 	public List<Servicios> listarServicios(){
 		return servicioService.findAll();
@@ -37,10 +40,17 @@ public class ServicioRESTController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/listarByCategoria")
-	public List<Servicios> getDataType(@RequestBody Categorias categoria){
-		return (List<Servicios>) servicioService.findByCategoriaId(categoria);
+
+	
+	@GetMapping("/getServciosByCategoriaId/{id}")
+	public List<Servicios> getServciosByCategoriaId(@PathVariable Integer id)
+	{
+		
+		Categorias c = categoriaService.findByCategoriaId(id);
+		
+		return (List<Servicios>) servicioService.findAllByCategoriaId(c);
 	}
+	
 
 	
 	@GetMapping("/encontrar/{id}")

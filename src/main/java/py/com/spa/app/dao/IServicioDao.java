@@ -8,5 +8,8 @@ import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
 
 public interface IServicioDao extends JpaRepository<Servicios, Integer>{
-		public List<Servicios> findByCategoriaId(Categorias categoria);
+	
+
+	List<Servicios> findAllByCategoriaId(Categorias categoria);
+	
 }

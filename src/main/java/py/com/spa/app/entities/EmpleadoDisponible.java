@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -11,13 +11,14 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,19 +33,24 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EmpleadoDisponible.findAll", query = "SELECT e FROM EmpleadoDisponible e"),
-    @NamedQuery(name = "EmpleadoDisponible.findByEmpleadoId", query = "SELECT e FROM EmpleadoDisponible e WHERE e.empleadoId = :empleadoId")})
+    @NamedQuery(name = "EmpleadoDisponible.findByDisponibleId", query = "SELECT e FROM EmpleadoDisponible e WHERE e.disponibleId = :disponibleId"),
+    @NamedQuery(name = "EmpleadoDisponible.findByComision", query = "SELECT e FROM EmpleadoDisponible e WHERE e.comision = :comision")})
 public class EmpleadoDisponible implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "disponible_id")
+    private Integer disponibleId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "empleado_id")
-    private Integer empleadoId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @Column(name = "comision")
+    private float comision;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "disponibleId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
-    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Empleados empleados;
+    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
+    @ManyToOne(optional = false)
+    private Empleados empleadoId;
     @JoinColumn(name = "servicio_id", referencedColumnName = "servicio_id")
     @ManyToOne(optional = false)
     private Servicios servicioId;
@@ -52,16 +58,29 @@ public class EmpleadoDisponible implements Serializable {
     public EmpleadoDisponible() {
     }
 
-    public EmpleadoDisponible(Integer empleadoId) {
-        this.empleadoId = empleadoId;
+    public EmpleadoDisponible(Integer disponibleId) {
+        this.disponibleId = disponibleId;
     }
 
-    public Integer getEmpleadoId() {
-        return empleadoId;
+    public EmpleadoDisponible(Integer disponibleId, float comision) {
+        this.disponibleId = disponibleId;
+        this.comision = comision;
     }
 
-    public void setEmpleadoId(Integer empleadoId) {
-        this.empleadoId = empleadoId;
+    public Integer getDisponibleId() {
+        return disponibleId;
+    }
+
+    public void setDisponibleId(Integer disponibleId) {
+        this.disponibleId = disponibleId;
+    }
+
+    public float getComision() {
+        return comision;
+    }
+
+    public void setComision(float comision) {
+        this.comision = comision;
     }
 
     @XmlTransient
@@ -73,12 +92,12 @@ public class EmpleadoDisponible implements Serializable {
         this.reservaDetalleCollection = reservaDetalleCollection;
     }
 
-    public Empleados getEmpleados() {
-        return empleados;
+    public Empleados getEmpleadoId() {
+        return empleadoId;
     }
 
-    public void setEmpleados(Empleados empleados) {
-        this.empleados = empleados;
+    public void setEmpleadoId(Empleados empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
     public Servicios getServicioId() {
@@ -92,7 +111,7 @@ public class EmpleadoDisponible implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (empleadoId != null ? empleadoId.hashCode() : 0);
+        hash += (disponibleId != null ? disponibleId.hashCode() : 0);
         return hash;
     }
 
@@ -103,7 +122,7 @@ public class EmpleadoDisponible implements Serializable {
             return false;
         }
         EmpleadoDisponible other = (EmpleadoDisponible) object;
-        if ((this.empleadoId == null && other.empleadoId != null) || (this.empleadoId != null && !this.empleadoId.equals(other.empleadoId))) {
+        if ((this.disponibleId == null && other.disponibleId != null) || (this.disponibleId != null && !this.disponibleId.equals(other.disponibleId))) {
             return false;
         }
         return true;
@@ -111,7 +130,7 @@ public class EmpleadoDisponible implements Serializable {
 
     @Override
     public String toString() {
-        return "com.EmpleadoDisponible[ empleadoId=" + empleadoId + " ]";
+        return "com.spa.EmpleadoDisponible[ disponibleId=" + disponibleId + " ]";
     }
     
 }

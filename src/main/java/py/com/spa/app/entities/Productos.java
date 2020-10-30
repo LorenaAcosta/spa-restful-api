@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -52,7 +54,7 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo", unique=true)
+    @Column(name = "codigo")
     private String codigo;
     @Basic(optional = false)
     @NotNull
@@ -186,6 +188,7 @@ public class Productos implements Serializable {
         this.comprasDetalleCollection = comprasDetalleCollection;
     }
 
+    @JsonManagedReference(value="productos")
     public Categorias getCategoriaId() {
         return categoriaId;
     }
@@ -216,7 +219,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.Productos[ productoId=" + productoId + " ]";
+        return "com.spa.Productos[ productoId=" + productoId + " ]";
     }
     
 }

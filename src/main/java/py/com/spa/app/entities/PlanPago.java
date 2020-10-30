@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
+package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -137,7 +137,7 @@ public class PlanPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.PlanPago[ planPagoPK=" + planPagoPK + " ]";
+        return "com.spa.PlanPago[ planPagoPK=" + planPagoPK + " ]";
     }
     
 }

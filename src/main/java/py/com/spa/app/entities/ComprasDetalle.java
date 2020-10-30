@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
-
+package py.com.spa.app.entities;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -130,7 +129,7 @@ public class ComprasDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.ComprasDetalle[ comprasId=" + comprasId + " ]";
+        return "com.spa.ComprasDetalle[ comprasId=" + comprasId + " ]";
     }
     
 }

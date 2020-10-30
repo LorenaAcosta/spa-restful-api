@@ -41,5 +41,10 @@ public class EmpleadoDisponibleService {
 	public void delete(Integer id) {
 		empleadoDisponible.deleteById(id);
 	}
-
+	
+	@Transactional
+	public List<EmpleadoDisponible> findByEmpleadoId(Integer empleadoId) {
+		return (List<EmpleadoDisponible>) empleadoDisponible.findByEmpleadoId(empleadoId);
+	}
+	
 }

@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package  py.com.spa.app.entities;
-
+package py.com.spa.app.entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ReservaDetalle.findAll", query = "SELECT r FROM ReservaDetalle r"),
     @NamedQuery(name = "ReservaDetalle.findByReservaId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaId = :reservaId"),
+    @NamedQuery(name = "ReservaDetalle.findByEmpleadoId", query = "SELECT r FROM ReservaDetalle r WHERE r.empleadoId = :empleadoId"),
     @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
     @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
 public class ReservaDetalle implements Serializable {
@@ -45,6 +45,10 @@ public class ReservaDetalle implements Serializable {
     private Integer reservaId;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "empleado_id")
+    private int empleadoId;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "fecha_reserva")
     @Temporal(TemporalType.DATE)
     private Date fechaReserva;
@@ -53,9 +57,9 @@ public class ReservaDetalle implements Serializable {
     @Column(name = "hora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date hora;
-    @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
+    @JoinColumn(name = "disponible_id", referencedColumnName = "disponible_id")
     @ManyToOne(optional = false)
-    private EmpleadoDisponible empleadoId;
+    private EmpleadoDisponible disponibleId;
     @JoinColumn(name = "reserva_id", referencedColumnName = "reserva_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Reserva reserva;
@@ -67,8 +71,9 @@ public class ReservaDetalle implements Serializable {
         this.reservaId = reservaId;
     }
 
-    public ReservaDetalle(Integer reservaId, Date fechaReserva, Date hora) {
+    public ReservaDetalle(Integer reservaId, int empleadoId, Date fechaReserva, Date hora) {
         this.reservaId = reservaId;
+        this.empleadoId = empleadoId;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
     }
@@ -79,6 +84,14 @@ public class ReservaDetalle implements Serializable {
 
     public void setReservaId(Integer reservaId) {
         this.reservaId = reservaId;
+    }
+
+    public int getEmpleadoId() {
+        return empleadoId;
+    }
+
+    public void setEmpleadoId(int empleadoId) {
+        this.empleadoId = empleadoId;
     }
 
     public Date getFechaReserva() {
@@ -97,12 +110,12 @@ public class ReservaDetalle implements Serializable {
         this.hora = hora;
     }
 
-    public EmpleadoDisponible getEmpleadoId() {
-        return empleadoId;
+    public EmpleadoDisponible getDisponibleId() {
+        return disponibleId;
     }
 
-    public void setEmpleadoId(EmpleadoDisponible empleadoId) {
-        this.empleadoId = empleadoId;
+    public void setDisponibleId(EmpleadoDisponible disponibleId) {
+        this.disponibleId = disponibleId;
     }
 
     public Reserva getReserva() {
@@ -135,7 +148,7 @@ public class ReservaDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.ReservaDetalle[ reservaId=" + reservaId + " ]";
+        return "com.spa.ReservaDetalle[ reservaId=" + reservaId + " ]";
     }
     
 }
