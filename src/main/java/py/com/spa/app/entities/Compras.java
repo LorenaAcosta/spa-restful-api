@@ -26,6 +26,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -97,7 +99,7 @@ public class Compras implements Serializable {
     public void setMontoTotal(String montoTotal) {
         this.montoTotal = montoTotal;
     }
-
+    @JsonBackReference(value="proveedor-compras")
     public Proveedor getProveedorId() {
         return proveedorId;
     }

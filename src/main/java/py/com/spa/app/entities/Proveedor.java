@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -51,12 +53,14 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "telefono")
-    private int telefono;
+    private String telefono;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "empresa")
     private String empresa;
+
+    @Column(nullable = true)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
     private Collection<Compras> comprasCollection;
 
@@ -67,7 +71,7 @@ public class Proveedor implements Serializable {
         this.proveedorId = proveedorId;
     }
 
-    public Proveedor(Integer proveedorId, String nombreProveedor, int telefono, String empresa) {
+    public Proveedor(Integer proveedorId, String nombreProveedor, String telefono, String empresa) {
         this.proveedorId = proveedorId;
         this.nombreProveedor = nombreProveedor;
         this.telefono = telefono;
@@ -90,11 +94,11 @@ public class Proveedor implements Serializable {
         this.nombreProveedor = nombreProveedor;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -105,7 +109,7 @@ public class Proveedor implements Serializable {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
-
+    
     @XmlTransient
     public Collection<Compras> getComprasCollection() {
         return comprasCollection;

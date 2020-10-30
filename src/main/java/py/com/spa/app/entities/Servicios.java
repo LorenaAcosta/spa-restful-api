@@ -184,7 +184,7 @@ public class Servicios implements Serializable {
         this.empleadoDisponibleCollection = empleadoDisponibleCollection;
     }
 
-    @JsonManagedReference(value="servicios")
+    
     public Categorias getCategoriaId() {
         return categoriaId;
     }

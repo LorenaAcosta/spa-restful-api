@@ -188,7 +188,7 @@ public class Productos implements Serializable {
         this.comprasDetalleCollection = comprasDetalleCollection;
     }
 
-    @JsonManagedReference(value="productos")
+ 
     public Categorias getCategoriaId() {
         return categoriaId;
     }
