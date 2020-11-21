@@ -169,7 +169,7 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference(value="herario")
+    @JsonBackReference(value="horario")
     @XmlTransient
     public Collection<Horario> getHorarioCollection() {
         return horarioCollection;

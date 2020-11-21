@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -178,7 +179,7 @@ public class Productos implements Serializable {
     public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
         this.ventasDetalleCollection = ventasDetalleCollection;
     }
-
+    @JsonBackReference(value="getComprasDetalleCollection")
     @XmlTransient
     public Collection<ComprasDetalle> getComprasDetalleCollection() {
         return comprasDetalleCollection;

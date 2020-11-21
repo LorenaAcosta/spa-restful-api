@@ -109,7 +109,7 @@ public class Proveedor implements Serializable {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
-    
+    @JsonBackReference(value="compras-proveedor")
     @XmlTransient
     public Collection<Compras> getComprasCollection() {
         return comprasCollection;
