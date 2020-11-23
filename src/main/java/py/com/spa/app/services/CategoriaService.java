@@ -42,10 +42,12 @@ public class CategoriaService {
 	}
 	
 	@Transactional
-	public List<Categorias> obtenerPorTipo(String tipo) {
-		return (List<Categorias>) categoriaDao.obtenerPorTipo(tipo);
+	public List<Categorias> obtenerCategorias(String id) {
+		return (List<Categorias>) categoriaDao.findByDataType(id);
 	}
 	
+	
+
 }
 
 

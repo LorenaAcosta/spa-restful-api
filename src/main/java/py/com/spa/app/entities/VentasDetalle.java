@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,6 +20,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -57,12 +61,12 @@ public class VentasDetalle implements Serializable {
     @NotNull
     @Column(name = "descuento")
     private int descuento;
-    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id")
-    @ManyToOne(optional = false)
-    private Productos productoId;
-    @JoinColumn(name = "servicio_id", referencedColumnName = "servicio_id")
-    @ManyToOne(optional = false)
-    private Servicios servicioId;
+    @JoinColumn(name = "producto", referencedColumnName = "producto_id")
+    @ManyToOne
+    private Productos producto;
+    @JoinColumn(name = "reserva", referencedColumnName = "reserva_id")
+    @ManyToOne
+    private ReservaDetalle reserva;
     @JoinColumn(name = "ventas_id", referencedColumnName = "ventas_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Ventas ventas;
@@ -122,22 +126,24 @@ public class VentasDetalle implements Serializable {
         this.descuento = descuento;
     }
 
-    public Productos getProductoId() {
-        return productoId;
+    public Productos getProducto() {
+        return producto;
     }
 
-    public void setProductoId(Productos productoId) {
-        this.productoId = productoId;
+    public void setProducto(Productos producto) {
+        this.producto = producto;
     }
 
-    public Servicios getServicioId() {
-        return servicioId;
+    @JsonBackReference(value="ventas")
+    public ReservaDetalle getReserva() {
+        return reserva;
     }
 
-    public void setServicioId(Servicios servicioId) {
-        this.servicioId = servicioId;
+    public void setReserva(ReservaDetalle reserva) {
+        this.reserva = reserva;
     }
 
+    @JsonManagedReference(value="ventas")
     public Ventas getVentas() {
         return ventas;
     }
@@ -168,7 +174,7 @@ public class VentasDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.VentasDetalle[ ventasId=" + ventasId + " ]";
+        return "py.com.spa.app.entities.VentasDetalle[ ventasId=" + ventasId + " ]";
     }
     
 }

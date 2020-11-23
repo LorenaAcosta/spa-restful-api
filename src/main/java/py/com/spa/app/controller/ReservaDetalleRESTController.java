@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,22 @@ public class ReservaDetalleRESTController {
 	}
 	
 	@GetMapping("/encontrar/{id}")
-	public ReservaDetalle obtenerReservaDetalleId(@PathVariable(value="id") Integer id) {
-		return (ReservaDetalle) reservaDetalleService.findByReservaDetalleId(id);
+	public ReservaDetalle obtenerReservaDetalleId(@PathVariable(value="id") Integer empleado) {
+		return (ReservaDetalle) reservaDetalleService.findByReservaDetalleId(empleado);
 	}
+	
+	@GetMapping("/get-turnos/{id}")
+	public List<ReservaDetalle> findByEmpleado(@PathVariable(value="id") Integer id) {
+		return (List<ReservaDetalle>) reservaDetalleService.findByEmpleado(id);
+	}
+	
 	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarReservaDetalle(@PathVariable(value="id") Integer id, @RequestBody ReservaDetalle reservadetalle) {
 		ReservaDetalle c = reservaDetalleService.findByReservaDetalleId(id);
 		if(c!=null) {
 		//	c.setServicioId(reservadetalle.get
-			c.setEmpleadoId(reservadetalle.getEmpleadoId());
+		//c.setEmpleadoId(reservadetalle.getEmpleadoId());
 			c.setFechaReserva(reservadetalle.getFechaReserva());
 			c.setHora(reservadetalle.getHora());
 			reservaDetalleService.updateReserva(c);

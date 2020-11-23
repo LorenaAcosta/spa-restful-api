@@ -20,6 +20,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  *
  * @author Lore
@@ -102,6 +105,7 @@ public class Planilla implements Serializable {
         this.liquidoCobrado = liquidoCobrado;
     }
 
+    @JsonBackReference(value="planilla-empleado")
     public Empleados getEmpleadoId() {
         return empleadoId;
     }
@@ -132,7 +136,7 @@ public class Planilla implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Planilla[ planillaId=" + planillaId + " ]";
+        return "py.com.spa.app.entities.Planilla[ planillaId=" + planillaId + " ]";
     }
     
 }

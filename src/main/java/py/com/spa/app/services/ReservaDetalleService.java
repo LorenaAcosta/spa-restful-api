@@ -1,12 +1,16 @@
 package py.com.spa.app.services;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IReservaDetalleDao;
+import py.com.spa.app.entities.Disponible;
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.ReservaDetalle;
 
 @Service
@@ -40,6 +44,12 @@ public class ReservaDetalleService {
 	public void deleteReserva(Integer id) {
 		reservaDao.deleteById(id);
 	}
+	
+	@Transactional
+	public List<ReservaDetalle> findByEmpleado(Integer empleado){
+		return (List<ReservaDetalle>) reservaDao.findByEmpleado(empleado);
+	}
+	
 
 
 }

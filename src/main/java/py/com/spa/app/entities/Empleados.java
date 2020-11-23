@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -86,7 +87,7 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
-    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
+    private Collection<Disponible> disponibleCollection;
 
     public Empleados() {
     }
@@ -169,7 +170,7 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference
+    @JsonBackReference(value="horario-empleado")
     @XmlTransient
     public Collection<Horario> getHorarioCollection() {
         return horarioCollection;
@@ -179,6 +180,7 @@ public class Empleados implements Serializable {
         this.horarioCollection = horarioCollection;
     }
 
+    @JsonBackReference(value="planilla-empleado")
     @XmlTransient
     public Collection<Planilla> getPlanillaCollection() {
         return planillaCollection;
@@ -188,14 +190,14 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    @JsonBackReference
+    @JsonBackReference(value="disponible-empleado")
     @XmlTransient
-    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
-        return empleadoDisponibleCollection;
+    public Collection<Disponible> getDisponibleCollection() {
+        return disponibleCollection;
     }
 
-    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
-        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
+    public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
+        this.disponibleCollection = disponibleCollection;
     }
 
     @Override
@@ -220,7 +222,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Empleados[ empleadoId=" + empleadoId + " ]";
+        return "py.com.spa.app.Empleados[ empleadoId=" + empleadoId + " ]";
     }
     
 }

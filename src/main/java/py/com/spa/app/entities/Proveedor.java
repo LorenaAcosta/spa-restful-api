@@ -137,7 +137,7 @@ public class Proveedor implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Proveedor[ proveedorId=" + proveedorId + " ]";
+        return "py.com.spa.app.entities.Proveedor[ proveedorId=" + proveedorId + " ]";
     }
     
 }

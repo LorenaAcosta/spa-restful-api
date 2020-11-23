@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -81,7 +82,7 @@ public class Productos implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
+    @OneToMany(mappedBy = "producto")
     private Collection<VentasDetalle> ventasDetalleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
@@ -188,7 +189,7 @@ public class Productos implements Serializable {
         this.comprasDetalleCollection = comprasDetalleCollection;
     }
 
-    @JsonManagedReference(value="productos")
+    @JsonBackReference(value="productos")
     public Categorias getCategoriaId() {
         return categoriaId;
     }
@@ -219,7 +220,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Productos[ productoId=" + productoId + " ]";
+        return "py.com.spa.app.entities.Productos[ productoId=" + productoId + " ]";
     }
     
 }

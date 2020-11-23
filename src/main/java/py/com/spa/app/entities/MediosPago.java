@@ -123,7 +123,7 @@ public class MediosPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.MediosPago[ medioPagoId=" + medioPagoId + " ]";
+        return "py.com.spa.app.entities.MediosPago[ medioPagoId=" + medioPagoId + " ]";
     }
     
 }

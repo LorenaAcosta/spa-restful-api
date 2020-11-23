@@ -7,8 +7,6 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -36,7 +35,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
-    @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
@@ -126,7 +124,8 @@ public class Categorias implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference(value="servicios")
+  
+   @JsonBackReference
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;
@@ -168,7 +167,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }

@@ -29,6 +29,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  *
  * @author Lore
@@ -134,6 +137,7 @@ public class Ventas implements Serializable {
         this.estado = estado;
     }
 
+    @JsonBackReference(value="ventas")
     public VentasDetalle getVentasDetalle() {
         return ventasDetalle;
     }
@@ -158,6 +162,7 @@ public class Ventas implements Serializable {
         this.usuarioId = usuarioId;
     }
 
+    @JsonManagedReference(value="planpago")
     @XmlTransient
     public Collection<PlanPago> getPlanPagoCollection() {
         return planPagoCollection;
@@ -189,7 +194,7 @@ public class Ventas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Ventas[ ventasId=" + ventasId + " ]";
+        return "py.com.spa.app.entities.Ventas[ ventasId=" + ventasId + " ]";
     }
     
 }

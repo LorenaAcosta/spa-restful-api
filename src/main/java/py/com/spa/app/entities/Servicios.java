@@ -6,6 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -31,6 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
 
 /**
  *
@@ -79,26 +83,25 @@ public class Servicios implements Serializable {
     private String imageName;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "duracion")
     @JsonFormat(pattern="HH:mm")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date duracion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private Collection<VentasDetalle> ventasDetalleCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
+    @Column(name = "duracion")
+    private Time  duracion;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
+    private Collection<Disponible> disponibleCollection;
 
     public Servicios() {
     }
 
+    
     public Servicios(Integer servicioId) {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Date duracion) {
+    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Time duracion) {
         this.servicioId = servicioId;
         this.nombre = nombre;
         this.estado = estado;
@@ -155,42 +158,31 @@ public class Servicios implements Serializable {
         this.imageName = imageName;
     }
 
-    public Date getDuracion() {
+    public Time getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Date duracion) {
-        this.duracion = duracion;
+    public void setDuracion(Time date) {
+        this.duracion = date;
     }
 
-    @JsonBackReference(value="ventas")
-    @XmlTransient
-    public Collection<VentasDetalle> getVentasDetalleCollection() {
-        return ventasDetalleCollection;
-    }
-
-    public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
-        this.ventasDetalleCollection = ventasDetalleCollection;
-    }
-    
-
-    @JsonBackReference(value="empleado")
-    @XmlTransient
-    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
-        return empleadoDisponibleCollection;
-    }
-
-    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
-        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
-    }
-
-    @JsonManagedReference(value="servicios")
+   
     public Categorias getCategoriaId() {
         return categoriaId;
     }
 
     public void setCategoriaId(Categorias categoriaId) {
         this.categoriaId = categoriaId;
+    }
+
+    @JsonBackReference(value="disponible-servicio")
+    @XmlTransient
+    public Collection<Disponible> getDisponibleCollection() {
+        return disponibleCollection;
+    }
+
+    public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
+        this.disponibleCollection = disponibleCollection;
     }
 
     @Override
@@ -215,7 +207,7 @@ public class Servicios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Servicios[ servicioId=" + servicioId + " ]";
+        return "py.com.spa.app.Servicios[ servicioId=" + servicioId + " ]";
     }
     
 }

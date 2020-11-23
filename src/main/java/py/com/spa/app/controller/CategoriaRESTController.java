@@ -30,11 +30,7 @@ public class CategoriaRESTController  {
 	public List<Categorias> listarCategorias(){
 		return categoriaService.findAll();
 	}
-	
-	@GetMapping("/obtener-por-tipo/{tipo}")
-	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
-		return (List<Categorias>) categoriaService.obtenerPorTipo(tipo);
-	}
+
 	
 	@GetMapping("/getServicios")
 	public List<Categorias> getServicios(){
@@ -77,4 +73,13 @@ public class CategoriaRESTController  {
 		}
 		
 	}
+	
+	
+	
+
+	@GetMapping("/obtener-por-tipo/{id}")
+	public List<Categorias> obtenerCategorias(@PathVariable(value="id") String id) {
+		return categoriaService.obtenerCategorias(id);
+	}
+
 }

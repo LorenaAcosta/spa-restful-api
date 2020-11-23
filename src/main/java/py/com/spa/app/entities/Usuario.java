@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -95,7 +97,7 @@ public class Usuario implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private Collection<Reserva> reservaCollection;
+    private Collection<ReservaDetalle> reservaDetalleCollection;
 
     public Usuario() {
     }
@@ -197,6 +199,7 @@ public class Usuario implements Serializable {
         this.estado = estado;
     }
 
+    @JsonBackReference(value="ventas")
     @XmlTransient
     public Collection<Ventas> getVentasCollection() {
         return ventasCollection;
@@ -205,14 +208,14 @@ public class Usuario implements Serializable {
     public void setVentasCollection(Collection<Ventas> ventasCollection) {
         this.ventasCollection = ventasCollection;
     }
-
+    @JsonBackReference(value="reservas")
     @XmlTransient
-    public Collection<Reserva> getReservaCollection() {
-        return reservaCollection;
+    public Collection<ReservaDetalle> getReservaCollection() {
+        return reservaDetalleCollection;
     }
 
-    public void setReservaCollection(Collection<Reserva> reservaCollection) {
-        this.reservaCollection = reservaCollection;
+    public void setReservaCollection(Collection<ReservaDetalle> reservaCollection) {
+        this.reservaDetalleCollection = reservaCollection;
     }
 
     @Override
@@ -237,7 +240,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Usuario[ usuarioId=" + usuarioId + " ]";
+        return "py.com.spa.app.entities.Usuario[ usuarioId=" + usuarioId + " ]";
     }
     
 }

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -129,7 +130,7 @@ public class ComprasDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.ComprasDetalle[ comprasId=" + comprasId + " ]";
+        return "py.com.spa.app.entities.ComprasDetalle[ comprasId=" + comprasId + " ]";
     }
     
 }

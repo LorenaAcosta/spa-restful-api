@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,6 +20,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
 /**
  *
  * @author Lore
@@ -44,14 +45,16 @@ public class Horario implements Serializable {
     private Integer horarioId;
     @Basic(optional = false)
     @NotNull
+    @JsonFormat(pattern="HH:mm")
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_inicio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date horaInicio;
+    private Time horaInicio;
     @Basic(optional = false)
     @NotNull
+    @JsonFormat(pattern="HH:mm")
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_fin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date horaFin;
+    private Time horaFin;
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
     private Empleados empleadoId;
@@ -63,7 +66,7 @@ public class Horario implements Serializable {
         this.horarioId = horarioId;
     }
 
-    public Horario(Integer horarioId, Date horaInicio, Date horaFin) {
+    public Horario(Integer horarioId, Time horaInicio, Time horaFin) {
         this.horarioId = horarioId;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -77,19 +80,19 @@ public class Horario implements Serializable {
         this.horarioId = horarioId;
     }
 
-    public Date getHoraInicio() {
+    public Time getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(Date horaInicio) {
+    public void setHoraInicio(Time horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public Date getHoraFin() {
+    public Time getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(Date horaFin) {
+    public void setHoraFin(Time horaFin) {
         this.horaFin = horaFin;
     }
 
