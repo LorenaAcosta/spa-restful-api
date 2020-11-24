@@ -42,11 +42,13 @@ public class CompraService {
 	
 	@Transactional
 	public void deleteCompras(Integer id) {
+		/*Se eliminan previamente todos los detalles*/
 		Compras c = this.findByComprasId(id);
 		Collection<ComprasDetalle> detallesDelete = c.getDetallesCollection();
 		for (ComprasDetalle d:detallesDelete) {
 			detalleService.deleteDetalles(d.getDetalleId());
 		}
+		/**/
 		comprasDao.deleteById(id);
 	}
 	

@@ -56,7 +56,8 @@ public class CompraRESTController {
 		if(c!=null) {
 			c.setFecha(compra.getFecha());
 			c.setMontoTotal(compra.getMontoTotal());
-			c.setMontoTotal(compra.getMontoTotal());
+			c.setProveedorId(compra.getProveedorId());
+			compraService.updateCompras(c);
 			//-c.setEstado(compra.getEstado());
 			return new ResponseEntity<Compras>(compra, HttpStatus.OK);
 		}else {
