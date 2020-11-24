@@ -49,6 +49,8 @@ public class ReservaDetalleService {
 	public List<ReservaDetalle> findByEmpleado(Integer empleado){
 		return (List<ReservaDetalle>) reservaDao.findByEmpleado(empleado);
 	}
+
+	
 	
 
 

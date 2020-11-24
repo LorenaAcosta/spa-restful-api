@@ -43,6 +43,7 @@ import py.com.spa.result.SqlTimeDeserializer;
     @NamedQuery(name = "ReservaDetalle.findByReservaId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaId = :reservaId"),
     @NamedQuery(name = "ReservaDetalle.findByEmpleado", query = "SELECT r FROM ReservaDetalle r WHERE r.empleado = :empleado"),
     @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
+    @NamedQuery(name = "ReservaDetalle.findByDisponibleId", query = "SELECT r FROM ReservaDetalle r WHERE r.disponibleId = :disponibleId"),
     @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
 public class ReservaDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -86,13 +87,8 @@ public class ReservaDetalle implements Serializable {
         this.reservaId = reservaId;
     }
 
-    public ReservaDetalle(Integer reservaId, Integer empleado, Date fechaReserva, Time hora) {
-        this.reservaId = reservaId;
-        this.empleado = empleado;
-        this.fechaReserva = fechaReserva;
-        this.hora = hora;
-    }
-    public ReservaDetalle(Integer reservaId, Integer empleado, Date fechaReserva, Time hora, Disponible disponibleId, Usuario usuarioId) {
+    public ReservaDetalle(Integer reservaId, Integer empleado, Date fechaReserva, Time hora, Disponible disponibleId,
+    		Usuario usuarioId) {
         this.reservaId = reservaId;
         this.empleado = empleado;
         this.fechaReserva = fechaReserva;
@@ -134,7 +130,6 @@ public class ReservaDetalle implements Serializable {
         this.hora = hora;
     }
 
-    @JsonBackReference(value="reserva")
     public Disponible getDisponibleId() {
         return disponibleId;
     }
