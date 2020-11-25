@@ -45,10 +45,14 @@ public class ServicioRESTController {
 	@GetMapping("/getServciosByCategoriaId/{id}")
 	public List<Servicios> getServciosByCategoriaId(@PathVariable Integer id)
 	{
-		
-		Categorias c = categoriaService.findByCategoriaId(id);
-		
+		Categorias c = categoriaService.findByCategoriaId(id);	
 		return (List<Servicios>) servicioService.findAllByCategoriaId(c);
+	}
+	
+	@GetMapping("/getServiciosByEstado/{estado}")
+	public List<Servicios> getServiciosByEstado(@PathVariable String estado)
+	{
+		return (List<Servicios>) servicioService.getServiciosByEstado(estado);
 	}
 	
 

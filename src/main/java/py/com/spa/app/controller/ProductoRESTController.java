@@ -18,6 +18,7 @@ import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ProductoService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -29,6 +30,8 @@ public class ProductoRESTController {
 
 	@Autowired
 	private ProductoService productoService;
+	@Autowired
+	private CategoriaService categoriaService;
 	
 	@GetMapping("/listar")
 	public List<Productos> listarProductos(){
@@ -44,6 +47,15 @@ public class ProductoRESTController {
 	@GetMapping("/encontrar/{id}")
 	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
 		return (Productos) productoService.findProductoById(id);
+	}
+
+	@GetMapping("/getProductosByCategoriaId/{id}")
+	public List<Productos> getServciosByCategoriaId(@PathVariable Integer id)
+	{
+		
+		Categorias c = categoriaService.findByCategoriaId(id);
+		
+		return (List<Productos>) productoService.findAllByCategoriaId(c);
 	}
 	
 	@PutMapping("/modificar/{id}")

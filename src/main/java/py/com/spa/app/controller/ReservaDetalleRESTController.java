@@ -17,14 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ReservaDetalleService;
 
 @RestController
 @RequestMapping(value="/reserva-detalle")
 public class ReservaDetalleRESTController {
+	
 	@Autowired
 	public ReservaDetalleService reservaDetalleService;
+	
+	@Autowired
+	public HorarioService horarioService;
 	
 	@GetMapping("/listar")
 	public List<ReservaDetalle> listarReservaDetalle(){
