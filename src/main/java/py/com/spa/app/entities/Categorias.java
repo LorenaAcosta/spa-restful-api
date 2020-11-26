@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,8 +39,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
-    @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,18 +62,19 @@ public class Categorias implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "data_type")
     private String dataType;
-    @Size(max = 2147483647)
-    @Column(name = "image_name")
-    private String imageName;
+
+    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Productos> productosCollection;
 
-    public Categorias() {
-    }
 
-    public Categorias(Integer categoriaId) {
+    public Categorias() {
+	}
+
+	public Categorias(Integer categoriaId) {
         this.categoriaId = categoriaId;
     }
 
@@ -83,6 +84,8 @@ public class Categorias implements Serializable {
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
+    
+
 
     public Integer getCategoriaId() {
         return categoriaId;
@@ -116,16 +119,8 @@ public class Categorias implements Serializable {
         this.dataType = dataType;
     }
 
-    public String getImageName() {
-        return imageName;
-    }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-  
-   @JsonBackReference
+@JsonBackReference
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;

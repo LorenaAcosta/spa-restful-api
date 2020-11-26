@@ -22,8 +22,8 @@ public class CategoriaService {
 	}
 	
 	@Transactional
-	public void addCategoria(Categorias categoria) {
-		categoriaDao.save(categoria);
+	public Categorias addCategoria(Categorias categoria) {
+		return categoriaDao.save(categoria);
 	}
 	
 	@Transactional(readOnly=true)
