@@ -68,14 +68,20 @@ public class Ventas implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "ventas")
-    private VentasDetalle ventasDetalle;
-    @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
-    @ManyToOne(optional = false)
-    private MediosPago medioPagoId;
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "ventas")
+    private VentasDetalle ventasDetalle;*/
+    /**/
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
+    /**/
+    @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
+    @ManyToOne(optional = false)
+    private MediosPago medioPagoId;
+    /**/
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")  
+    private Collection<VentasDetalle> ventasDetalleCollection;
+    /**/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")
     private Collection<PlanPago> planPagoCollection;
 
@@ -86,15 +92,33 @@ public class Ventas implements Serializable {
         this.ventasId = ventasId;
     }
 
-    public Ventas(Integer ventasId, int numeroFactura, Date fecha, int montoTotal, String estado) {
-        this.ventasId = ventasId;
-        this.numeroFactura = numeroFactura;
-        this.fecha = fecha;
-        this.montoTotal = montoTotal;
-        this.estado = estado;
-    }
 
-    public Integer getVentasId() {
+    public Ventas(Integer ventasId, @NotNull int numeroFactura, @NotNull Date fecha, @NotNull int montoTotal,
+			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId,
+			Collection<VentasDetalle> ventasDetalleCollection, Collection<PlanPago> planPagoCollection) {
+		super();
+		this.ventasId = ventasId;
+		this.numeroFactura = numeroFactura;
+		this.fecha = fecha;
+		this.montoTotal = montoTotal;
+		this.estado = estado;
+		this.usuarioId = usuarioId;
+		this.medioPagoId = medioPagoId;
+		this.ventasDetalleCollection = ventasDetalleCollection;
+		this.planPagoCollection = planPagoCollection;
+	}
+    
+    
+
+	public Collection<VentasDetalle> getVentasDetalleCollection() {
+		return ventasDetalleCollection;
+	}
+
+	public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
+		this.ventasDetalleCollection = ventasDetalleCollection;
+	}
+
+	public Integer getVentasId() {
         return ventasId;
     }
 
@@ -132,14 +156,6 @@ public class Ventas implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public VentasDetalle getVentasDetalle() {
-        return ventasDetalle;
-    }
-
-    public void setVentasDetalle(VentasDetalle ventasDetalle) {
-        this.ventasDetalle = ventasDetalle;
     }
 
     public MediosPago getMedioPagoId() {

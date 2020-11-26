@@ -45,6 +45,13 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "proveedor_id")
     private Integer proveedorId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "empresa")
+    private String empresa;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -54,11 +61,21 @@ public class Proveedor implements Serializable {
     @NotNull
     @Column(name = "telefono")
     private String telefono;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "empresa")
-    private String empresa;
+    @Column(name = "direccion")
+    private String direccion;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "correo")
+    private String correo;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ruc")
+    private String ruc;
 
     @Column(nullable = true)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
@@ -71,14 +88,47 @@ public class Proveedor implements Serializable {
         this.proveedorId = proveedorId;
     }
 
-    public Proveedor(Integer proveedorId, String nombreProveedor, String telefono, String empresa) {
-        this.proveedorId = proveedorId;
-        this.nombreProveedor = nombreProveedor;
-        this.telefono = telefono;
-        this.empresa = empresa;
-    }
 
-    public Integer getProveedorId() {
+    public Proveedor(Integer proveedorId, @NotNull @Size(min = 1, max = 2147483647) String empresa,
+			@NotNull @Size(min = 1, max = 2147483647) String nombreProveedor, @NotNull String telefono,
+			@NotNull String direccion, @NotNull String correo, @NotNull String ruc,
+			Collection<Compras> comprasCollection) {
+		super();
+		this.proveedorId = proveedorId;
+		this.empresa = empresa;
+		this.nombreProveedor = nombreProveedor;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.correo = correo;
+		this.ruc = ruc;
+		this.comprasCollection = comprasCollection;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public String getRuc() {
+		return ruc;
+	}
+
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+
+	public Integer getProveedorId() {
         return proveedorId;
     }
 
