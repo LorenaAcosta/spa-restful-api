@@ -76,8 +76,8 @@ public class VentasDetalle implements Serializable {
     @ManyToOne(optional = false)
     private Servicios servicioId;
     /**/
-    @JsonBackReference(value="detalle-compras")
-    @JoinColumn(name = "compras_id", referencedColumnName = "compras_id", insertable = false, updatable = false)
+    @JsonBackReference(value="detalle-ventas")
+    @JoinColumn(name = "ventas_id", referencedColumnName = "ventas_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Ventas ventas;
     /*
