@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.entities.Categorias;
@@ -45,8 +46,6 @@ public class CategoriaService {
 	public List<Categorias> obtenerCategorias(String id) {
 		return (List<Categorias>) categoriaDao.findByDataType(id);
 	}
-	
-	
 
 }
 

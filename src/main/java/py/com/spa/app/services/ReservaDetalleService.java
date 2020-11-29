@@ -49,6 +49,12 @@ public class ReservaDetalleService {
 	public List<ReservaDetalle> findByEmpleado(Integer empleado){
 		return (List<ReservaDetalle>) reservaDao.findByEmpleado(empleado);
 	}
+	
+
+	@Transactional
+	public List<ReservaDetalle> findAllByEmpleadoAndFechaReserva(Integer empleado, Date date){
+		return (List<ReservaDetalle>) reservaDao.findAllByEmpleadoAndFechaReserva(empleado, date);
+	}
 
 	
 	

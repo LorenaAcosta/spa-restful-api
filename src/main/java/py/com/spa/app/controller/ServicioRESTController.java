@@ -39,9 +39,7 @@ public class ServicioRESTController {
 		servicioService.agregarServicio(p);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
-	
 
-	
 	@GetMapping("/getServciosByCategoriaId/{id}")
 	public List<Servicios> getServciosByCategoriaId(@PathVariable Integer id)
 	{
@@ -55,7 +53,12 @@ public class ServicioRESTController {
 		return (List<Servicios>) servicioService.getServiciosByEstado(estado);
 	}
 	
-
+	@GetMapping("/getServiciosActivos/{categoriaId}/{estado}")
+	public List<Servicios> findByCategoriaIdAndEstado(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="estado") String estado )
+	{
+		Categorias c = categoriaService.findByCategoriaId(categoriaId);
+		return (List<Servicios>) servicioService.findAllByCategoriaIdAndEstado(c, estado);
+	}
 	
 	@GetMapping("/encontrar/{id}")
 	public Servicios encontrarProducto(@PathVariable Integer id) {
@@ -78,7 +81,6 @@ public class ServicioRESTController {
 			s.setEstado(servicio.getEstado());
 			s.setDuracion(servicio.getDuracion());
 			s.setCosto(servicio.getCosto());
-			s.setImageName(servicio.getImageName());
 			servicioService.updateServicio(s);
 		}	
 	} 

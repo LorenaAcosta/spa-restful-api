@@ -63,7 +63,6 @@ public class ProductoRESTController {
 		Productos prod= null;
 		prod = productoService.findProductoById(id);
 		if (prod!=null) {
-			prod.setCodigo(producto.getCodigo());
 			prod.setDescripcion(producto.getDescripcion());
 			prod.setCosto(producto.getCosto());
 			prod.setPrecioVenta(producto.getPrecioVenta());

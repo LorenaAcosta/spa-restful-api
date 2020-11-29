@@ -36,7 +36,6 @@ public class DisponibleRESTController {
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarDisponible(@RequestBody Disponible p) {
-		disponibleService.addDisponible(p);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	

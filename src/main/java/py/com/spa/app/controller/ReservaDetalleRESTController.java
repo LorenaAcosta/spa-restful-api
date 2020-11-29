@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,7 +53,14 @@ public class ReservaDetalleRESTController {
 		return (List<ReservaDetalle>) reservaDetalleService.findByEmpleado(id);
 	}
 	
-
+	@GetMapping("/get-turnos/{id}/{date}")
+	public List<ReservaDetalle> findAllByEmpleadoAndFechaReserva(@PathVariable(value="id") Integer empleado, @PathVariable(value="date")    String date) throws ParseException {
+		// @DateTimeFormat(pattern="yyyy-MM-DD")
+		//String sDate1 = "31/12/1998";
+		Date date1 = new SimpleDateFormat ("yyyy-MM-DD").parse(date);
+		System.out.println(date  + " " + date1);
+		return (List<ReservaDetalle>) reservaDetalleService.findAllByEmpleadoAndFechaReserva(empleado, date1);
+	}
 	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarReservaDetalle(@PathVariable(value="id") Integer id, @RequestBody ReservaDetalle reservadetalle) {

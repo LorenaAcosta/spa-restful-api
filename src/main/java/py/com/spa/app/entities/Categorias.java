@@ -37,7 +37,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @NamedQueries({
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
-    @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
     @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType")})
 public class Categorias implements Serializable {
@@ -47,11 +46,7 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
-    private String codigo;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -63,7 +58,6 @@ public class Categorias implements Serializable {
     @Column(name = "data_type")
     private String dataType;
 
-    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
@@ -78,14 +72,11 @@ public class Categorias implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType) {
+    public Categorias(Integer categoriaId, String descripcion, String dataType,  @NotNull @Size(min = 1, max = 2147483647) String imageName) {
         this.categoriaId = categoriaId;
-        this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
-    
-
 
     public Integer getCategoriaId() {
         return categoriaId;
@@ -93,14 +84,6 @@ public class Categorias implements Serializable {
 
     public void setCategoriaId(Integer categoriaId) {
         this.categoriaId = categoriaId;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -118,7 +101,8 @@ public class Categorias implements Serializable {
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
-
+    
+    
 
 @JsonBackReference
     @XmlTransient

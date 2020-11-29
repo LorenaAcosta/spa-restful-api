@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import py.com.spa.app.dao.ImageRepository;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.ImageModel;
 import py.com.spa.app.services.CategoriaService;
+import py.com.spa.app.util.Utileria;
 
 @RestController
 @RequestMapping("/categoria")
@@ -58,7 +60,6 @@ public class CategoriaRESTController  {
 		Categorias c = categoriaService.findByCategoriaId(id);
 		if(c!=null) {
 			c.setDescripcion(categoria.getDescripcion());
-			c.setCodigo(categoria.getCodigo());
 			c.setDataType(categoria.getDataType());
 			categoriaService.updateCategoria(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);

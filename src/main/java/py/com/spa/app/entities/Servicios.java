@@ -50,7 +50,6 @@ import py.com.spa.result.SqlTimeDeserializer;
     @NamedQuery(name = "Servicios.findByEstado", query = "SELECT s FROM Servicios s WHERE s.estado = :estado"),
     @NamedQuery(name = "Servicios.findByDescripcion", query = "SELECT s FROM Servicios s WHERE s.descripcion = :descripcion"),
     @NamedQuery(name = "Servicios.findByCosto", query = "SELECT s FROM Servicios s WHERE s.costo = :costo"),
-    @NamedQuery(name = "Servicios.findByImageName", query = "SELECT s FROM Servicios s WHERE s.imageName = :imageName"),
     @NamedQuery(name = "Servicios.findByDuracion", query = "SELECT s FROM Servicios s WHERE s.duracion = :duracion")})
 public class Servicios implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -78,9 +77,6 @@ public class Servicios implements Serializable {
     @NotNull
     @Column(name = "costo")
     private int costo;
-    @Size(max = 2147483647)
-    @Column(name = "image_name")
-    private String imageName;
     @Basic(optional = false)
     @NotNull
     @JsonFormat(pattern="HH:mm")
@@ -148,14 +144,6 @@ public class Servicios implements Serializable {
 
     public void setCosto(int costo) {
         this.costo = costo;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
     }
 
     public Time getDuracion() {

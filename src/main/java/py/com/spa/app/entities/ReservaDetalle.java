@@ -62,6 +62,7 @@ public class ReservaDetalle implements Serializable {
     @NotNull
     @JsonFormat(pattern="yyyy-MM-DD")
     @Column(name = "fecha_reserva")
+    @Temporal(TemporalType.TIME)
     private Date fechaReserva;
     
     @Basic(optional = false)

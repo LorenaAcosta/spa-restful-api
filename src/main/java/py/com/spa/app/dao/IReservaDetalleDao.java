@@ -12,8 +12,8 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	
 	List<ReservaDetalle> findByEmpleado(Integer empleado);
 	
+	List<ReservaDetalle> findAllByEmpleadoAndFechaReserva(Integer empleado, Date date);
 	
-	
-	
+
 	
 }
