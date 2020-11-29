@@ -33,9 +33,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @NamedQuery(name = "VentasDetalle.findAll", query = "SELECT v FROM VentasDetalle v"),
     @NamedQuery(name = "VentasDetalle.findByVentasId", query = "SELECT v FROM VentasDetalle v WHERE v.ventasId = :ventasId"),
     @NamedQuery(name = "VentasDetalle.findByMonto", query = "SELECT v FROM VentasDetalle v WHERE v.monto = :monto"),
-    @NamedQuery(name = "VentasDetalle.findByCantidad", query = "SELECT v FROM VentasDetalle v WHERE v.cantidad = :cantidad"),
-    @NamedQuery(name = "VentasDetalle.findBySubtotal", query = "SELECT v FROM VentasDetalle v WHERE v.subtotal = :subtotal"),
-    @NamedQuery(name = "VentasDetalle.findByDescuento", query = "SELECT v FROM VentasDetalle v WHERE v.descuento = :descuento")})
+    @NamedQuery(name = "VentasDetalle.findByPrecio", query = "SELECT v FROM VentasDetalle v WHERE v.precio = :precio"),
+    @NamedQuery(name = "VentasDetalle.findByCantidad", query = "SELECT v FROM VentasDetalle v WHERE v.cantidad = :cantidad")})
 public class VentasDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,25 +54,30 @@ public class VentasDetalle implements Serializable {
     /**/
     @Basic(optional = false)
     @NotNull
-    @Column(name = "monto")
-    private int monto;
+    @Column(name = "precio")
+    private int precio;
     /**/
     @Basic(optional = false)
     @NotNull
+    @Column(name = "monto")
+    private int monto;
+    /**/
+    /**@Basic(optional = false)
+    @NotNull
     @Column(name = "subtotal")
     private int subtotal;
-    /**/
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "descuento")
     private int descuento;
-    /**/
+     **/
     @JoinColumn(name = "producto_id", referencedColumnName = "producto_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Productos productoId;
     /**/
     @JoinColumn(name = "servicio_id", referencedColumnName = "servicio_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Servicios servicioId;
     /**/
     @JsonBackReference(value="detalle-ventas")
@@ -93,17 +97,24 @@ public class VentasDetalle implements Serializable {
     }
 
 
-    public VentasDetalle(Integer detalleId, @NotNull int ventasId, @NotNull int cantidad, @NotNull int monto,
-			@NotNull int subtotal, @NotNull int descuento, Productos productoId, Servicios servicioId) {
+    public VentasDetalle(Integer detalleId, @NotNull int ventasId, @NotNull int cantidad, @NotNull int precio, @NotNull int monto,
+			 Productos productoId, Servicios servicioId) {
 		super();
 		this.detalleId = detalleId;
 		this.ventasId = ventasId;
 		this.cantidad = cantidad;
+		this.monto = precio;
 		this.monto = monto;
-		this.subtotal = subtotal;
-		this.descuento = descuento;
 		this.productoId = productoId;
 		this.servicioId = servicioId;
+	}
+
+	public int getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(int precio) {
+		this.precio = precio;
 	}
 
 	public Integer getDetalleId() {
@@ -139,7 +150,7 @@ public class VentasDetalle implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public int getSubtotal() {
+    /*public int getSubtotal() {
         return subtotal;
     }
 
@@ -153,7 +164,7 @@ public class VentasDetalle implements Serializable {
 
     public void setDescuento(int descuento) {
         this.descuento = descuento;
-    }
+    }*/
 
     public Productos getProductoId() {
         return productoId;
@@ -180,9 +191,29 @@ public class VentasDetalle implements Serializable {
 		this.ventas = ventas;
 	}
 
-	@Override
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (detalleId != null ? detalleId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof VentasDetalle)) {
+            return false;
+        }
+        VentasDetalle other = (VentasDetalle) object;
+        if ((this.detalleId == null && other.detalleId != null) || (this.detalleId != null && !this.detalleId.equals(other.detalleId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
-        return "com.spa.VentasDetalle[ ventasId=" + ventasId + " ]";
+        return "com.spa.VentasDetalle[ comprasId=" + detalleId + " ]";
     }
     
 }

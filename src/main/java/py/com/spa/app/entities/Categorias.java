@@ -67,6 +67,11 @@ public class Categorias implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
+    
+    /**/
+     private String imagen;
+     /**/
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
@@ -126,7 +131,15 @@ public class Categorias implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference(value="servicios")
+    public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+	@JsonBackReference(value="servicios")
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;

@@ -33,9 +33,11 @@ public class VentaDetalleService {
 		Productos p;
 		detallesDao.save(detalle);
 		/* actualizar stock de productos */
+		if (detalle.getProductoId() != null) {
 		p = productoService.findProductoById(detalle.getProductoId().getProductoId());
 		p.setStockActual(p.getStockActual() + detalle.getCantidad());
 		productoService.updateProducto(p);
+		}
 		/* actualizar stock de productos */
 	}
 	
@@ -70,10 +72,12 @@ public class VentaDetalleService {
 		VentasDetalle detalle;
 		Productos p;
 		detalle = this.findByVentaDetalleId(id);
-		p = productoService.findProductoById(detalle.getProductoId().getProductoId());
-		p.setStockActual(p.getStockActual() - detalle.getCantidad());
-		productoService.updateProducto(p);
-		/* actualizar stock de productos */
+		if (detalle.getProductoId() != null) {
+			p = productoService.findProductoById(detalle.getProductoId().getProductoId());
+			p.setStockActual(p.getStockActual() - detalle.getCantidad());
+			productoService.updateProducto(p);
+			/* actualizar stock de productos */
+		}
 		detallesDao.deleteById(id);
 	}
 	

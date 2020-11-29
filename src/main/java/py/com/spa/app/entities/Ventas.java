@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ventas.findAll", query = "SELECT v FROM Ventas v"),
     @NamedQuery(name = "Ventas.findByVentasId", query = "SELECT v FROM Ventas v WHERE v.ventasId = :ventasId"),
-    @NamedQuery(name = "Ventas.findByNumeroFactura", query = "SELECT v FROM Ventas v WHERE v.numeroFactura = :numeroFactura"),
+    @NamedQuery(name = "Ventas.findByNumeroComprobante", query = "SELECT v FROM Ventas v WHERE v.numeroComprobante = :numeroComprobante"),
     @NamedQuery(name = "Ventas.findByFecha", query = "SELECT v FROM Ventas v WHERE v.fecha = :fecha"),
     @NamedQuery(name = "Ventas.findByMontoTotal", query = "SELECT v FROM Ventas v WHERE v.montoTotal = :montoTotal"),
     @NamedQuery(name = "Ventas.findByEstado", query = "SELECT v FROM Ventas v WHERE v.estado = :estado")})
@@ -52,8 +53,9 @@ public class Ventas implements Serializable {
     private Integer ventasId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "numero_factura")
-    private int numeroFactura;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name = "numero_comprobante")
+    private long numeroComprobante;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
@@ -93,12 +95,12 @@ public class Ventas implements Serializable {
     }
 
 
-    public Ventas(Integer ventasId, @NotNull int numeroFactura, @NotNull Date fecha, @NotNull int montoTotal,
+    public Ventas(Integer ventasId, @NotNull int numerocomprobante, @NotNull Date fecha, @NotNull int montoTotal,
 			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId,
 			Collection<VentasDetalle> ventasDetalleCollection, Collection<PlanPago> planPagoCollection) {
 		super();
 		this.ventasId = ventasId;
-		this.numeroFactura = numeroFactura;
+		this.numeroComprobante = numerocomprobante;
 		this.fecha = fecha;
 		this.montoTotal = montoTotal;
 		this.estado = estado;
@@ -126,12 +128,12 @@ public class Ventas implements Serializable {
         this.ventasId = ventasId;
     }
 
-    public int getNumeroFactura() {
-        return numeroFactura;
+    public long getNumeroComprobante() {
+        return numeroComprobante;
     }
 
-    public void setNumeroFactura(int numeroFactura) {
-        this.numeroFactura = numeroFactura;
+    public void setNumeroComprobante(int numeroComprobante) {
+        this.numeroComprobante = numeroComprobante;
     }
 
     public Date getFecha() {

@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -91,7 +93,8 @@ public class MediosPago implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+    
+    @JsonBackReference(value="ventas-mediopago")
     @XmlTransient
     public Collection<Ventas> getVentasCollection() {
         return ventasCollection;

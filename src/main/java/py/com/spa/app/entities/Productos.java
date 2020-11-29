@@ -170,7 +170,7 @@ public class Productos implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
+    @JsonBackReference(value="ventasdetalle-productos")
     @XmlTransient
     public Collection<VentasDetalle> getVentasDetalleCollection() {
         return ventasDetalleCollection;

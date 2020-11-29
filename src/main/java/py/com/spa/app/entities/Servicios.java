@@ -163,7 +163,7 @@ public class Servicios implements Serializable {
         this.duracion = duracion;
     }
 
-    @JsonBackReference(value="ventas")
+    @JsonBackReference(value="ventas-detalle")
     @XmlTransient
     public Collection<VentasDetalle> getVentasDetalleCollection() {
         return ventasDetalleCollection;

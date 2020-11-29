@@ -31,6 +31,11 @@ public class VentaService {
 	public Ventas findByVentasId(Integer id) {
 		return (Ventas) ventasDao.findById(id).orElse(null);
 	}
+	
+	@Transactional(readOnly=true)
+	public Integer getNextId() {
+		return (Integer) ventasDao.getNextIdVal();
+	}
 
 	@Transactional
 	public void updateVentas(Ventas venta) {
