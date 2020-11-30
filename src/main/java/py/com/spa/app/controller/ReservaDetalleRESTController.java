@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,11 +36,13 @@ public class ReservaDetalleRESTController {
 	
 	@GetMapping("/listar")
 	public List<ReservaDetalle> listarReservaDetalle(){
+		System.out.println(TimeZone.getDefault());
 		return reservaDetalleService.findAll();
 	}
 	
 	@PostMapping("/agregar")
 	public void agregarReservaDetalle(@RequestBody ReservaDetalle reservadetalle) {
+		System.out.println(reservadetalle.getFechaReserva().toString());
 		reservaDetalleService.addReservaDetalle(reservadetalle);
 	}
 	
@@ -53,13 +56,16 @@ public class ReservaDetalleRESTController {
 		return (List<ReservaDetalle>) reservaDetalleService.findByEmpleado(id);
 	}
 	
+	@GetMapping("/listarporfecha/{fechaReserva}")
+	public List<ReservaDetalle> findByFechaReserva(@PathVariable(value="fechaReserva") String fechaReserva) throws ParseException {
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(fechaReserva);
+		return (List<ReservaDetalle>) reservaDetalleService.findByFechaReserva(date1);
+	}
+	
 	@GetMapping("/get-turnos/{id}/{date}")
-	public List<ReservaDetalle> findAllByEmpleadoAndFechaReserva(@PathVariable(value="id") Integer empleado, @PathVariable(value="date")    String date) throws ParseException {
-		// @DateTimeFormat(pattern="yyyy-MM-DD")
-		//String sDate1 = "31/12/1998";
-		Date date1 = new SimpleDateFormat ("yyyy-MM-DD").parse(date);
-		System.out.println(date  + " " + date1);
-		return (List<ReservaDetalle>) reservaDetalleService.findAllByEmpleadoAndFechaReserva(empleado, date1);
+	public List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(@PathVariable(value="id") Integer empleado, @PathVariable(value="date")  String date) throws ParseException {
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		return (List<ReservaDetalle>) reservaDetalleService.findAllByEmpleadoAndFechaReservaOrderByHoraAsc(empleado, date1);
 	}
 	
 	@PutMapping("/modificar/{id}")

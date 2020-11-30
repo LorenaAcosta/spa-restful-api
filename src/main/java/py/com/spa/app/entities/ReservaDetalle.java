@@ -7,7 +7,7 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,9 +60,9 @@ public class ReservaDetalle implements Serializable {
     
     @Basic(optional = false)
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-DD")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="America/Asuncion")
     @Column(name = "fecha_reserva")
-    @Temporal(TemporalType.TIME)
+   // @Temporal(TemporalType.DATE)
     private Date fechaReserva;
     
     @Basic(optional = false)

@@ -27,13 +27,10 @@ public class ReservaDetalleService {
 	
 	@Transactional
 	public void addReservaDetalle(ReservaDetalle reserva) {
+		System.out.println(reserva.getFechaReserva());
 		reservaDao.save(reserva);
 	}
-	
-	@Transactional(readOnly=true)
-	public ReservaDetalle findByReservaDetalleId(Integer id) {
-		return (ReservaDetalle) reservaDao.findById(id).orElse(null);
-	}
+
 
 	@Transactional
 	public void updateReserva(ReservaDetalle reserva) {
@@ -52,8 +49,18 @@ public class ReservaDetalleService {
 	
 
 	@Transactional
-	public List<ReservaDetalle> findAllByEmpleadoAndFechaReserva(Integer empleado, Date date){
-		return (List<ReservaDetalle>) reservaDao.findAllByEmpleadoAndFechaReserva(empleado, date);
+	public List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(Integer empleado, Date date){
+		return (List<ReservaDetalle>) reservaDao.findAllByEmpleadoAndFechaReservaOrderByHoraAsc(empleado, date);
+	}
+	
+	@Transactional(readOnly=true)
+	public ReservaDetalle findByReservaDetalleId(Integer id) {
+		return (ReservaDetalle) reservaDao.findById(id).orElse(null);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<ReservaDetalle> findByFechaReserva(Date fechaReserva) {
+		return (List<ReservaDetalle>) reservaDao.findByFechaReserva(fechaReserva);
 	}
 
 	
