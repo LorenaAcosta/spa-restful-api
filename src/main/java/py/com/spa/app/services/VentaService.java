@@ -21,7 +21,7 @@ public class VentaService {
 	@Transactional(readOnly=true)
 	public List<Ventas> findAll(){
 		//return (List<Ventas>) ventasDao.findAll();
-		return (List<Ventas>) ventasDao.findAllByOrderByNumeroComprobanteDesc();
+		return (List<Ventas>) ventasDao.ventasActivas();
 		
 	}
 	
