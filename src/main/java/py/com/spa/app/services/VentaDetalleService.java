@@ -12,6 +12,7 @@ import py.com.spa.app.dao.IVentasDetalleDao;
 import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.ComprasDetalle;
 import py.com.spa.app.entities.Productos;
+import py.com.spa.app.entities.RankingP;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.entities.VentasDetalle;
 
@@ -19,6 +20,7 @@ import py.com.spa.app.entities.VentasDetalle;
 public class VentaDetalleService {
 	@Autowired
 	private IVentasDetalleDao detallesDao;
+	
 	
 	@Autowired
 	public ProductoService productoService;
@@ -35,7 +37,7 @@ public class VentaDetalleService {
 		/* actualizar stock de productos */
 		if (detalle.getProductoId() != null) {
 		p = productoService.findProductoById(detalle.getProductoId().getProductoId());
-		p.setStockActual(p.getStockActual() + detalle.getCantidad());
+		p.setStockActual(p.getStockActual() - detalle.getCantidad());
 		productoService.updateProducto(p);
 		}
 		/* actualizar stock de productos */
@@ -60,7 +62,7 @@ public class VentaDetalleService {
 		/* actualizar stock de productos */
 		Productos p;
 		p = productoService.findProductoById(detalle.getProductoId().getProductoId());
-		p.setStockActual((p.getStockActual() + detalle.getCantidad()) - detalleOld.getCantidad());
+		p.setStockActual((p.getStockActual() - detalle.getCantidad()) + detalleOld.getCantidad());
 		productoService.updateProducto(p);
 		/* actualizar stock de productos */
 		
@@ -74,12 +76,18 @@ public class VentaDetalleService {
 		detalle = this.findByVentaDetalleId(id);
 		if (detalle.getProductoId() != null) {
 			p = productoService.findProductoById(detalle.getProductoId().getProductoId());
-			p.setStockActual(p.getStockActual() - detalle.getCantidad());
+			p.setStockActual(p.getStockActual() + detalle.getCantidad());
 			productoService.updateProducto(p);
 			/* actualizar stock de productos */
 		}
 		detallesDao.deleteById(id);
 	}
+	
+	@Transactional
+	public List<RankingP> rankingProductos() {
+		return (List<RankingP>) detallesDao.rankingProductos();
+	}
+	
 	
 
 	

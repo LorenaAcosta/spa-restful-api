@@ -2,6 +2,7 @@ package py.com.spa.app.services;
 
 import java.util.List;
 
+import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,9 @@ public class VentaService {
 	
 	@Transactional(readOnly=true)
 	public List<Ventas> findAll(){
-		return (List<Ventas>) ventasDao.findAll();
+		//return (List<Ventas>) ventasDao.findAll();
+		return (List<Ventas>) ventasDao.findAllByOrderByNumeroComprobanteDesc();
+		
 	}
 	
 	@Transactional

@@ -55,7 +55,7 @@ public class Ventas implements Serializable {
     @NotNull
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "numero_comprobante")
-    private long numeroComprobante;
+    private int numeroComprobante;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")

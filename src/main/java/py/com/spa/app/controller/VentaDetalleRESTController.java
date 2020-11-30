@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.ComprasDetalle;
+import py.com.spa.app.entities.RankingP;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.entities.VentasDetalle;
 import py.com.spa.app.services.CategoriaService;
@@ -42,6 +43,11 @@ public class VentaDetalleRESTController {
 	@GetMapping("/listar")
 	public List<VentasDetalle> listarDetalles(){
 		return ventaDetalleService.findAll();
+	}
+	
+	@GetMapping("/ranking")
+	public List<RankingP> listarRanking(){
+		return  (List<RankingP> ) ventaDetalleService.rankingProductos();
 	}
 	
 	
@@ -71,6 +77,7 @@ public class VentaDetalleRESTController {
 			vd.setCantidad(detalle.getCantidad());
 			vd.setMonto(detalle.getMonto());
 			vd.setVentas(detalle.getVentas());
+			vd.setPrecio(detalle.getPrecio());
 			//-c.setEstado(compra.getEstado());
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
