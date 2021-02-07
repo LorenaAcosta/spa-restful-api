@@ -24,6 +24,7 @@ import py.com.spa.app.services.UsuarioService;
 //@CrossOrigin
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin(origins = "*")
 public class UsuarioRESTController {
 
 	@Autowired
