@@ -26,7 +26,7 @@ import py.com.spa.result.PaginadoResult;
 
 @RestController
 @RequestMapping("/producto")
-@CrossOrigin(origins = "https://spa-2021-angular.herokuapp.com/")
+@CrossOrigin(origins = "*")
 public class ProductoRESTController {
 	
 
