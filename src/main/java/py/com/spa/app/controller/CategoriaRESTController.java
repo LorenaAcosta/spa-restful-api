@@ -63,7 +63,7 @@ public class CategoriaRESTController  {
 				Path rutaCompleta = Paths.get(rutaAbsoluta + "//"+ imagen.getOriginalFilename());
 				Files.write(rutaCompleta, bytesImg);
 				
-				categoria.setImagen(imagen.getOriginalFilename());
+				//categoria.setImagen(imagen.getOriginalFilename());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
