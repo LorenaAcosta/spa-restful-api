@@ -40,8 +40,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
     @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
-    @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType")})
+    //@NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
