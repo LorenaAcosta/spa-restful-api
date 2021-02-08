@@ -64,9 +64,9 @@ public class Categorias implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "data_type")
     private String dataType;
-    @Size(max = 2147483647)
+    /*@Size(max = 2147483647)
     @Column(name = "image_name")
-    private String imageName;
+    private String imageName;*/
     
     /**/
      //private String imagen;
@@ -123,13 +123,13 @@ public class Categorias implements Serializable {
         this.dataType = dataType;
     }
 
-    public String getImageName() {
+    /*public String getImageName() {
         return imageName;
     }
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
-    }
+    }*/
 
     /*public String getImagen() {
 		return imagen;

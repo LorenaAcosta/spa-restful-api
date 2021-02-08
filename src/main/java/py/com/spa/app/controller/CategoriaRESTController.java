@@ -51,7 +51,7 @@ public class CategoriaRESTController  {
 		return categoriaService.findAll();
 	}
 	
-	//@RequestMapping(value="categoria", produces = "application/json", consumes = "multipart/form-data")
+	/*//@RequestMapping(value="categoria", produces = "application/json", consumes = "multipart/form-data")
 	@PutMapping("/upload")
 	public void cargarImagen( @RequestParam("file") MultipartFile imagen ) {
 		Categorias categoria = categoriaService.findByCategoriaId(1);
@@ -72,7 +72,7 @@ public class CategoriaRESTController  {
 		}
 		
 		categoriaService.addCategoria(categoria);
-	}
+	}*/
 	
 	//@RequestMapping(value="categoria", produces = "application/json", consumes = "multipart/form-data")
 	@PostMapping(value="/agregar" )
@@ -93,7 +93,7 @@ public class CategoriaRESTController  {
 		if(c!=null) {
 			c.setDescripcion(categoria.getDescripcion());
 			c.setCodigo(categoria.getCodigo());
-			c.setImageName(categoria.getImageName());
+			//c.setImageName(categoria.getImageName());
 			c.setDataType(categoria.getDataType());
 			categoriaService.updateCategoria(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
