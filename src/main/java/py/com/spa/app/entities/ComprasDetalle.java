@@ -4,22 +4,30 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
-
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  *
@@ -30,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ComprasDetalle.findAll", query = "SELECT c FROM ComprasDetalle c"),
-    @NamedQuery(name = "ComprasDetalle.findByComprasId", query = "SELECT c FROM ComprasDetalle c WHERE c.comprasId = :comprasId"),
+    @NamedQuery(name = "ComprasDetalle.findByDetalleId", query = "SELECT c FROM ComprasDetalle c WHERE c.detalleId = :detalleId"),
     @NamedQuery(name = "ComprasDetalle.findByCantidad", query = "SELECT c FROM ComprasDetalle c WHERE c.cantidad = :cantidad"),
     @NamedQuery(name = "ComprasDetalle.findByPrecioCompra", query = "SELECT c FROM ComprasDetalle c WHERE c.precioCompra = :precioCompra")})
 public class ComprasDetalle implements Serializable {
@@ -38,45 +46,67 @@ public class ComprasDetalle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "compras_id")
-    private Integer comprasId;
+    @Column(name = "detalle_id")
+    private Integer detalleId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cantidad")
     private int cantidad;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "compras_id")
+    private int comprasId;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "precio_compra")
     private int precioCompra;
+    @JsonBackReference(value="detalle-compras")
     @JoinColumn(name = "compras_id", referencedColumnName = "compras_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Compras compras;
     @JoinColumn(name = "producto_id", referencedColumnName = "producto_id")
     @ManyToOne(optional = false)
     private Productos productoId;
+    
+    /*
+     * 	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="usuarios_roles", joinColumns = @JoinColumn(name="usuario_id"),
+	inverseJoinColumns = @JoinColumn(name="rol_id"),
+	uniqueConstraints = { @UniqueConstraint (columnNames = {"detalle_id", "compra_id"})})
+	private List <Rol> roles;
+     * */
 
     public ComprasDetalle() {
     }
 
     public ComprasDetalle(Integer comprasId) {
-        this.comprasId = comprasId;
+        this.detalleId = comprasId;
     }
 
-    public ComprasDetalle(Integer comprasId, int cantidad, int precioCompra) {
-        this.comprasId = comprasId;
+	public ComprasDetalle(Integer detalleId, int cantidad, int comprasId,  int precioCompra) {
+		this.detalleId = detalleId;
         this.cantidad = cantidad;
+        this.comprasId = comprasId;
         this.precioCompra = precioCompra;
     }
 
-    public Integer getComprasId() {
-        return comprasId;
-    }
+    public Integer getDetalleId() {
+		return detalleId;
+	}
 
-    public void setComprasId(Integer comprasId) {
-        this.comprasId = comprasId;
-    }
+	public void setDetalleId(Integer detalleId) {
+		this.detalleId = detalleId;
+	}
 
-    public int getCantidad() {
+    public int getComprasId() {
+		return comprasId;
+	}
+
+	public void setComprasId(int comprasId) {
+		this.comprasId = comprasId;
+	}
+
+	public int getCantidad() {
         return cantidad;
     }
 
@@ -111,7 +141,7 @@ public class ComprasDetalle implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (comprasId != null ? comprasId.hashCode() : 0);
+        hash += (detalleId != null ? detalleId.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +152,7 @@ public class ComprasDetalle implements Serializable {
             return false;
         }
         ComprasDetalle other = (ComprasDetalle) object;
-        if ((this.comprasId == null && other.comprasId != null) || (this.comprasId != null && !this.comprasId.equals(other.comprasId))) {
+        if ((this.detalleId == null && other.detalleId != null) || (this.detalleId != null && !this.detalleId.equals(other.detalleId))) {
             return false;
         }
         return true;
@@ -130,7 +160,7 @@ public class ComprasDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.ComprasDetalle[ comprasId=" + comprasId + " ]";
+        return "com.spa.ComprasDetalle[ comprasId=" + detalleId + " ]";
     }
     
 }

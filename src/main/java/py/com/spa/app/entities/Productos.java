@@ -38,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @NamedQueries({
     @NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p"),
     @NamedQuery(name = "Productos.findByProductoId", query = "SELECT p FROM Productos p WHERE p.productoId = :productoId"),
+    @NamedQuery(name = "Productos.findByCodigo", query = "SELECT p FROM Productos p WHERE p.codigo = :codigo"),
     @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Productos.findByCosto", query = "SELECT p FROM Productos p WHERE p.costo = :costo"),
     @NamedQuery(name = "Productos.findByPrecioVenta", query = "SELECT p FROM Productos p WHERE p.precioVenta = :precioVenta"),
@@ -51,6 +52,11 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @Column(name = "producto_id")
     private Integer productoId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "codigo")
+    private String codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -76,7 +82,7 @@ public class Productos implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
@@ -91,8 +97,9 @@ public class Productos implements Serializable {
         this.productoId = productoId;
     }
 
-    public Productos(Integer productoId, String descripcion, int costo, int precioVenta, int stockActual, String estado) {
+    public Productos(Integer productoId, String codigo, String descripcion, int costo, int precioVenta, int stockActual, String estado) {
         this.productoId = productoId;
+        this.codigo = codigo;
         this.descripcion = descripcion;
         this.costo = costo;
         this.precioVenta = precioVenta;
@@ -106,6 +113,14 @@ public class Productos implements Serializable {
 
     public void setProductoId(Integer productoId) {
         this.productoId = productoId;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -155,7 +170,7 @@ public class Productos implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
+    @JsonBackReference(value="ventasdetalle-productos")
     @XmlTransient
     public Collection<VentasDetalle> getVentasDetalleCollection() {
         return ventasDetalleCollection;
@@ -164,7 +179,7 @@ public class Productos implements Serializable {
     public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
         this.ventasDetalleCollection = ventasDetalleCollection;
     }
-
+    @JsonBackReference(value="getComprasDetalleCollection")
     @XmlTransient
     public Collection<ComprasDetalle> getComprasDetalleCollection() {
         return comprasDetalleCollection;
@@ -174,7 +189,7 @@ public class Productos implements Serializable {
         this.comprasDetalleCollection = comprasDetalleCollection;
     }
 
-    @JsonBackReference(value="productos")
+ 
     public Categorias getCategoriaId() {
         return categoriaId;
     }
@@ -205,7 +220,7 @@ public class Productos implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Productos[ productoId=" + productoId + " ]";
+        return "com.spa.Productos[ productoId=" + productoId + " ]";
     }
     
 }

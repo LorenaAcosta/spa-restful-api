@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.VentaService;
@@ -32,10 +33,16 @@ public class VentaRESTController {
 		return ventaService.findAll();
 	}
 	
+	@GetMapping("/next-id")
+	public Integer getNextId() {
+		return (Integer) ventaService.getNextId();
+	}
 	
 	@PostMapping("/agregar")
-	public void agregarVenta(@RequestBody Ventas venta) {
+	public ResponseEntity<?> agregarVenta(@RequestBody Ventas venta) {
+		venta.setNumeroComprobante(ventaService.getNextId()+1);
 		ventaService.addVentas(venta);
+		return new ResponseEntity<Ventas>(venta, HttpStatus.OK);
 	}
 	
 	@GetMapping("/encontrar/{id}")
@@ -56,12 +63,13 @@ public class VentaRESTController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+	// en realidad cambia estado a anulado
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarVenta(@PathVariable(value="id") Integer id) {
-		Ventas c = ventaService.findByVentasId(id);
-		if (c!=null) {
-			ventaService.deleteVentas(id);
+		Ventas v = ventaService.findByVentasId(id);
+		if (v!=null) {
+			v.setEstado("anulado");
+			ventaService.updateVentas(v);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

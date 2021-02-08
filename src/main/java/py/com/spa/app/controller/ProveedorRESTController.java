@@ -48,6 +48,9 @@ public class ProveedorRESTController {
 			c.setNombreProveedor(proveedor.getNombreProveedor());
 			c.setTelefono(proveedor.getTelefono());
 			c.setEmpresa(proveedor.getEmpresa());
+			c.setDireccion(proveedor.getDireccion());
+			c.setRuc(proveedor.getRuc());
+			c.setCorreo(proveedor.getCorreo());
 			proveedorService.update(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {

@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -86,8 +85,8 @@ public class Empleados implements Serializable {
     private Collection<Horario> horarioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
-    private Collection<Disponible> disponibleCollection;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;*/
 
     public Empleados() {
     }
@@ -170,7 +169,7 @@ public class Empleados implements Serializable {
         this.imageName = imageName;
     }
 
-    @JsonBackReference(value="horario-empleado")
+    @JsonBackReference(value="horario")
     @XmlTransient
     public Collection<Horario> getHorarioCollection() {
         return horarioCollection;
@@ -180,7 +179,6 @@ public class Empleados implements Serializable {
         this.horarioCollection = horarioCollection;
     }
 
-    @JsonBackReference(value="planilla-empleado")
     @XmlTransient
     public Collection<Planilla> getPlanillaCollection() {
         return planillaCollection;
@@ -190,15 +188,15 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    @JsonBackReference(value="disponible-empleado")
+    /*@JsonBackReference(value="empleado-disponible")
     @XmlTransient
-    public Collection<Disponible> getDisponibleCollection() {
-        return disponibleCollection;
+    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
+        return empleadoDisponibleCollection;
     }
 
-    public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
-        this.disponibleCollection = disponibleCollection;
-    }
+    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
+        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
+    }*/
 
     @Override
     public int hashCode() {
@@ -222,7 +220,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.Empleados[ empleadoId=" + empleadoId + " ]";
+        return "com.spa.Empleados[ empleadoId=" + empleadoId + " ]";
     }
     
 }

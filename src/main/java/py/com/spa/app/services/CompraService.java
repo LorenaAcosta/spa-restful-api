@@ -1,5 +1,6 @@
 package py.com.spa.app.services;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IComprasDao;
 import py.com.spa.app.entities.Compras;
+import py.com.spa.app.entities.ComprasDetalle;
 
 @Service
 public class CompraService {
 	@Autowired
 	private IComprasDao comprasDao;
+	
+	@Autowired
+	private CompraDetalleService detalleService;
 	
 	
 	@Transactional(readOnly=true)
@@ -37,6 +42,13 @@ public class CompraService {
 	
 	@Transactional
 	public void deleteCompras(Integer id) {
+		/*Se eliminan previamente todos los detalles*/
+		Compras c = this.findByComprasId(id);
+		Collection<ComprasDetalle> detallesDelete = c.getDetallesCollection();
+		for (ComprasDetalle d:detallesDelete) {
+			detalleService.deleteDetalles(d.getDetalleId());
+		}
+		/**/
 		comprasDao.deleteById(id);
 	}
 	

@@ -7,6 +7,8 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,7 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -36,9 +36,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
+    @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
+    @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType")})
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
+    @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,7 +49,11 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
-    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "codigo")
+    private String codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -57,23 +64,29 @@ public class Categorias implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "data_type")
     private String dataType;
-
-
+    @Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;
+    
+    /**/
+     private String imagen;
+     /**/
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Productos> productosCollection;
 
-
     public Categorias() {
-	}
+    }
 
-	public Categorias(Integer categoriaId) {
+    public Categorias(Integer categoriaId) {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String descripcion, String dataType,  @NotNull @Size(min = 1, max = 2147483647) String imageName) {
+    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType) {
         this.categoriaId = categoriaId;
+        this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
@@ -84,6 +97,14 @@ public class Categorias implements Serializable {
 
     public void setCategoriaId(Integer categoriaId) {
         this.categoriaId = categoriaId;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescripcion() {
@@ -101,10 +122,24 @@ public class Categorias implements Serializable {
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
-    
-    
 
-@JsonBackReference
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+	@JsonBackReference(value="servicios")
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;
@@ -146,7 +181,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "com.spa.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }

@@ -96,8 +96,8 @@ public class Usuario implements Serializable {
     private int estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private Collection<ReservaDetalle> reservaDetalleCollection;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private Collection<Reserva> reservaCollection;*/
 
     public Usuario() {
     }
@@ -198,8 +198,7 @@ public class Usuario implements Serializable {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-
-    @JsonBackReference(value="ventas")
+    @JsonBackReference(value="ventas-usuario")
     @XmlTransient
     public Collection<Ventas> getVentasCollection() {
         return ventasCollection;
@@ -208,15 +207,15 @@ public class Usuario implements Serializable {
     public void setVentasCollection(Collection<Ventas> ventasCollection) {
         this.ventasCollection = ventasCollection;
     }
-    @JsonBackReference(value="reservas")
-    @XmlTransient
-    public Collection<ReservaDetalle> getReservaCollection() {
-        return reservaDetalleCollection;
+
+    /*@XmlTransient
+    public Collection<Reserva> getReservaCollection() {
+        return reservaCollection;
     }
 
-    public void setReservaCollection(Collection<ReservaDetalle> reservaCollection) {
-        this.reservaDetalleCollection = reservaCollection;
-    }
+    public void setReservaCollection(Collection<Reserva> reservaCollection) {
+        this.reservaCollection = reservaCollection;
+    }*/
 
     @Override
     public int hashCode() {
@@ -240,7 +239,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Usuario[ usuarioId=" + usuarioId + " ]";
+        return "com.spa.Usuario[ usuarioId=" + usuarioId + " ]";
     }
     
 }

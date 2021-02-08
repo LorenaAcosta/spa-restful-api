@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,9 +29,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  *
@@ -42,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @NamedQueries({
     @NamedQuery(name = "Ventas.findAll", query = "SELECT v FROM Ventas v"),
     @NamedQuery(name = "Ventas.findByVentasId", query = "SELECT v FROM Ventas v WHERE v.ventasId = :ventasId"),
-    @NamedQuery(name = "Ventas.findByNumeroFactura", query = "SELECT v FROM Ventas v WHERE v.numeroFactura = :numeroFactura"),
+    @NamedQuery(name = "Ventas.findByNumeroComprobante", query = "SELECT v FROM Ventas v WHERE v.numeroComprobante = :numeroComprobante"),
     @NamedQuery(name = "Ventas.findByFecha", query = "SELECT v FROM Ventas v WHERE v.fecha = :fecha"),
     @NamedQuery(name = "Ventas.findByMontoTotal", query = "SELECT v FROM Ventas v WHERE v.montoTotal = :montoTotal"),
     @NamedQuery(name = "Ventas.findByEstado", query = "SELECT v FROM Ventas v WHERE v.estado = :estado")})
@@ -55,8 +53,9 @@ public class Ventas implements Serializable {
     private Integer ventasId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "numero_factura")
-    private int numeroFactura;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name = "numero_comprobante")
+    private int numeroComprobante;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
@@ -71,14 +70,20 @@ public class Ventas implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "ventas")
-    private VentasDetalle ventasDetalle;
-    @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
-    @ManyToOne(optional = false)
-    private MediosPago medioPagoId;
+    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "ventas")
+    private VentasDetalle ventasDetalle;*/
+    /**/
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
+    /**/
+    @JoinColumn(name = "medio_pago_id", referencedColumnName = "medio_pago_id")
+    @ManyToOne(optional = false)
+    private MediosPago medioPagoId;
+    /**/
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")  
+    private Collection<VentasDetalle> ventasDetalleCollection;
+    /**/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")
     private Collection<PlanPago> planPagoCollection;
 
@@ -89,15 +94,33 @@ public class Ventas implements Serializable {
         this.ventasId = ventasId;
     }
 
-    public Ventas(Integer ventasId, int numeroFactura, Date fecha, int montoTotal, String estado) {
-        this.ventasId = ventasId;
-        this.numeroFactura = numeroFactura;
-        this.fecha = fecha;
-        this.montoTotal = montoTotal;
-        this.estado = estado;
-    }
 
-    public Integer getVentasId() {
+    public Ventas(Integer ventasId, @NotNull int numerocomprobante, @NotNull Date fecha, @NotNull int montoTotal,
+			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId,
+			Collection<VentasDetalle> ventasDetalleCollection, Collection<PlanPago> planPagoCollection) {
+		super();
+		this.ventasId = ventasId;
+		this.numeroComprobante = numerocomprobante;
+		this.fecha = fecha;
+		this.montoTotal = montoTotal;
+		this.estado = estado;
+		this.usuarioId = usuarioId;
+		this.medioPagoId = medioPagoId;
+		this.ventasDetalleCollection = ventasDetalleCollection;
+		this.planPagoCollection = planPagoCollection;
+	}
+    
+    
+
+	public Collection<VentasDetalle> getVentasDetalleCollection() {
+		return ventasDetalleCollection;
+	}
+
+	public void setVentasDetalleCollection(Collection<VentasDetalle> ventasDetalleCollection) {
+		this.ventasDetalleCollection = ventasDetalleCollection;
+	}
+
+	public Integer getVentasId() {
         return ventasId;
     }
 
@@ -105,12 +128,12 @@ public class Ventas implements Serializable {
         this.ventasId = ventasId;
     }
 
-    public int getNumeroFactura() {
-        return numeroFactura;
+    public long getNumeroComprobante() {
+        return numeroComprobante;
     }
 
-    public void setNumeroFactura(int numeroFactura) {
-        this.numeroFactura = numeroFactura;
+    public void setNumeroComprobante(int numeroComprobante) {
+        this.numeroComprobante = numeroComprobante;
     }
 
     public Date getFecha() {
@@ -137,15 +160,6 @@ public class Ventas implements Serializable {
         this.estado = estado;
     }
 
-    @JsonBackReference(value="ventas")
-    public VentasDetalle getVentasDetalle() {
-        return ventasDetalle;
-    }
-
-    public void setVentasDetalle(VentasDetalle ventasDetalle) {
-        this.ventasDetalle = ventasDetalle;
-    }
-
     public MediosPago getMedioPagoId() {
         return medioPagoId;
     }
@@ -162,7 +176,6 @@ public class Ventas implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    @JsonManagedReference(value="planpago")
     @XmlTransient
     public Collection<PlanPago> getPlanPagoCollection() {
         return planPagoCollection;
@@ -194,7 +207,7 @@ public class Ventas implements Serializable {
 
     @Override
     public String toString() {
-        return "py.com.spa.app.entities.Ventas[ ventasId=" + ventasId + " ]";
+        return "com.spa.Ventas[ ventasId=" + ventasId + " ]";
     }
     
 }

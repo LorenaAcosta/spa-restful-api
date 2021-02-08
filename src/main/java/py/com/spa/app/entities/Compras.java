@@ -6,6 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +27,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  *
@@ -47,8 +52,8 @@ public class Compras implements Serializable {
     private Integer comprasId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha" )
+    @Temporal(TemporalType.DATE ) 
     private Date fecha;
     @Basic(optional = false)
     @NotNull
@@ -58,8 +63,9 @@ public class Compras implements Serializable {
     @JoinColumn(name = "proveedor_id", referencedColumnName = "proveedor_id")
     @ManyToOne(optional = false)
     private Proveedor proveedorId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "compras")
-    private ComprasDetalle comprasDetalle;
+    @Column(nullable = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compras")  
+    private Collection<ComprasDetalle> detallesCollection;
 
     public Compras() {
     }
@@ -97,7 +103,6 @@ public class Compras implements Serializable {
     public void setMontoTotal(String montoTotal) {
         this.montoTotal = montoTotal;
     }
-
     public Proveedor getProveedorId() {
         return proveedorId;
     }
@@ -105,15 +110,14 @@ public class Compras implements Serializable {
     public void setProveedorId(Proveedor proveedorId) {
         this.proveedorId = proveedorId;
     }
-
-    public ComprasDetalle getComprasDetalle() {
-        return comprasDetalle;
+    //@JsonBackReference(value="compras-detalle")
+    @XmlTransient
+    public Collection<ComprasDetalle> getDetallesCollection() {
+        return detallesCollection;
     }
-
-    public void setComprasDetalle(ComprasDetalle comprasDetalle) {
-        this.comprasDetalle = comprasDetalle;
+    public void setComprasCollection(Collection<ComprasDetalle> detallesCollection) {
+        this.detallesCollection = detallesCollection;
     }
-
     @Override
     public int hashCode() {
         int hash = 0;
