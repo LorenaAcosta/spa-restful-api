@@ -1,4 +1,4 @@
-package py.com.spa.app.controller;
+ package py.com.spa.app.controller;
 
 import java.util.List;
 
@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Horario;
+import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.services.EmpleadoService;
 import py.com.spa.app.services.HorarioService;
 
 @RestController
@@ -23,6 +26,10 @@ public class HorarioRESTController  {
 	
 	@Autowired
 	public HorarioService horarioService;
+	
+	@Autowired
+	public EmpleadoService empleadoService;
+	
 	
 	@GetMapping("/listar")
 	public List<Horario> listarhorarios(){
@@ -69,4 +76,15 @@ public class HorarioRESTController  {
 		}
 		
 	}
+	
+	
+
+	@GetMapping("/obtener-horario-empleado/{id}")
+	public List<Horario> findByEmpleadoId(@PathVariable Integer id)
+	{
+		Empleados e = empleadoService.findEmpleadoById(id);	
+		return (List<Horario>) horarioService.findByEmpleadoId(e);
+	}
+	
+	
 }

@@ -76,7 +76,7 @@ public class PlanPagoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.PlanPagoPK[ ventasId=" + ventasId + ", numeroCuota=" + numeroCuota + " ]";
+        return "py.com.spa.app.entities.PlanPagoPK[ ventasId=" + ventasId + ", numeroCuota=" + numeroCuota + " ]";
     }
     
 }

@@ -18,14 +18,18 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IProductoDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Productos;
+import py.com.spa.app.entities.Servicios;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
 
 @Service
 public class ProductoService {
 	
+	
 	@Autowired
 	private IProductoDao productoDao;
+	@Autowired
+	private ICategoriaDao categoriaDao;
 	
 
 	@Transactional(readOnly=true)
@@ -37,6 +41,13 @@ public class ProductoService {
 		productoDao.save(producto);
 	}
 	
+	
+	@Transactional(readOnly=true)
+	public Categorias findByCategoriaId(Integer id) {
+		return (Categorias) categoriaDao.findById(id).orElse(null);
+	}
+
+
 	@Transactional(readOnly=true)
 	public Productos findProductoById(Integer id){
 		return (Productos) productoDao.findById(id).orElse(null);
@@ -50,6 +61,11 @@ public class ProductoService {
 	@Transactional
 	public void deleteProducto(Integer id) {
 		productoDao.deleteById(id);
+	}
+	
+	
+	public List<Productos> findAllByCategoriaId(Categorias categoria) {
+		return (List<Productos>) productoDao.findAllByCategoriaId(categoria);
 	}
 	
 	  

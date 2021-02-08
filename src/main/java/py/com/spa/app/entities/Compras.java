@@ -140,7 +140,7 @@ public class Compras implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Compras[ comprasId=" + comprasId + " ]";
+        return "py.com.spa.app.entities.Compras[ comprasId=" + comprasId + " ]";
     }
     
 }

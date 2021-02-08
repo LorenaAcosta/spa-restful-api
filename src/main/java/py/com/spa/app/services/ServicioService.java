@@ -37,6 +37,12 @@ public class ServicioService {
 		return (Servicios) servicioDao.findById(id).orElse(null);
 	}
 	
+	@Transactional(readOnly=true)
+	public Categorias findByCategoriaId(Integer id) {
+		return (Categorias) categoriaDao.findById(id).orElse(null);
+	}
+
+	
 	@Transactional
 	public void agregarServicio(Servicios prod){
 		servicioDao.save(prod);
@@ -52,10 +58,17 @@ public class ServicioService {
 		servicioDao.save(p);
 	} 
 	
-	
 	public List<Servicios> findAllByCategoriaId(Categorias categoria) {
-	
 		return (List<Servicios>) servicioDao.findAllByCategoriaId(categoria);
 	}
 
+	public List<Servicios> getServiciosByEstado(String estado) {
+		return (List<Servicios>) servicioDao.getServiciosByEstado(estado);
+	}
+
+
+	public List<Servicios> findAllByCategoriaIdAndEstado(Categorias categoria, String estado){
+		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria, estado);
+		
+	}
 }

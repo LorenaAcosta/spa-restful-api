@@ -21,6 +21,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  *
  * @author Lore
@@ -107,6 +110,7 @@ public class PlanPago implements Serializable {
         this.fechaPago = fechaPago;
     }
 
+    @JsonBackReference(value="planpago")
     public Ventas getVentas() {
         return ventas;
     }
@@ -137,7 +141,7 @@ public class PlanPago implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.PlanPago[ planPagoPK=" + planPagoPK + " ]";
+        return "py.com.spa.app.entities.PlanPago[ planPagoPK=" + planPagoPK + " ]";
     }
     
 }

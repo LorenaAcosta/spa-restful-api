@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package py.com.spa.app.entities;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Time;
+import java.sql.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +25,12 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
+
 /**
  *
  * @author Lore
@@ -33,8 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ReservaDetalle.findAll", query = "SELECT r FROM ReservaDetalle r"),
     @NamedQuery(name = "ReservaDetalle.findByReservaId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaId = :reservaId"),
-    @NamedQuery(name = "ReservaDetalle.findByEmpleadoId", query = "SELECT r FROM ReservaDetalle r WHERE r.empleadoId = :empleadoId"),
+    @NamedQuery(name = "ReservaDetalle.findByEmpleado", query = "SELECT r FROM ReservaDetalle r WHERE r.empleado = :empleado"),
     @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
+    @NamedQuery(name = "ReservaDetalle.findByDisponibleId", query = "SELECT r FROM ReservaDetalle r WHERE r.disponibleId = :disponibleId"),
     @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
 public class ReservaDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -43,26 +52,34 @@ public class ReservaDetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "reserva_id")
     private Integer reservaId;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "empleado_id")
-    private int empleadoId;
+    @Column(name = "empleado")
+    private Integer empleado;
+    
     @Basic(optional = false)
     @NotNull
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="America/Asuncion")
     @Column(name = "fecha_reserva")
-    @Temporal(TemporalType.DATE)
+   // @Temporal(TemporalType.DATE)
     private Date fechaReserva;
+    
     @Basic(optional = false)
     @NotNull
+    @JsonFormat(pattern="HH:mm")
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date hora;
+    private Time hora;
+    
     @JoinColumn(name = "disponible_id", referencedColumnName = "disponible_id")
     @ManyToOne(optional = false)
-    private EmpleadoDisponible disponibleId;
-    @JoinColumn(name = "reserva_id", referencedColumnName = "reserva_id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Reserva reserva;
+    private Disponible disponibleId;
+    
+    
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioId;
 
     public ReservaDetalle() {
     }
@@ -71,14 +88,18 @@ public class ReservaDetalle implements Serializable {
         this.reservaId = reservaId;
     }
 
-    public ReservaDetalle(Integer reservaId, int empleadoId, Date fechaReserva, Date hora) {
+    public ReservaDetalle(Integer reservaId, Integer empleado, Date fechaReserva, Time hora, Disponible disponibleId,
+    		Usuario usuarioId) {
         this.reservaId = reservaId;
-        this.empleadoId = empleadoId;
+        this.empleado = empleado;
         this.fechaReserva = fechaReserva;
         this.hora = hora;
+        this.disponibleId= disponibleId;
+        this.usuarioId =  usuarioId;
     }
 
-    public Integer getReservaId() {
+
+	public Integer getReservaId() {
         return reservaId;
     }
 
@@ -86,12 +107,12 @@ public class ReservaDetalle implements Serializable {
         this.reservaId = reservaId;
     }
 
-    public int getEmpleadoId() {
-        return empleadoId;
+    public int getEmpleado() {
+        return empleado;
     }
 
-    public void setEmpleadoId(int empleadoId) {
-        this.empleadoId = empleadoId;
+    public void setEmpleado(int empleado) {
+        this.empleado = empleado;
     }
 
     public Date getFechaReserva() {
@@ -102,29 +123,31 @@ public class ReservaDetalle implements Serializable {
         this.fechaReserva = fechaReserva;
     }
 
-    public Date getHora() {
+    public Time getHora() {
         return hora;
     }
 
-    public void setHora(Date hora) {
+    public void setHora(Time hora) {
         this.hora = hora;
     }
 
-    public EmpleadoDisponible getDisponibleId() {
+    public Disponible getDisponibleId() {
         return disponibleId;
     }
 
-    public void setDisponibleId(EmpleadoDisponible disponibleId) {
+    public void setDisponibleId(Disponible disponibleId) {
         this.disponibleId = disponibleId;
     }
 
-    public Reserva getReserva() {
-        return reserva;
+
+    public Usuario getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
+    public void setUsuarioId(Usuario usuarioId) {
+        this.usuarioId = usuarioId;
     }
+
 
     @Override
     public int hashCode() {
@@ -148,7 +171,7 @@ public class ReservaDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.ReservaDetalle[ reservaId=" + reservaId + " ]";
+        return "py.com.spa.app.ReservaDetalle[ reservaId=" + reservaId + " ]";
     }
     
 }

@@ -153,15 +153,12 @@ public class VentasDetalle implements Serializable {
     /*public int getSubtotal() {
         return subtotal;
     }
-
     public void setSubtotal(int subtotal) {
         this.subtotal = subtotal;
     }
-
     public int getDescuento() {
         return descuento;
     }
-
     public void setDescuento(int descuento) {
         this.descuento = descuento;
     }*/
