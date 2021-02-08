@@ -36,6 +36,7 @@ public class CategoriaRESTController  {
 	public CategoriaService categoriaService;
 	
 	@GetMapping("/listar")
+	@CrossOrigin(value = "*")
 	public List<Categorias> listarCategorias(){
 		return categoriaService.findAll();
 	}
