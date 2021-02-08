@@ -40,7 +40,7 @@ public class CategoriaRESTController  {
 	
 	@GetMapping("/obtener-por-tipo/{tipo}")
 	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
-		return (List<Categorias>) categoriaService.obtenerPorTipo(tipo);
+		return (List<Categorias>) categoriaService.obtenerCategorias(tipo);
 	}
 	
 	@GetMapping("/getServicios")

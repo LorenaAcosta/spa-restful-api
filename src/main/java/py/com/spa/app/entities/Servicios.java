@@ -85,8 +85,8 @@ public class Servicios implements Serializable {
     private Date duracion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<VentasDetalle> ventasDetalleCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
-    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
+    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;*/
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
@@ -174,7 +174,7 @@ public class Servicios implements Serializable {
     }
     
 
-    @JsonBackReference(value="empleado")
+   /* @JsonBackReference(value="empleado")
     @XmlTransient
     public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
         return empleadoDisponibleCollection;
@@ -182,7 +182,7 @@ public class Servicios implements Serializable {
 
     public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
         this.empleadoDisponibleCollection = empleadoDisponibleCollection;
-    }
+    }*/
 
     
     public Categorias getCategoriaId() {

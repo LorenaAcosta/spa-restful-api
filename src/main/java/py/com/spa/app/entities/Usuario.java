@@ -96,8 +96,8 @@ public class Usuario implements Serializable {
     private int estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private Collection<Reserva> reservaCollection;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private Collection<Reserva> reservaCollection;*/
 
     public Usuario() {
     }
@@ -208,14 +208,14 @@ public class Usuario implements Serializable {
         this.ventasCollection = ventasCollection;
     }
 
-    @XmlTransient
+    /*@XmlTransient
     public Collection<Reserva> getReservaCollection() {
         return reservaCollection;
     }
 
     public void setReservaCollection(Collection<Reserva> reservaCollection) {
         this.reservaCollection = reservaCollection;
-    }
+    }*/
 
     @Override
     public int hashCode() {

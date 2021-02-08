@@ -85,8 +85,8 @@ public class Empleados implements Serializable {
     private Collection<Horario> horarioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
-    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;*/
 
     public Empleados() {
     }
@@ -188,7 +188,7 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    @JsonBackReference(value="empleado-disponible")
+    /*@JsonBackReference(value="empleado-disponible")
     @XmlTransient
     public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
         return empleadoDisponibleCollection;
@@ -196,7 +196,7 @@ public class Empleados implements Serializable {
 
     public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
         this.empleadoDisponibleCollection = empleadoDisponibleCollection;
-    }
+    }*/
 
     @Override
     public int hashCode() {
