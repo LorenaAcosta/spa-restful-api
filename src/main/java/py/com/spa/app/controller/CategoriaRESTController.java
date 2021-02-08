@@ -89,6 +89,11 @@ public class CategoriaRESTController  {
 		return (Categorias) categoriaService.findByCategoriaId(id);
 	}
 	
+	@GetMapping("/obtener-por-tipo/{tipo}")
+	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
+		return (List<Categorias>) categoriaService.obtenerCategorias(tipo);
+	}
+	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarCategoria (@PathVariable(value="id") Integer id, @RequestBody Categorias categoria) {
 		Categorias c = categoriaService.findByCategoriaId(id);
