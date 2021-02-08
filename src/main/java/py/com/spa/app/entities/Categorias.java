@@ -69,7 +69,7 @@ public class Categorias implements Serializable {
     private String imageName;
     
     /**/
-     private String imagen;
+     //private String imagen;
      /**/
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
@@ -131,13 +131,13 @@ public class Categorias implements Serializable {
         this.imageName = imageName;
     }
 
-    public String getImagen() {
+    /*public String getImagen() {
 		return imagen;
 	}
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
-	}
+	}*/
 
 	@JsonBackReference(value="servicios")
     @XmlTransient
@@ -181,7 +181,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Categorias[ categoriaId=" + categoriaId + " ]";
+    	return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }
