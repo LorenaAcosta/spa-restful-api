@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,33 +18,31 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import py.com.spa.app.dao.ImageRepository;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Compras;
-import py.com.spa.app.entities.ImageModel;
 import py.com.spa.app.services.CategoriaService;
-import py.com.spa.app.util.Utileria;
+import py.com.spa.params.PaginadoParam;
+import py.com.spa.result.PaginadoResult;
 
 @RestController
 @RequestMapping("/categoria" )
-@CrossOrigin(origins = "*")
+@CrossOrigin(value = "*")
 public class CategoriaRESTController  {
 	
 	@Autowired
 	public CategoriaService categoriaService;
 	
-	@Autowired
-	public ImageRepository imageRepository;
-
-	
 	@GetMapping("/listar")
 	public List<Categorias> listarCategorias(){
 		return categoriaService.findAll();
+	}
+	
+	@GetMapping("/obtener-por-tipo/{tipo}")
+	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
+		return (List<Categorias>) categoriaService.obtenerCategorias(tipo);
 	}
 	
 	@GetMapping("/getServicios")
@@ -89,16 +86,13 @@ public class CategoriaRESTController  {
 		return (Categorias) categoriaService.findByCategoriaId(id);
 	}
 	
-	@GetMapping("/obtener-por-tipo/{tipo}")
-	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
-		return (List<Categorias>) categoriaService.obtenerCategorias(tipo);
-	}
-	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarCategoria (@PathVariable(value="id") Integer id, @RequestBody Categorias categoria) {
 		Categorias c = categoriaService.findByCategoriaId(id);
 		if(c!=null) {
 			c.setDescripcion(categoria.getDescripcion());
+			c.setCodigo(categoria.getCodigo());
+			c.setImageName(categoria.getImageName());
 			c.setDataType(categoria.getDataType());
 			categoriaService.updateCategoria(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -118,22 +112,4 @@ public class CategoriaRESTController  {
 		}
 		
 	}
-	
-	@GetMapping("/obtener-por-tipo/{id}")
-	public List<Categorias> obtenerCategorias(@PathVariable(value="id") String id) {
-		return categoriaService.obtenerCategorias(id);
-	}
-	
-
-    @PostMapping("/upload")
-    public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
-
-        ImageModel img = new ImageModel(file.getOriginalFilename(),file.getContentType(),file.getBytes());
-        final ImageModel savedImage = imageRepository.save(img);
-        System.out.println("Image saved");
-        return savedImage;
-
-
-    }
-
 }
