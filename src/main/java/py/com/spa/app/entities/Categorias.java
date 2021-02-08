@@ -181,7 +181,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-    	return "py.com.spa.app.entities.Categorias[ categoriaId=" + categoriaId + " ]";
+    	return "com.spa.entities.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }
