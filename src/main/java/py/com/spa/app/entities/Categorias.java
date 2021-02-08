@@ -139,7 +139,7 @@ public class Categorias implements Serializable {
 		this.imagen = imagen;
 	}*/
 
-	@JsonBackReference(value="servicios")
+	@JsonBackReference(value="servicios-cat")
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;
@@ -149,7 +149,7 @@ public class Categorias implements Serializable {
         this.serviciosCollection = serviciosCollection;
     }
 
-    @JsonBackReference(value="productos")
+    @JsonBackReference(value="productos-cat")
     @XmlTransient
     public Collection<Productos> getProductosCollection() {
         return productosCollection;
