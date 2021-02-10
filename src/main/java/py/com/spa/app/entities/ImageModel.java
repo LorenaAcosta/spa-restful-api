@@ -1,7 +1,4 @@
 package py.com.spa.app.entities;
-
-
-package com.javainuse.model;
 import javax.persistence.*;
 @Entity
 @Table(name = "image_table")
