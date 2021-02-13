@@ -1,7 +1,14 @@
  package py.com.spa.app.controller;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +21,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Horario;
@@ -32,6 +41,7 @@ public class HorarioRESTController  {
 	@Autowired
 	public EmpleadoService empleadoService;
 	
+	private Logger log = LoggerFactory.getLogger(HorarioRESTController.class);
 	
 	@GetMapping("/listar")
 	public List<Horario> listarhorarios(){
@@ -46,6 +56,9 @@ public class HorarioRESTController  {
 	
 	@PostMapping("/agregar")
 	public void agregarhorario(@RequestBody Horario horario) {
+		//horario.set
+		log.info("Horario inicio " + horario.getHoraInicio() + " Hora fin " + horario.getHoraFin());
+
 		horarioService.addHorario(horario);
 	}
 	
