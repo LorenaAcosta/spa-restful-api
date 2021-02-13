@@ -25,8 +25,10 @@ public class HorarioService {
 		return (List<Horario>) horarioDao.findAll();
 	}
 	
+	
 	@Transactional
 	public void addHorario(Horario horario) {
+		
 		horarioDao.save(horario);
 	}
 	
