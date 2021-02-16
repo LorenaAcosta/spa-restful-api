@@ -15,6 +15,7 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 	List<Servicios> getServiciosByEstado(String estado);
 	
 	List<Servicios> findAllByCategoriaIdAndEstado(Categorias categoria, String estado);
+
 	
 
 	

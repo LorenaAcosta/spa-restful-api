@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import py.com.spa.app.dao.ImageRepository;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.ImageModel;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
@@ -39,8 +36,6 @@ public class CategoriaRESTController  {
 	@Autowired
 	public ServicioService servicioService;
 	
-	@Autowired
-	public ImageRepository imageRepository;
 
 	
 	@GetMapping("/listar")
@@ -52,6 +47,7 @@ public class CategoriaRESTController  {
 	public List<Categorias> getServicios(){
 		return categoriaService.findAll();
 	}
+	
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarCategoria(@RequestBody Categorias  c) {
@@ -66,18 +62,12 @@ public class CategoriaRESTController  {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	
 		response.put("mensaje", "El cliente ha sido creado con exito.");
 		response.put("categoria", categoria);
-		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);
-		
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
 	} 
-	
-	@GetMapping("/encontrar/{id}")
-	public Categorias obtenerCategoriasId(@PathVariable(value="id") Integer id) {
-		return (Categorias) categoriaService.findByCategoriaId(id);
-	}
-	
+		
+
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarCategoria (@PathVariable(value="id") Integer id, @RequestBody Categorias categoria) {
 		Categorias c = categoriaService.findByCategoriaId(id);
@@ -105,6 +95,7 @@ public class CategoriaRESTController  {
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
 	}
 	
+	
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarCategoria(@PathVariable(value="id") Integer id) {
 		Map<String, Object> response = new HashMap<>();
@@ -122,7 +113,6 @@ public class CategoriaRESTController  {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
@@ -132,8 +122,8 @@ public class CategoriaRESTController  {
 		List<Categorias> lista = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			lista= categoriaService.obtenerCategorias(id);
 			
+			lista= categoriaService.obtenerCategorias(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -141,22 +131,13 @@ public class CategoriaRESTController  {
 		}
 		
 		if (lista==null) {
-			response.put("mensaje",  "El cliente no existe en la base de datos.");
+			response.put("mensaje",  "No hay datos.");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
 	}
 	
 
-    @PostMapping("/upload")
-    public ImageModel uplaodImage(@RequestParam("myFile") MultipartFile file) throws IOException {
 
-        ImageModel img = new ImageModel(file.getOriginalFilename(),file.getContentType(),file.getBytes());
-        final ImageModel savedImage = imageRepository.save(img);
-        System.out.println("Image saved");
-        return savedImage;
-
-
-    }
 
 }
