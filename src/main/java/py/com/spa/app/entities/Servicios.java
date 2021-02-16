@@ -86,7 +86,7 @@ public class Servicios implements Serializable {
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
     private Collection<Disponible> disponibleCollection;
 
     public Servicios() {

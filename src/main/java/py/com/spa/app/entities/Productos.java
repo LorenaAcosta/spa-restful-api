@@ -81,6 +81,7 @@ public class Productos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
+    
     @ManyToOne(optional = false)
     private Categorias categoriaId;
 

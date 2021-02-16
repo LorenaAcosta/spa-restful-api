@@ -33,8 +33,8 @@ public class CategoriaService {
 	}
 
 	@Transactional
-	public void updateCategoria(Categorias categoria) {
-		categoriaDao.save(categoria);
+	public Categorias updateCategoria(Categorias categoria) {
+		return categoriaDao.save(categoria);
 	}
 	
 	@Transactional

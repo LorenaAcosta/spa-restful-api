@@ -46,7 +46,6 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -58,10 +57,10 @@ public class Categorias implements Serializable {
     @Column(name = "data_type")
     private String dataType;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    @OneToMany( mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    
+    @OneToMany( mappedBy = "categoriaId")
     private Collection<Productos> productosCollection;
 
 
@@ -104,7 +103,7 @@ public class Categorias implements Serializable {
     
     
 
-@JsonBackReference
+    @JsonBackReference
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;
@@ -124,13 +123,7 @@ public class Categorias implements Serializable {
         this.productosCollection = productosCollection;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (categoriaId != null ? categoriaId.hashCode() : 0);
-        return hash;
-    }
-
+  
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
