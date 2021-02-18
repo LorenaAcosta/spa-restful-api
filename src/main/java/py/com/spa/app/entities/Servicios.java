@@ -77,14 +77,12 @@ public class Servicios implements Serializable {
     @NotNull
     @Column(name = "costo")
     private int costo;
-    
     @Basic(optional = false)
     @NotNull
     @JsonFormat(pattern="HH:mm")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "duracion")
     private Time  duracion;
-    
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;

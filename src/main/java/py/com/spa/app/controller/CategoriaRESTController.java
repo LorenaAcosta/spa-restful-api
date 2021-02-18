@@ -49,9 +49,15 @@ public class CategoriaRESTController  {
 	}
 	
 	
+	@GetMapping("/encontrar/{id}")
+	public Categorias encontrarCategoria(@PathVariable Integer id) {
+		return (Categorias) categoriaService.findByCategoriaId(id);
+	}
+	
+	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarCategoria(@RequestBody Categorias  c) {
-		
+	
 		Categorias categoria = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
@@ -59,7 +65,7 @@ public class CategoriaRESTController  {
 			
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "El cliente ha sido creado con exito.");

@@ -1,8 +1,11 @@
 package py.com.spa.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,38 +43,47 @@ public class ProductoRESTController {
 	
 	
 	@PostMapping("/agregar")
-	public void agregarProducto(@RequestBody Productos producto) {
-		productoService.addProducto(producto);
-	}
-
-	@GetMapping("/encontrar/{id}")
-	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
-		return (Productos) productoService.findProductoById(id);
-	}
-
-	@GetMapping("/getProductosByCategoriaId/{id}")
-	public List<Productos> getServciosByCategoriaId(@PathVariable Integer id)
-	{
-		
-		Categorias c = categoriaService.findByCategoriaId(id);
-		
-		return (List<Productos>) productoService.findAllByCategoriaId(c);
+	public ResponseEntity<?> agregarProducto(@RequestBody Productos producto) {
+		Map<String, Object> response = new HashMap<>();
+		Productos productoA = null;
+		try {
+			productoA = productoService.addProducto(producto);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar el insert en la BD");
+			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El producto ha sido creado con exito.");
+		response.put("producto", productoA);
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);				
 	}
 	
 	@PutMapping("/modificar/{id}")
-	public void modificarProducto(@PathVariable Integer id, @RequestBody Productos producto) {
-		Productos prod= null;
-		prod = productoService.findProductoById(id);
-		if (prod!=null) {
-			prod.setDescripcion(producto.getDescripcion());
-			prod.setCosto(producto.getCosto());
-			prod.setPrecioVenta(producto.getPrecioVenta());
-			prod.setStockActual(producto.getStockActual());
-			prod.setCategoriaId(producto.getCategoriaId());
-			prod.setImageName(producto.getImageName());
-			prod.setEstado(producto.getEstado());
-			productoService.updateProducto(prod);
+	public ResponseEntity<?>  modificarProducto(@PathVariable Integer id, @RequestBody Productos producto) {
+		Productos prod= productoService.findProductoById(id);
+		Productos p =  null;
+		Map<String, Object> response = new HashMap<>();
+		if (prod == null) {
+			response.put("mensaje",  "Error, No se pudo editar. La categoria no existe en la base de datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
+		try {
+			prod.setDescripcion(    producto.getDescripcion());
+			prod.setCosto(          producto.getCosto());
+			prod.setPrecioVenta(    producto.getPrecioVenta());
+			prod.setStockActual(    producto.getStockActual());
+			prod.setCategoriaId(    producto.getCategoriaId());
+			prod.setImageName(      producto.getImageName());
+			prod.setEstado(         producto.getEstado());
+			p = productoService.updateProducto(prod);		
+		} catch (DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "Producto actualizado.");
+		response.put("producto", producto);
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
 		
 	} 
 	@DeleteMapping("/eliminar/{id}")
@@ -91,7 +103,21 @@ public class ProductoRESTController {
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
+	}
+	
+
+	@GetMapping("/encontrar/{id}")
+	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
+		return (Productos) productoService.findProductoById(id);
+	}
+
+	@GetMapping("/getProductosByCategoriaId/{id}")
+	public List<Productos> getServciosByCategoriaId(@PathVariable Integer id)
+	{
 		
+		Categorias c = categoriaService.findByCategoriaId(id);
+		
+		return (List<Productos>) productoService.findAllByCategoriaId(c);
 	}
 	
 

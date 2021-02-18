@@ -39,26 +39,21 @@ public class ServicioRESTController {
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarServicio(@RequestBody Servicios p) {
-	
 		Map<String, Object> response = new HashMap<>();
 		Servicios servicio = null;
 		try {
 			servicio= servicioService.guardarServicio(p);
-			
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		response.put("mensaje", "El servicio ha sido creado con exito.");
 		response.put("servicio", servicio);
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
-		
 	} 
 	
 
-	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarProducto(@PathVariable Integer id, @RequestBody Servicios servicio) {
 		Servicios s= servicioService.findServicioById(id);
@@ -69,12 +64,12 @@ public class ServicioRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
-			s.setNombre(servicio.getNombre());
-			s.setDescripcion(servicio.getDescripcion());
-			s.setCategoriaId(servicio.getCategoriaId());
-			s.setEstado(servicio.getEstado());
-			s.setDuracion(servicio.getDuracion());
-			s.setCosto(servicio.getCosto());
+			s.setNombre(      servicio.getNombre());
+			s.setDescripcion( servicio.getDescripcion());
+			s.setCategoriaId( servicio.getCategoriaId());
+			s.setEstado(      servicio.getEstado());
+			s.setDuracion(    servicio.getDuracion());
+			s.setCosto(       servicio.getCosto());
 			nuevo = servicioService.updateServicio(s);
 		} catch (DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
