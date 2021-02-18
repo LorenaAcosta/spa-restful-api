@@ -36,6 +36,7 @@ public class ProductoRESTController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
+	
 	@GetMapping("/listar")
 	public List<Productos> listarProductos(){
 		return productoService.findAll();
@@ -57,6 +58,7 @@ public class ProductoRESTController {
 		response.put("producto", productoA);
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);				
 	}
+	
 	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?>  modificarProducto(@PathVariable Integer id, @RequestBody Productos producto) {
@@ -87,8 +89,22 @@ public class ProductoRESTController {
 		
 	} 
 	@DeleteMapping("/eliminar/{id}")
-	public void eliminarProducto(@PathVariable(value="id") Integer id) {
-		productoService.deleteProducto(id);
+	public ResponseEntity<?>  eliminarProducto(@PathVariable(value="id") Integer id) {
+		Map<String, Object> response = new HashMap<>();
+		Productos p = productoService.findProductoById(id);
+
+		if (p == null) {
+			response.put("mensaje",  "Error, No se pudo eliminar. La categoria no existe en la base de datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		try {
+			 productoService.deleteProducto(id);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	
@@ -105,20 +121,20 @@ public class ProductoRESTController {
 		}
 	}
 	
+	@GetMapping("/getProductosByCategoriaId/{id}")
+	public List<Productos> getServciosByCategoriaId(@PathVariable Integer id)
+	{
+		Categorias c = categoriaService.findByCategoriaId(id);
+		return (List<Productos>) productoService.findAllByCategoriaId(c);
+	}
+	
 
 	@GetMapping("/encontrar/{id}")
 	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
 		return (Productos) productoService.findProductoById(id);
 	}
 
-	@GetMapping("/getProductosByCategoriaId/{id}")
-	public List<Productos> getServciosByCategoriaId(@PathVariable Integer id)
-	{
-		
-		Categorias c = categoriaService.findByCategoriaId(id);
-		
-		return (List<Productos>) productoService.findAllByCategoriaId(c);
-	}
+
 	
 
 }

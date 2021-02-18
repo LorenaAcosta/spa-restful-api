@@ -30,7 +30,6 @@ public class VentaRESTController {
 		return ventaService.findAll();
 	}
 	
-	
 	@PostMapping("/agregar")
 	public void agregarVenta(@RequestBody Ventas venta) {
 		ventaService.addVentas(venta);

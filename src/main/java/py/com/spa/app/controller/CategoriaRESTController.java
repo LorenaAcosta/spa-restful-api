@@ -35,7 +35,6 @@ public class CategoriaRESTController  {
 	
 	@Autowired
 	public ServicioService servicioService;
-	
 
 	
 	@GetMapping("/listar")
@@ -123,14 +122,15 @@ public class CategoriaRESTController  {
 		
 	}
 	
+	
+	
 	@GetMapping("/obtener-por-tipo/{id}")
 	public ResponseEntity<?> obtenerCategorias(@PathVariable(value="id") String id) {
 		List<Categorias> lista = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			
 			lista= categoriaService.obtenerCategorias(id);
-		}catch(DataAccessException e ){
+		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);

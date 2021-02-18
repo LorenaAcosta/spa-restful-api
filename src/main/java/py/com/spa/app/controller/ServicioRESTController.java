@@ -102,31 +102,83 @@ public class ServicioRESTController {
 
 	
 	@GetMapping("/getServciosByCategoriaId/{id}")
-	public List<Servicios> getServciosByCategoriaId(@PathVariable Integer id)
+	public ResponseEntity<?> getServciosByCategoriaId(@PathVariable Integer id)
 	{
-		Categorias c = categoriaService.findByCategoriaId(id);	
-		return (List<Servicios>) servicioService.findAllByCategoriaId(c);
+		Map<String, Object> response = new HashMap<>();
+		List<Servicios> lista = null;
+		Categorias c = categoriaService.findByCategoriaId(id);
+		try {
+			lista= servicioService.findAllByCategoriaId(c);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getServiciosByEstado/{estado}")
-	public List<Servicios> getServiciosByEstado(@PathVariable String estado)
-	{
-		return (List<Servicios>) servicioService.getServiciosByEstado(estado);
+	public ResponseEntity<?>  getServiciosByEstado(@PathVariable String estado){
+		List<Servicios> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista = servicioService.getServiciosByEstado(estado);
+		}
+		catch(DataAccessException e ){
+		response.put("mensaje",  "Error al realizar la consulta");
+		response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getServiciosActivos/{categoriaId}/{estado}")
-	public List<Servicios> findByCategoriaIdAndEstado(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="estado") String estado )
+	public  ResponseEntity<?> findByCategoriaIdAndEstado(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="estado") String estado )
 	{
+		
+		Map<String, Object> response = new HashMap<>();
+		List<Servicios> lista = null;
 		Categorias c = categoriaService.findByCategoriaId(categoriaId);
-		return (List<Servicios>) servicioService.findAllByCategoriaIdAndEstado(c, estado);
+		try {
+			lista= servicioService.findAllByCategoriaIdAndEstado(c, estado);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
 	@GetMapping("/encontrar/{id}")
-	public Servicios encontrarProducto(@PathVariable Integer id) {
-		return (Servicios) servicioService.findServicioById(id);
+	public  ResponseEntity<?>  encontrarProducto(@PathVariable Integer id) {
+		Servicios service = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			service = servicioService.findServicioById(id);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if (service==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Servicios>(service, HttpStatus.OK);
 	}
-	
-	
-	
+
 	
 }
