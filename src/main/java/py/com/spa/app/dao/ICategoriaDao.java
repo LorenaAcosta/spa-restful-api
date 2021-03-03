@@ -8,7 +8,6 @@ import py.com.spa.app.entities.Categorias;
 
 
 public interface ICategoriaDao extends JpaRepository<Categorias, Integer>{
-
 	
 	List<Categorias> findByDataType(String dataType);
 

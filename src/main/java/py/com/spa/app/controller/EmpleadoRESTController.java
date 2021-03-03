@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Empleados;
+import py.com.spa.app.entities.Horario;
 import py.com.spa.app.services.EmpleadoService;
+import py.com.spa.app.services.HorarioService;
 
 @RestController
 @RequestMapping("/empleado")
@@ -27,6 +29,9 @@ public class EmpleadoRESTController {
 
 	@Autowired
 	private EmpleadoService empleadoService;
+
+	@Autowired
+	private HorarioService horarioService;
 	
 	@GetMapping("/listar")
 	public List<Empleados> listarEmpleados() {
@@ -56,6 +61,7 @@ public class EmpleadoRESTController {
 		
 		try {
 			empleadoNuevo = empleadoService.saveEmpleado(empleado);
+		
 		} catch (DataAccessException e) {
 			// TODO: handle exception
 			response.put("mensaje", "Error al realizar el insert");
@@ -119,6 +125,18 @@ public class EmpleadoRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/encontrar-por-cedula/{id}")
+	public ResponseEntity<?> findEmpleadoCedula(@PathVariable(value="id") Integer cedula) {
+		Empleados emp = empleadoService.findEmpleadoCedula(cedula);
+		Map<String, Object> response = new HashMap<>();
+		if (emp == null) 
+		{
+			response.put("mensaje", "El  empelado ID:" .concat(cedula.toString().concat("no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Empleados>(emp, HttpStatus.OK); 		
 	}
 	
 	

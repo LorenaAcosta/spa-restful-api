@@ -61,7 +61,7 @@ public class Servicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre")
+    @Column(name = "nombre", unique=true)
     private String nombre;
     @Basic(optional = false)
     @NotNull

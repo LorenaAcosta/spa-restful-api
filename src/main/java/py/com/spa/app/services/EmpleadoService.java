@@ -40,5 +40,12 @@ public class EmpleadoService {
 		return (Empleados) empleadoDao.findById(id).orElse(null);
 	}
 
+	
+
+	@Transactional(readOnly=true)	
+	public Empleados findEmpleadoCedula(Integer cedula) {
+		return (Empleados) empleadoDao.findByCedula(cedula);
+	}
+
 
 }

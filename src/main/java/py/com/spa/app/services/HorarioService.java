@@ -45,8 +45,8 @@ public class HorarioService {
 		horarioDao.deleteById(id);
 	}
 	
-	public List<Horario> findByEmpleadoId(Empleados empleado){
-		return (List<Horario>) horarioDao.findByEmpleadoId(empleado);
+	public Horario findByEmpleadoId(Empleados id){
+		return ( Horario ) horarioDao.findByEmpleadoId(id);
 	}
 
 

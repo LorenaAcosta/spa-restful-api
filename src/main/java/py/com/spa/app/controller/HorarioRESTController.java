@@ -73,6 +73,8 @@ public class HorarioRESTController  {
 		if(c!=null) {
 			c.setHoraInicio(horario.getHoraInicio());
 			c.setHoraFin(horario.getHoraFin());
+			Empleados emp =  empleadoService.findEmpleadoById(horario.getEmpleadoId().getEmpleadoId());
+			c.setEmpleadoId(emp);
 			horarioService.updateHorario(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
@@ -95,10 +97,10 @@ public class HorarioRESTController  {
 	
 
 	@GetMapping("/obtener-horario-empleado/{id}")
-	public List<Horario> findByEmpleadoId(@PathVariable Integer id)
+	public Horario findByEmpleadoId(@PathVariable(value="id") Integer id)
 	{
-		Empleados e = empleadoService.findEmpleadoById(id);	
-		return (List<Horario>) horarioService.findByEmpleadoId(e);
+		Empleados emp = empleadoService.findEmpleadoById(id);
+		return (Horario) horarioService.findByEmpleadoId(emp);
 	}
 	
 	

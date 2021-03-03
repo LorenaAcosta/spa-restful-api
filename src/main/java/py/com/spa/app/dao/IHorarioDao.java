@@ -9,7 +9,7 @@ import py.com.spa.app.entities.Horario;
 
 public interface IHorarioDao extends  JpaRepository<Horario, Integer> {
 	
-	List<Horario> findByEmpleadoId(Empleados empleado);
+	 Horario findByEmpleadoId(Empleados id);
 	
 
 }

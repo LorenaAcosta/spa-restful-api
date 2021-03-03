@@ -54,7 +54,7 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique=true)
     private String descripcion;
     @Basic(optional = false)
     @NotNull

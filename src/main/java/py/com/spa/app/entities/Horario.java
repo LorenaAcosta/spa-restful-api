@@ -1,4 +1,3 @@
-
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
@@ -44,21 +43,20 @@ public class Horario implements Serializable {
     @Column(name = "horario_id")
     private Integer horarioId;
     @Basic(optional = false)
-    @NotNull
     @JsonFormat(pattern="HH:mm")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_inicio")
     private Time horaInicio;
     @Basic(optional = false)
-    @NotNull
     @JsonFormat(pattern="HH:mm")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_fin")
-    private Time horaFin;
+    private Time horaFin; 
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
     private Empleados empleadoId;
-
+    
+    
     public Horario() {
     }
 
@@ -66,13 +64,20 @@ public class Horario implements Serializable {
         this.horarioId = horarioId;
     }
 
-    public Horario(Integer horarioId, Time horaInicio, Time horaFin) {
-        this.horarioId = horarioId;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-    }
 
-    public Integer getHorarioId() {
+	public Horario(Integer horarioId, Time horaInicio, Time horaFin, int empleadoId) {
+		super();
+		this.horarioId = horarioId;
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
+	}
+	
+	public Horario( Time horaInicio, Time horaFin) {
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
+	}
+
+	public Integer getHorarioId() {
         return horarioId;
     }
 
@@ -96,15 +101,16 @@ public class Horario implements Serializable {
         this.horaFin = horaFin;
     }
 
+
     public Empleados getEmpleadoId() {
-        return empleadoId;
-    }
+		return empleadoId;
+	}
 
-    public void setEmpleadoId(Empleados empleadoId) {
-        this.empleadoId = empleadoId;
-    }
+	public void setEmpleadoId(Empleados empleadoId) {
+		this.empleadoId = empleadoId;
+	}
 
-    @Override
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (horarioId != null ? horarioId.hashCode() : 0);

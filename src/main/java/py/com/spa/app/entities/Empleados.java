@@ -6,6 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -24,7 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
 
 /**
  *
@@ -52,7 +57,7 @@ public class Empleados implements Serializable {
     private Integer empleadoId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cedula")
+    @Column(name = "cedula", unique=true)
     private int cedula;
     @Basic(optional = false)
     @NotNull
@@ -169,18 +174,10 @@ public class Empleados implements Serializable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+    
 
-    @JsonBackReference(value="horario-empleado")
-    @XmlTransient
-    public Collection<Horario> getHorarioCollection() {
-        return horarioCollection;
-    }
 
-    public void setHorarioCollection(Collection<Horario> horarioCollection) {
-        this.horarioCollection = horarioCollection;
-    }
-
-    @JsonBackReference(value="planilla-empleado")
+	@JsonBackReference(value="planilla-empleado")
     @XmlTransient
     public Collection<Planilla> getPlanillaCollection() {
         return planillaCollection;

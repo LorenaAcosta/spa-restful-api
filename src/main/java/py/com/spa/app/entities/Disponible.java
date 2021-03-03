@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * @author Lore
  */
 @Entity
-@Table(name = "disponible")
+@Table(name = "disponible" )
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Disponible.findAll", query = "SELECT d FROM Disponible d"),

@@ -46,7 +46,7 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_proveedor")
+    @Column(name = "nombre_proveedor", unique=true)
     private String nombreProveedor;
     @Basic(optional = false)
     @NotNull
