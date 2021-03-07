@@ -73,8 +73,7 @@ public class HorarioRESTController  {
 		if(c!=null) {
 			c.setHoraInicio(horario.getHoraInicio());
 			c.setHoraFin(horario.getHoraFin());
-			Empleados emp =  empleadoService.findEmpleadoById(horario.getEmpleadoId().getEmpleadoId());
-			c.setEmpleadoId(emp);
+			c.setEmpleadoId(horario.getEmpleadoId());
 			horarioService.updateHorario(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {

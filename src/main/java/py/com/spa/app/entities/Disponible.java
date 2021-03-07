@@ -48,7 +48,7 @@ public class Disponible implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "comision")
-    private float comision;
+    private double comision;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "disponibleId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
@@ -79,7 +79,7 @@ public class Disponible implements Serializable {
         this.disponibleId = disponibleId;
     }
 
-    public float getComision() {
+    public double getComision() {
         return comision;
     }
 

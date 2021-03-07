@@ -43,12 +43,12 @@ public class Horario implements Serializable {
     @Column(name = "horario_id")
     private Integer horarioId;
     @Basic(optional = false)
-    @JsonFormat(pattern="HH:mm")
+    @JsonFormat(pattern="HH:mm:ss")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_inicio")
     private Time horaInicio;
     @Basic(optional = false)
-    @JsonFormat(pattern="HH:mm")
+    @JsonFormat(pattern="HH:mm:ss")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_fin")
     private Time horaFin; 
