@@ -10,7 +10,7 @@ import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.entities.VentasDetalle;
 
 public interface IVentasDao extends JpaRepository<Ventas, Integer>{
-	@Query(value="select max(ventas_id) from Ventas", nativeQuery = 
+	@Query(value="select COALESCE (max(ventas_id), 0) from Ventas", nativeQuery = 
 	        true)
 	Integer getNextIdVal();
 	
