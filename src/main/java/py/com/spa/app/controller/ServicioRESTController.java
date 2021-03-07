@@ -2,6 +2,8 @@ package py.com.spa.app.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,8 @@ public class ServicioRESTController {
 	private ServicioService servicioService;
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	private Logger log = LoggerFactory.getLogger(ServicioRESTController.class);
 	
 	@GetMapping("/listar")
 	public List<Servicios> listarServicios(){
@@ -73,13 +77,15 @@ public class ServicioRESTController {
 	
 	@PutMapping("/modificar/{id}")
 	public void modificarProducto(@PathVariable Integer id, @RequestBody Servicios servicio) {
+		//log.info("Duracion " + servicio.getDuracion());
 		Servicios s= servicioService.findServicioById(id);
+		log.info("Duracion " + servicio.getDuracion());
 		if (s!=null) {
 			s.setNombre(servicio.getNombre());
 			s.setDescripcion(servicio.getDescripcion());
 			s.setCategoriaId(servicio.getCategoriaId());
 			s.setEstado(servicio.getEstado());
-			s.setDuracion(servicio.getDuracion());
+			//s.setDuracion(servicio.getDuracion());
 			s.setCosto(servicio.getCosto());
 			servicioService.updateServicio(s);
 		}	

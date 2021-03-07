@@ -13,19 +13,29 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import py.com.spa.app.enumeraciones.TipoCategoria;
+import py.com.spa.app.util.FileModel;
 
 /**
  *
@@ -60,46 +70,81 @@ public class Categorias implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @Basic(optional = false)
-    @NotNull
+    /*@NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "data_type")
-    private String dataType;
+    private String dataType;*/
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    private TipoCategoria dataType;
+    
+    
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
-    
-    /**/
-     private String imagen;
-     /**/
+       
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
     private Collection<Productos> productosCollection;
+    
+    
 
-    public Categorias() {
+	public Categorias() {
     }
 
     public Categorias(Integer categoriaId) {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType) {
+    public Categorias(Integer categoriaId, String codigo, String descripcion, TipoCategoria dataType) {
         this.categoriaId = categoriaId;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
 
+    public Categorias(Integer categoriaId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
+			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull TipoCategoria dataType,
+			@Size(max = 2147483647) String imageName, Collection<Servicios> serviciosCollection,
+			Collection<Productos> productosCollection) {
+		super();
+		this.categoriaId = categoriaId;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.dataType = dataType;
+		this.imageName = imageName;
+		this.serviciosCollection = serviciosCollection;
+		this.productosCollection = productosCollection;
+	}
+
+	public String getImage_name() {
+		return imageName;
+	}
+    
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+    public Integer getCategoria_id() {
+		return categoriaId;
+	}
+
     public Integer getCategoriaId() {
-        return categoriaId;
-    }
+		return categoriaId;
+	}
 
-    public void setCategoriaId(Integer categoriaId) {
-        this.categoriaId = categoriaId;
-    }
+	public void setCategoriaId(Integer categoriaId) {
+		this.categoriaId = categoriaId;
+	}
 
-    public String getCodigo() {
+	public String getCodigo() {
         return codigo;
     }
 
@@ -115,29 +160,25 @@ public class Categorias implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getDataType() {
+    public String getData_type() {
+        return dataType.toString();
+    }
+    
+    public TipoCategoria getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(TipoCategoria dataType) {
         this.dataType = dataType;
     }
 
-    public String getImageName() {
+    /*public String getImageName() {
         return imageName;
     }
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
-    }
-
-    public String getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
-	}
+    }*/
 
 	@JsonBackReference(value="servicios")
     @XmlTransient

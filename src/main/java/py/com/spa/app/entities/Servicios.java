@@ -6,6 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -31,6 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
 
 /**
  *
@@ -79,10 +83,10 @@ public class Servicios implements Serializable {
     private String imageName;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "duracion")
     @JsonFormat(pattern="HH:mm")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date duracion;
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
+    @Column(name = "duracion")
+    private Time  duracion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
@@ -98,7 +102,7 @@ public class Servicios implements Serializable {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Date duracion) {
+    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Time duracion) {
         this.servicioId = servicioId;
         this.nombre = nombre;
         this.estado = estado;
@@ -155,11 +159,11 @@ public class Servicios implements Serializable {
         this.imageName = imageName;
     }
 
-    public Date getDuracion() {
+    public Time getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Date duracion) {
+    public void setDuracion(Time duracion) {
         this.duracion = duracion;
     }
 

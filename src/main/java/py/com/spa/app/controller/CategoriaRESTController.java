@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Compras;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -40,6 +43,7 @@ public class CategoriaRESTController  {
 	
 	@GetMapping("/obtener-por-tipo/{tipo}")
 	public List<Categorias> obtenerPorTipo(@PathVariable(value="tipo") String tipo){
+		//tipo = tipo.toUpperCase();
 		return (List<Categorias>) categoriaService.obtenerCategorias(tipo);
 	}
 	
@@ -61,7 +65,7 @@ public class CategoriaRESTController  {
 				Path rutaCompleta = Paths.get(rutaAbsoluta + "//"+ imagen.getOriginalFilename());
 				Files.write(rutaCompleta, bytesImg);
 				
-				categoria.setImagen(imagen.getOriginalFilename());
+				//categoria.setImagen(imagen.getOriginalFilename());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -74,7 +78,6 @@ public class CategoriaRESTController  {
 	//@RequestMapping(value="categoria", produces = "application/json", consumes = "multipart/form-data")
 	@PostMapping(value="/agregar" )
 	public ResponseEntity<?> agregarCategoria(@RequestBody Categorias categoria ) {
-		
 		categoriaService.addCategoria(categoria);
 		return new ResponseEntity<Categorias>(categoria, HttpStatus.OK);
 	}
@@ -110,4 +113,9 @@ public class CategoriaRESTController  {
 		}
 		
 	}
+	
+    @GetMapping("/report/{format}")
+    public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
+        return categoriaService.exportReport(format);
+    }
 }
