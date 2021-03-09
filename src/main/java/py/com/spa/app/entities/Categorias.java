@@ -48,7 +48,7 @@ import py.com.spa.app.util.FileModel;
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
     @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
-    @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
+    //@NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
     @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
     @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
@@ -93,20 +93,18 @@ public class Categorias implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String codigo, String descripcion, TipoCategoria dataType) {
+    public Categorias(Integer categoriaId, String descripcion, TipoCategoria dataType) {
         this.categoriaId = categoriaId;
-        this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
 
-    public Categorias(Integer categoriaId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
+    public Categorias(Integer categoriaId,
 			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull TipoCategoria dataType,
 			@Size(max = 2147483647) String imageName, Collection<Servicios> serviciosCollection,
 			Collection<Productos> productosCollection) {
 		super();
 		this.categoriaId = categoriaId;
-		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.dataType = dataType;
 		this.imageName = imageName;
@@ -137,14 +135,6 @@ public class Categorias implements Serializable {
 	public void setCategoriaId(Integer categoriaId) {
 		this.categoriaId = categoriaId;
 	}
-
-	public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
 
     public String getDescripcion() {
         return descripcion;

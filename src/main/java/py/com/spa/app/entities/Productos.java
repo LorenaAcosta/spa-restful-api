@@ -43,7 +43,7 @@ import py.com.spa.app.enumeraciones.TipoCategoria;
 @NamedQueries({
     @NamedQuery(name = "Productos.findAll", query = "SELECT p FROM Productos p"),
     @NamedQuery(name = "Productos.findByProductoId", query = "SELECT p FROM Productos p WHERE p.productoId = :productoId"),
-    @NamedQuery(name = "Productos.findByCodigo", query = "SELECT p FROM Productos p WHERE p.codigo = :codigo"),
+    //@NamedQuery(name = "Productos.findByCodigo", query = "SELECT p FROM Productos p WHERE p.codigo = :codigo"),
     @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Productos.findByCosto", query = "SELECT p FROM Productos p WHERE p.costo = :costo"),
     @NamedQuery(name = "Productos.findByPrecioVenta", query = "SELECT p FROM Productos p WHERE p.precioVenta = :precioVenta"),
@@ -105,12 +105,11 @@ public class Productos implements Serializable {
         this.productoId = productoId;
     }
 
-    public Productos(Integer productoId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
+    public Productos(Integer productoId,
 			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull int costo, @NotNull int precioVenta,
 			@NotNull int stockActual, @NotNull EstadoProducto estado) {
 		super();
 		this.productoId = productoId;
-		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.costo = costo;
 		this.precioVenta = precioVenta;
@@ -124,14 +123,6 @@ public class Productos implements Serializable {
 
     public void setProductoId(Integer productoId) {
         this.productoId = productoId;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public String getDescripcion() {

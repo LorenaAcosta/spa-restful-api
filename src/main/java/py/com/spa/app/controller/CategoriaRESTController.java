@@ -119,7 +119,7 @@ public class CategoriaRESTController  {
 		
 		try {
 			c.setDescripcion(categoria.getDescripcion());
-			c.setCodigo(categoria.getCodigo());
+			//c.setCodigo(categoria.getCodigo());
 			c.setImageName(categoria.getImageName());
 			c.setDataType(categoria.getDataType());
 			nuevo = categoriaService.updateCategoria(c);

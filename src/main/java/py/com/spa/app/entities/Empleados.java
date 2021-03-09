@@ -195,7 +195,7 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    @JsonBackReference(value="disponible-empleado")
+    /*@JsonBackReference(value="disponible-empleado")
     @XmlTransient
     public Collection<Disponible> getDisponibleCollection() {
         return disponibleCollection;
@@ -203,7 +203,7 @@ public class Empleados implements Serializable {
 
     public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
         this.disponibleCollection = disponibleCollection;
-    }
+    }*/
 
     @Override
     public int hashCode() {
