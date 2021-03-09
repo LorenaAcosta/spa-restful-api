@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import py.com.spa.app.enumeraciones.EstadoProducto;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 
 /**
  *
@@ -74,14 +79,19 @@ public class Productos implements Serializable {
     @NotNull
     @Column(name = "stock_actual")
     private int stockActual;
+    /*@Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;*/
+    
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
-    @Basic(optional = false)
+
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "estado")
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    private EstadoProducto estado;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
@@ -97,17 +107,20 @@ public class Productos implements Serializable {
         this.productoId = productoId;
     }
 
-    public Productos(Integer productoId, String codigo, String descripcion, int costo, int precioVenta, int stockActual, String estado) {
-        this.productoId = productoId;
-        this.codigo = codigo;
-        this.descripcion = descripcion;
-        this.costo = costo;
-        this.precioVenta = precioVenta;
-        this.stockActual = stockActual;
-        this.estado = estado;
-    }
+    public Productos(Integer productoId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
+			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull int costo, @NotNull int precioVenta,
+			@NotNull int stockActual, @NotNull EstadoProducto estado) {
+		super();
+		this.productoId = productoId;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.costo = costo;
+		this.precioVenta = precioVenta;
+		this.stockActual = stockActual;
+		this.estado = estado;
+	}
 
-    public Integer getProductoId() {
+	public Integer getProductoId() {
         return productoId;
     }
 
@@ -163,14 +176,15 @@ public class Productos implements Serializable {
         this.imageName = imageName;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+    public EstadoProducto getEstado() {
+		return estado;
+	}
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-    @JsonBackReference(value="ventasdetalle-productos")
+	public void setEstado(EstadoProducto estado) {
+		this.estado = estado;
+	}
+
+	@JsonBackReference(value="ventasdetalle-productos")
     @XmlTransient
     public Collection<VentasDetalle> getVentasDetalleCollection() {
         return ventasDetalleCollection;

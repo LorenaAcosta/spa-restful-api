@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,6 +36,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import py.com.spa.app.enumeraciones.EstadoProducto;
+import py.com.spa.app.enumeraciones.EstadoServicio;
 import py.com.spa.result.SqlTimeDeserializer;
 
 /**
@@ -64,11 +68,16 @@ public class Servicios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
-    @Basic(optional = false)
+    /*@Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
-    private String estado;
+    private String estado;*/
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    private EstadoServicio estado;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -102,16 +111,19 @@ public class Servicios implements Serializable {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Time duracion) {
-        this.servicioId = servicioId;
-        this.nombre = nombre;
-        this.estado = estado;
-        this.descripcion = descripcion;
-        this.costo = costo;
-        this.duracion = duracion;
-    }
+    public Servicios(Integer servicioId, @NotNull @Size(min = 1, max = 2147483647) String nombre,
+			@NotNull EstadoServicio estado, @NotNull @Size(min = 1, max = 2147483647) String descripcion,
+			@NotNull int costo, @NotNull Time duracion) {
+		super();
+		this.servicioId = servicioId;
+		this.nombre = nombre;
+		this.estado = estado;
+		this.descripcion = descripcion;
+		this.costo = costo;
+		this.duracion = duracion;
+	}
 
-    public Integer getServicioId() {
+	public Integer getServicioId() {
         return servicioId;
     }
 
@@ -127,15 +139,17 @@ public class Servicios implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+   
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    public EstadoServicio getEstado() {
+		return estado;
+	}
 
-    public String getDescripcion() {
+	public void setEstado(EstadoServicio estado) {
+		this.estado = estado;
+	}
+
+	public String getDescripcion() {
         return descripcion;
     }
 
