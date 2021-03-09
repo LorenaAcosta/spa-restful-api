@@ -66,7 +66,7 @@ public class Servicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre")
+    @Column(name = "nombre", unique=true)
     private String nombre;
     /*@Basic(optional = false)
     @NotNull
@@ -103,6 +103,9 @@ public class Servicios implements Serializable {
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    private Collection<Disponible> disponibleCollection;
 
     public Servicios() {
     }

@@ -6,6 +6,7 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -24,6 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.result.SqlTimeDeserializer;
 
 /**
  *
@@ -51,7 +57,7 @@ public class Empleados implements Serializable {
     private Integer empleadoId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cedula")
+    @Column(name = "cedula", unique=true)
     private int cedula;
     @Basic(optional = false)
     @NotNull
@@ -168,7 +174,7 @@ public class Empleados implements Serializable {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
-
+    
     @JsonBackReference(value="horario")
     @XmlTransient
     public Collection<Horario> getHorarioCollection() {
@@ -179,6 +185,7 @@ public class Empleados implements Serializable {
         this.horarioCollection = horarioCollection;
     }
 
+	@JsonBackReference(value="planilla-empleado")
     @XmlTransient
     public Collection<Planilla> getPlanillaCollection() {
         return planillaCollection;
@@ -188,15 +195,15 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    /*@JsonBackReference(value="empleado-disponible")
+    @JsonBackReference(value="disponible-empleado")
     @XmlTransient
-    public Collection<EmpleadoDisponible> getEmpleadoDisponibleCollection() {
-        return empleadoDisponibleCollection;
+    public Collection<Disponible> getDisponibleCollection() {
+        return disponibleCollection;
     }
 
-    public void setEmpleadoDisponibleCollection(Collection<EmpleadoDisponible> empleadoDisponibleCollection) {
-        this.empleadoDisponibleCollection = empleadoDisponibleCollection;
-    }*/
+    public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
+        this.disponibleCollection = disponibleCollection;
+    }
 
     @Override
     public int hashCode() {

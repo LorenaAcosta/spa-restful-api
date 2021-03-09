@@ -24,8 +24,8 @@ public class ProveedorService {
 	}
 	
 	@Transactional
-	public void add(Proveedor proveedor) {
-		proveedorDao.save(proveedor);
+	public Proveedor add(Proveedor proveedor) {
+		return proveedorDao.save(proveedor);
 	}
 	
 	@Transactional(readOnly=true)
@@ -34,8 +34,8 @@ public class ProveedorService {
 	}
 
 	@Transactional
-	public void update(Proveedor proveedor) {
-		proveedorDao.save(proveedor);
+	public Proveedor update(Proveedor proveedor) {
+		return proveedorDao.save(proveedor);
 	}
 	
 	@Transactional

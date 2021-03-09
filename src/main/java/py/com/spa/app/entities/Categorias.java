@@ -59,21 +59,14 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
-    private String codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique=true )
     private String descripcion;
+
     @Basic(optional = false)
-    /*@NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "data_type")
-    private String dataType;*/
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
@@ -85,9 +78,10 @@ public class Categorias implements Serializable {
     private String imageName;
        
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    @OneToMany( mappedBy = "categoriaId")
     private Collection<Servicios> serviciosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    
+    @OneToMany( mappedBy = "categoriaId")
     private Collection<Productos> productosCollection;
     
     
@@ -172,13 +166,6 @@ public class Categorias implements Serializable {
         this.dataType = dataType;
     }
 
-    /*public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }*/
 
 	@JsonBackReference(value="servicios")
     @XmlTransient
@@ -200,13 +187,7 @@ public class Categorias implements Serializable {
         this.productosCollection = productosCollection;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (categoriaId != null ? categoriaId.hashCode() : 0);
-        return hash;
-    }
-
+  
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

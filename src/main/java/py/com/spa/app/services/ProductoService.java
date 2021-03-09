@@ -34,8 +34,8 @@ public class ProductoService {
 		return (List<Productos>) productoDao.findAll(); 
 	}
 	@Transactional
-	public void addProducto(Productos producto) {
-		productoDao.save(producto);
+	public Productos addProducto(Productos producto) {
+		return productoDao.save(producto);
 	}
 	
 	
@@ -51,8 +51,8 @@ public class ProductoService {
 	}
 	
 	@Transactional
-	public void updateProducto(Productos producto) {
-		productoDao.save(producto);
+	public Productos updateProducto(Productos producto) {
+		return productoDao.save(producto);
 	} 
 	
 	@Transactional

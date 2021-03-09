@@ -1,8 +1,11 @@
 package py.com.spa.app.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.DisponibleService;
@@ -35,31 +38,68 @@ public class DisponibleRESTController {
 	}
 	
 	@PostMapping("/agregar")
-	public void agregarDisponible(@RequestBody Disponible disponible) {
-		disponibleService.addDisponible(disponible);
+	public ResponseEntity<?> agregarDisponible(@RequestBody Disponible disponible) {
+		Disponible disp = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			disp = disponibleService.addDisponible(disponible);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar el insert en la bd");
+			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "Se ha creado con exito.");
+		response.put("disponible", disp);
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
+	}
+	
+	
+	@DeleteMapping("/eliminar/{id}")
+	public ResponseEntity<?> eliminarDiponible(@PathVariable(value="id") Integer id) {
+		Map<String, Object> response = new HashMap<>();
+		Disponible d = disponibleService.findByDisponibleId(id);
+		if ( d == null) {
+			response.put("mensaje",  "Error, No se pudo eliminar. La categoria no existe en la base de datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		try {
+			disponibleService.deleteCategoria(id);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	
 	@GetMapping("/obtener-empleados-disponibles/{id}")
-	public List<Disponible> findAllByServicioId(@PathVariable Integer id)
+	public ResponseEntity<?> findAllByServicioId(@PathVariable Integer id)
 	{
-		
+		List<Disponible> lista = null;
+		Map<String, Object> response = new HashMap<>();
 		Servicios s = servicioService.findServicioById(id);
 		
-		return (List<Disponible>) disponibleService.findAllByCategoriaId(s);
+		try {
+			lista = disponibleService.findAllByCategoriaId(s);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Disponible>>(lista, HttpStatus.OK);
 	}
 	
 
-	
 	@GetMapping("/encontrar/{id}")
 	public Disponible encontrarProducto(@PathVariable Integer id) {
 		return (Disponible) disponibleService.findByDisponibleId(id);
 	}  
-	
-	@DeleteMapping("/eliminar/{id}")
-	public void eliminarDiponible(@PathVariable(value="id") Integer id) {
-		disponibleService.deleteCategoria(id);
-	}
+
 	
 	
 

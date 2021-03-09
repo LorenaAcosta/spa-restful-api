@@ -42,20 +42,20 @@ public class ServicioService {
 		return (Categorias) categoriaDao.findById(id).orElse(null);
 	}
 
-	
-	@Transactional
-	public void agregarServicio(Servicios prod){
-		servicioDao.save(prod);
-	}
-	
+
 	@Transactional
 	public void deleteServicio(Integer id) {
 		servicioDao.deleteById(id);
 	}
 	
 	@Transactional
-	public void updateServicio(Servicios p) {
-		servicioDao.save(p);
+	public Servicios updateServicio(Servicios p) {
+		return servicioDao.save(p);
+	} 
+
+	@Transactional
+	public Servicios guardarServicio(Servicios p) {
+		return servicioDao.save(p);
 	} 
 	
 	public List<Servicios> findAllByCategoriaId(Categorias categoria) {

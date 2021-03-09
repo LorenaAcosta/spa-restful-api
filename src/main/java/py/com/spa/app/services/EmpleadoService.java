@@ -25,8 +25,8 @@ public class EmpleadoService {
 	}
 
 	@Transactional
-	public void updateEmpleado(Empleados empleado) {
-		empleadoDao.save(empleado);
+	public Empleados updateEmpleado(Empleados empleado) {
+		return empleadoDao.save(empleado);
 	}
 	
 	@Transactional
@@ -38,6 +38,13 @@ public class EmpleadoService {
 	@Transactional(readOnly=true)	
 	public Empleados findEmpleadoById(Integer id) {
 		return (Empleados) empleadoDao.findById(id).orElse(null);
+	}
+
+	
+
+	@Transactional(readOnly=true)	
+	public Empleados findEmpleadoCedula(Integer cedula) {
+		return (Empleados) empleadoDao.findByCedula(cedula);
 	}
 
 

@@ -31,6 +31,7 @@ public class VentaRESTController {
 		return ventaService.findAll();
 	}
 	
+
 	@GetMapping("/next-id")
 	public Integer getNextId() {
 		return (Integer) ventaService.getNextId();

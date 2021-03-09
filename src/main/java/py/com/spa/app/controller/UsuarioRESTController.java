@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.UsuarioService;
 
@@ -35,13 +37,13 @@ public class UsuarioRESTController {
 	    model.put("id", UUID.randomUUID().toString());
 	    model.put("content", "Hello World");
 	    return model;
-	  }
+	 }
 
 	
 	@GetMapping("/user")
 	  public Principal user(Principal user) {
 	    return user;
-	  } 
+	} 
 
 	
 	@GetMapping("/listar")
@@ -57,16 +59,32 @@ public class UsuarioRESTController {
 	
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<Void> agregarUsuario(@RequestBody Usuario Usuario) {
-		 UsuarioService.addUsuario(Usuario);
-		 return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<?>  agregarUsuario(@RequestBody Usuario Usuario) {
+		 Usuario usuario = null;
+		 Map<String, Object> response = new HashMap<>();
+		 try {
+			 usuario = UsuarioService.addUsuario(Usuario);
+		 }catch(DataAccessException e ){
+				response.put("mensaje",  "Error al realizar el insert en la bd");
+				response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El usuario ha sido creado con exito.");
+		response.put("usuario", usuario);
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
 	}
 	
 	@PutMapping("/modificar/{id}")
-	public ResponseEntity<Void> modificarUsuario (@PathVariable(value="id") Integer id, @RequestBody Usuario UsuarioActual) {
-	
+	public ResponseEntity<?> modificarUsuario (@PathVariable(value="id") Integer id, @RequestBody Usuario UsuarioActual) {
 	    Usuario c = UsuarioService.findUsuarioById(id);
-		if(c!=null) {
+		Usuario nuevo =  null;
+		Map<String, Object> response = new HashMap<>();
+	    
+		if (c == null) {
+			response.put("mensaje",  "Error, No se pudo editar. La categoria no existe en la base de datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		try {
 			c.setNombre( UsuarioActual.getNombre());
 			c.setUsername(UsuarioActual.getUsername());
 			c.setPassword(UsuarioActual.getPassword());
@@ -76,24 +94,34 @@ public class UsuarioRESTController {
 			c.setTelefono( UsuarioActual.getTelefono());
 			c.setSexo(UsuarioActual.getSexo());
 			c.setEstado(UsuarioActual.getEstado());
-			UsuarioService.updateUsuario(c);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}else{
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			nuevo = UsuarioService.updateUsuario(c);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		response.put("mensaje", "El usuario ha sido actualizado.");
+		response.put("usuario", nuevo);
+		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);	
 	}  
 	
 	@DeleteMapping("/eliminar/{id}")
-	public ResponseEntity<Void> eliminarUsuario(@PathVariable(value="id") Integer id) {
+	public ResponseEntity<?>  eliminarUsuario(@PathVariable(value="id") Integer id) {
+		Map<String, Object> response = new HashMap<>();
 		Usuario c = UsuarioService.findUsuarioById(id);
-		if (c!=null) {
-			UsuarioService.deleteUsuario(id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		
+		if (c == null) {
+			response.put("mensaje",  "Error, No se pudo eliminar. La categoria no existe en la base de datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
-		
-		
+		try {
+			 UsuarioService.deleteUsuario(id);
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);	
 	}
 
 

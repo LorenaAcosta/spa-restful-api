@@ -26,8 +26,8 @@ public class CompraService {
 	}
 	
 	@Transactional
-	public void addCompras(Compras compra) {
-		comprasDao.save(compra);
+	public Compras addCompras(Compras compra) {
+		return comprasDao.save(compra);
 	}
 	
 	@Transactional(readOnly=true)
@@ -36,8 +36,8 @@ public class CompraService {
 	}
 
 	@Transactional
-	public void updateCompras(Compras compra) {
-		comprasDao.save(compra);
+	public Compras updateCompras(Compras compra) {
+		return comprasDao.save(compra);
 	}
 	
 	@Transactional

@@ -25,8 +25,8 @@ public class DisponibleService {
 	}
 	
 	@Transactional
-	public void addDisponible(Disponible disponible) {
-		disponibleDao.save(disponible);
+	public Disponible addDisponible(Disponible disponible) {
+		return disponibleDao.save(disponible);
 	}	
 	
 	@Transactional(readOnly=true)

@@ -57,16 +57,13 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @Column(name = "producto_id")
     private Integer productoId;
+ 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
-    private String codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique=true)
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "costo")
@@ -97,6 +94,7 @@ public class Productos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
+    
     @ManyToOne(optional = false)
     private Categorias categoriaId;
 
