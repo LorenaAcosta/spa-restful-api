@@ -50,6 +50,10 @@ public class HorarioService {
 	public Horario findByEmpleadoId(Empleados id){
 		return ( Horario ) horarioDao.findByEmpleadoId(id);
 	}
+	
+	public Horario findByIdEmpleado(Integer id){
+		return ( Horario ) horarioDao.findByEmpleado(id);
+	}
 
 
 }

@@ -57,6 +57,12 @@ public class Productos implements Serializable {
     @Basic(optional = false)
     @Column(name = "producto_id")
     private Integer productoId;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "codigo")
+    private String codigo;
  
     @Basic(optional = false)
     @NotNull
@@ -105,11 +111,12 @@ public class Productos implements Serializable {
         this.productoId = productoId;
     }
 
-    public Productos(Integer productoId,
+    public Productos(Integer productoId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
 			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull int costo, @NotNull int precioVenta,
 			@NotNull int stockActual, @NotNull EstadoProducto estado) {
 		super();
 		this.productoId = productoId;
+		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.costo = costo;
 		this.precioVenta = precioVenta;
@@ -123,6 +130,14 @@ public class Productos implements Serializable {
 
     public void setProductoId(Integer productoId) {
         this.productoId = productoId;
+    }
+    
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescripcion() {

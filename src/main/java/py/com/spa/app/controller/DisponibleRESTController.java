@@ -1,9 +1,14 @@
 package py.com.spa.app.controller;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
+import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.DisponibleService;
+import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ServicioService;
 
 @RestController
@@ -31,6 +39,10 @@ public class DisponibleRESTController {
 	private DisponibleService disponibleService;
 	@Autowired
 	private ServicioService servicioService;
+
+	
+	private static final Logger logger = null;
+	
 	
 	@GetMapping("/listar")
 	public List<Disponible> listarDisponible(){
@@ -98,11 +110,18 @@ public class DisponibleRESTController {
 	@GetMapping("/encontrar/{id}")
 	public Disponible encontrarProducto(@PathVariable Integer id) {
 		return (Disponible) disponibleService.findByDisponibleId(id);
-	}  
-
-	
+	}
 	
 
+	@GetMapping("/getHorariosDisponibles/{categoriaId}/{servicioId}/{empleadoId}/{fecha}")
+	public List<Time> getHorariosDisponibles(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="servicioId") Integer servicioId,
+												@PathVariable(value="empleadoId")  Integer empleadoId, @PathVariable(value="fecha")  String fecha) throws ParseException {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fech = sdf.parse(fecha);
+
+		return (List<Time>) disponibleService.getHorariosDisponibles(categoriaId, servicioId, empleadoId, fech);
+	}
 	
 	
 }

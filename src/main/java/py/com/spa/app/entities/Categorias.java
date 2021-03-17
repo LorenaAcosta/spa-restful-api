@@ -112,6 +112,7 @@ public class Categorias implements Serializable {
 		this.productosCollection = productosCollection;
 	}
 
+    @JsonBackReference(value="image_name")
 	public String getImage_name() {
 		return imageName;
 	}
@@ -123,7 +124,7 @@ public class Categorias implements Serializable {
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
 	}
-
+	@JsonBackReference(value="categoria_id")
     public Integer getCategoria_id() {
 		return categoriaId;
 	}
@@ -144,6 +145,7 @@ public class Categorias implements Serializable {
         this.descripcion = descripcion;
     }
 
+    @JsonBackReference(value="datatype_id")
     public String getData_type() {
         return dataType.toString();
     }

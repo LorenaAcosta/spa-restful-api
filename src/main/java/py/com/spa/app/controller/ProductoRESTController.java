@@ -70,6 +70,7 @@ public class ProductoRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
+			prod.setCodigo(producto.getCodigo());
 			prod.setDescripcion(    producto.getDescripcion());
 			prod.setCosto(          producto.getCosto());
 			prod.setPrecioVenta(    producto.getPrecioVenta());

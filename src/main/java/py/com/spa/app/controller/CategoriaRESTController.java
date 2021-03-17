@@ -53,6 +53,11 @@ public class CategoriaRESTController  {
 		return categoriaService.findAll();
 	}
 	
+	@GetMapping("/descripcion")
+	public List<String> listarServiciosPorDescripcion(){
+		return categoriaService.findAllByDescripcion();
+	}
+	
 	@GetMapping("/getServicios")
 	public List<Categorias> getServicios(){
 		return categoriaService.findAll();

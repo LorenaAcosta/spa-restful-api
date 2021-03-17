@@ -34,6 +34,11 @@ public class CategoriaService {
 		return (List<Categorias>) categoriaDao.findAll();
 	}
 	
+	@Transactional(readOnly=true)
+	public List<String> findAllByDescripcion(){
+		return (List<String>) categoriaDao.findAllByDescripcion(); 
+	}
+	
 	@Transactional
 	public Categorias addCategoria(Categorias categoria) {
 		return categoriaDao.save(categoria);
