@@ -126,7 +126,7 @@ public class ServicioRESTController {
 	}
 	
 	@GetMapping("/getServiciosByEstado/{estado}")
-	public ResponseEntity<?>  getServiciosByEstado(@PathVariable String estado){
+	public ResponseEntity<?>  getServiciosByEstado(@PathVariable(value="estado") String estado){
 		List<Servicios> lista = null;
 		Map<String, Object> response = new HashMap<>();
 		try {

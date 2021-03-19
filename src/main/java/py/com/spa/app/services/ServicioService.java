@@ -15,6 +15,8 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IServicioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.enumeraciones.EstadoServicio;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 
 @Service
 public class ServicioService {
@@ -63,7 +65,8 @@ public class ServicioService {
 	}
 
 	public List<Servicios> getServiciosByEstado(String estado) {
-		return (List<Servicios>) servicioDao.getServiciosByEstado(estado);
+		return (List<Servicios>) servicioDao.getServiciosByEstado(EstadoServicio.valueOf(estado.toUpperCase()));
+		//return (List<Categorias>) categoriaDao.findByDataType(TipoCategoria.valueOf(id.toUpperCase()));
 	}
 
 
