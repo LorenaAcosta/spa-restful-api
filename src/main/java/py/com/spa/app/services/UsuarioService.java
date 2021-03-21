@@ -22,13 +22,13 @@ public class UsuarioService {
 	}
 	
 	@Transactional
-	public void addUsuario(Usuario Usuario) {
-		UsuarioDao.save(Usuario);
+	public Usuario addUsuario(Usuario Usuario) {
+		return UsuarioDao.save(Usuario);
 	}
 
 	@Transactional
-	public void updateUsuario(Usuario Usuario) {
-		UsuarioDao.save(Usuario);
+	public Usuario updateUsuario(Usuario Usuario) {
+		return UsuarioDao.save(Usuario);
 	}
 	
 	@Transactional

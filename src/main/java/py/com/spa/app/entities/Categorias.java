@@ -13,19 +13,29 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import py.com.spa.app.enumeraciones.TipoCategoria;
+import py.com.spa.app.util.FileModel;
 
 /**
  *
@@ -38,10 +48,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @NamedQuery(name = "Categorias.findAll", query = "SELECT c FROM Categorias c"),
     @NamedQuery(name = "Categorias.obtenerPorTipo", query = "SELECT c FROM Categorias c WHERE c.dataType = :tipo"),
     @NamedQuery(name = "Categorias.findByCategoriaId", query = "SELECT c FROM Categorias c WHERE c.categoriaId = :categoriaId"),
-    @NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
+    //@NamedQuery(name = "Categorias.findByCodigo", query = "SELECT c FROM Categorias c WHERE c.codigo = :codigo"),
     @NamedQuery(name = "Categorias.findByDescripcion", query = "SELECT c FROM Categorias c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType")})
-    //@NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")
+    @NamedQuery(name = "Categorias.findByDataType", query = "SELECT c FROM Categorias c WHERE c.dataType = :dataType"),
+    @NamedQuery(name = "Categorias.findByImageName", query = "SELECT c FROM Categorias c WHERE c.imageName = :imageName")})
 public class Categorias implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,63 +59,83 @@ public class Categorias implements Serializable {
     @Basic(optional = false)
     @Column(name = "categoria_id")
     private Integer categoriaId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "codigo")
-    private String codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "descripcion")
-    private String descripcion;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "data_type")
-    private String dataType;
-    /*@Size(max = 2147483647)
-    @Column(name = "image_name")
-    private String imageName;*/
-    
-    /**/
-     //private String imagen;
-     /**/
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private Collection<Servicios> serviciosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private Collection<Productos> productosCollection;
 
-    public Categorias() {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "descripcion", unique=true )
+    private String descripcion;
+
+    @Basic(optional = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    private TipoCategoria dataType;
+    
+    
+    @Size(max = 2147483647)
+    @Column(name = "image_name")
+    private String imageName;
+       
+    
+    @OneToMany( mappedBy = "categoriaId")
+    private Collection<Servicios> serviciosCollection;
+    
+    @OneToMany( mappedBy = "categoriaId")
+    private Collection<Productos> productosCollection;
+    
+    
+
+	public Categorias() {
     }
 
     public Categorias(Integer categoriaId) {
         this.categoriaId = categoriaId;
     }
 
-    public Categorias(Integer categoriaId, String codigo, String descripcion, String dataType) {
+    public Categorias(Integer categoriaId, String descripcion, TipoCategoria dataType) {
         this.categoriaId = categoriaId;
-        this.codigo = codigo;
         this.descripcion = descripcion;
         this.dataType = dataType;
     }
 
+    public Categorias(Integer categoriaId,
+			@NotNull @Size(min = 1, max = 2147483647) String descripcion, @NotNull TipoCategoria dataType,
+			@Size(max = 2147483647) String imageName, Collection<Servicios> serviciosCollection,
+			Collection<Productos> productosCollection) {
+		super();
+		this.categoriaId = categoriaId;
+		this.descripcion = descripcion;
+		this.dataType = dataType;
+		this.imageName = imageName;
+		this.serviciosCollection = serviciosCollection;
+		this.productosCollection = productosCollection;
+	}
+
+    @JsonBackReference(value="image_name")
+	public String getImage_name() {
+		return imageName;
+	}
+    
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+	@JsonBackReference(value="categoria_id")
+    public Integer getCategoria_id() {
+		return categoriaId;
+	}
+
     public Integer getCategoriaId() {
-        return categoriaId;
-    }
+		return categoriaId;
+	}
 
-    public void setCategoriaId(Integer categoriaId) {
-        this.categoriaId = categoriaId;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
+	public void setCategoriaId(Integer categoriaId) {
+		this.categoriaId = categoriaId;
+	}
 
     public String getDescripcion() {
         return descripcion;
@@ -115,31 +145,21 @@ public class Categorias implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getDataType() {
+    @JsonBackReference(value="datatype_id")
+    public String getData_type() {
+        return dataType.toString();
+    }
+    
+    public TipoCategoria getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(TipoCategoria dataType) {
         this.dataType = dataType;
     }
 
-    /*public String getImageName() {
-        return imageName;
-    }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }*/
-
-    /*public String getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
-	}*/
-
-	@JsonBackReference(value="servicios-cat")
+	@JsonBackReference(value="servicios")
     @XmlTransient
     public Collection<Servicios> getServiciosCollection() {
         return serviciosCollection;
@@ -149,7 +169,7 @@ public class Categorias implements Serializable {
         this.serviciosCollection = serviciosCollection;
     }
 
-    @JsonBackReference(value="productos-cat")
+    @JsonBackReference(value="productos")
     @XmlTransient
     public Collection<Productos> getProductosCollection() {
         return productosCollection;
@@ -159,13 +179,7 @@ public class Categorias implements Serializable {
         this.productosCollection = productosCollection;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (categoriaId != null ? categoriaId.hashCode() : 0);
-        return hash;
-    }
-
+  
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -181,7 +195,7 @@ public class Categorias implements Serializable {
 
     @Override
     public String toString() {
-    	return "com.spa.entities.Categorias[ categoriaId=" + categoriaId + " ]";
+        return "com.spa.Categorias[ categoriaId=" + categoriaId + " ]";
     }
     
 }

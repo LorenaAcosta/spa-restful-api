@@ -27,9 +27,9 @@ public class HorarioService {
 	
 	
 	@Transactional
-	public void addHorario(Horario horario) {
-		
-		horarioDao.save(horario);
+
+	public Horario addHorario(Horario horario) {
+		return horarioDao.save(horario);
 	}
 	
 	@Transactional(readOnly=true)
@@ -47,11 +47,13 @@ public class HorarioService {
 		horarioDao.deleteById(id);
 	}
 	
-	public List<Horario> findByEmpleadoId(Empleados empleado){
-		return (List<Horario>) horarioDao.findByEmpleadoId(empleado);
+	public Horario findByEmpleadoId(Empleados id){
+		return ( Horario ) horarioDao.findByEmpleadoId(id);
 	}
 	
+	public Horario findByIdEmpleado(Integer id){
+		return ( Horario ) horarioDao.findByEmpleado(id);
+	}
 
-	
 
 }

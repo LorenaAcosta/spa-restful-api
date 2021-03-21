@@ -15,6 +15,8 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IServicioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.enumeraciones.EstadoServicio;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 
 @Service
 public class ServicioService {
@@ -42,20 +44,20 @@ public class ServicioService {
 		return (Categorias) categoriaDao.findById(id).orElse(null);
 	}
 
-	
-	@Transactional
-	public void agregarServicio(Servicios prod){
-		servicioDao.save(prod);
-	}
-	
+
 	@Transactional
 	public void deleteServicio(Integer id) {
 		servicioDao.deleteById(id);
 	}
 	
 	@Transactional
-	public void updateServicio(Servicios p) {
-		servicioDao.save(p);
+	public Servicios updateServicio(Servicios p) {
+		return servicioDao.save(p);
+	} 
+
+	@Transactional
+	public Servicios guardarServicio(Servicios p) {
+		return servicioDao.save(p);
 	} 
 	
 	public List<Servicios> findAllByCategoriaId(Categorias categoria) {
@@ -63,12 +65,13 @@ public class ServicioService {
 	}
 
 	public List<Servicios> getServiciosByEstado(String estado) {
-		return (List<Servicios>) servicioDao.getServiciosByEstado(estado);
+		return (List<Servicios>) servicioDao.getServiciosByEstado(EstadoServicio.valueOf(estado.toUpperCase()));
+		//return (List<Categorias>) categoriaDao.findByDataType(TipoCategoria.valueOf(id.toUpperCase()));
 	}
 
 
 	public List<Servicios> findAllByCategoriaIdAndEstado(Categorias categoria, String estado){
-		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria, estado);
+		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria.getCategoriaId(), estado);
 		
 	}
 }

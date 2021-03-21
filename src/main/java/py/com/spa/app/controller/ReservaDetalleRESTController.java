@@ -44,7 +44,7 @@ public class ReservaDetalleRESTController {
 	
 	@PostMapping("/agregar")
 	public void agregarReservaDetalle(@RequestBody ReservaDetalle reservadetalle) {
-		System.out.println(reservadetalle.getFechaReserva().toString());
+		//System.out.println(reservadetalle.getFechaReserva().toString());
 		reservaDetalleService.addReservaDetalle(reservadetalle);
 	}
 	

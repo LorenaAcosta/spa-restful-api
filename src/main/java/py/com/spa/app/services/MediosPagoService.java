@@ -20,8 +20,8 @@ public class MediosPagoService {
 	}
 	
 	@Transactional
-	public void addMediosPago(MediosPago mediospago) {
-		mediosPagoDao.save(mediospago);
+	public MediosPago addMediosPago(MediosPago mediospago) {
+		return mediosPagoDao.save(mediospago);
 	}
 	
 	@Transactional(readOnly=true)
@@ -30,8 +30,8 @@ public class MediosPagoService {
 	}
 	
 	@Transactional
-	public void updateMedioPago(MediosPago mediospago) {
-		mediosPagoDao.save(mediospago);
+	public MediosPago updateMedioPago(MediosPago mediospago) {
+		return mediosPagoDao.save(mediospago);
 	}
 	
 	

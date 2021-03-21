@@ -6,12 +6,15 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import py.com.spa.app.enumeraciones.EstadoProducto;
+import py.com.spa.app.enumeraciones.EstadoServicio;
+import py.com.spa.result.SqlTimeDeserializer;
 
 /**
  *
@@ -58,13 +66,18 @@ public class Servicios implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre")
+    @Column(name = "nombre", unique=true)
     private String nombre;
-    @Basic(optional = false)
+    /*@Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
-    private String estado;
+    private String estado;*/
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 8)
+    private EstadoServicio estado;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -79,10 +92,10 @@ public class Servicios implements Serializable {
     private String imageName;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "duracion")
     @JsonFormat(pattern="HH:mm")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date duracion;
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
+    @Column(name = "duracion")
+    private Time  duracion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
@@ -91,6 +104,9 @@ public class Servicios implements Serializable {
     @ManyToOne(optional = false)
     private Categorias categoriaId;
 
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    private Collection<Disponible> disponibleCollection;
+
     public Servicios() {
     }
 
@@ -98,16 +114,19 @@ public class Servicios implements Serializable {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Date duracion) {
-        this.servicioId = servicioId;
-        this.nombre = nombre;
-        this.estado = estado;
-        this.descripcion = descripcion;
-        this.costo = costo;
-        this.duracion = duracion;
-    }
+    public Servicios(Integer servicioId, @NotNull @Size(min = 1, max = 2147483647) String nombre,
+			@NotNull EstadoServicio estado, @NotNull @Size(min = 1, max = 2147483647) String descripcion,
+			@NotNull int costo, @NotNull Time duracion) {
+		super();
+		this.servicioId = servicioId;
+		this.nombre = nombre;
+		this.estado = estado;
+		this.descripcion = descripcion;
+		this.costo = costo;
+		this.duracion = duracion;
+	}
 
-    public Integer getServicioId() {
+	public Integer getServicioId() {
         return servicioId;
     }
 
@@ -123,15 +142,17 @@ public class Servicios implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+   
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    public EstadoServicio getEstado() {
+		return estado;
+	}
 
-    public String getDescripcion() {
+	public void setEstado(EstadoServicio estado) {
+		this.estado = estado;
+	}
+
+	public String getDescripcion() {
         return descripcion;
     }
 
@@ -155,11 +176,11 @@ public class Servicios implements Serializable {
         this.imageName = imageName;
     }
 
-    public Date getDuracion() {
+    public Time getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Date duracion) {
+    public void setDuracion(Time duracion) {
         this.duracion = duracion;
     }
 
