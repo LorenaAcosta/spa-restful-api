@@ -2,6 +2,8 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,8 +21,11 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import py.com.spa.result.SqlTimeDeserializer;
 /**

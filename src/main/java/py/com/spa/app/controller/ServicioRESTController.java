@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,5 +181,24 @@ public class ServicioRESTController {
 		return new ResponseEntity<Servicios>(service, HttpStatus.OK);
 	}
 
+	@GetMapping("/get-servicios-disponibles/{id}")
+	public  ResponseEntity<?>  getServiciosDisponibles(@PathVariable Integer empleadoId) {
+		List<Servicios> servicios = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			
+			servicios = (List<Servicios>)servicioService.getServiciosDisponibles(empleadoId);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if (servicios==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<	List<Servicios> >(	servicios, HttpStatus.OK);
+	}
 	
 }

@@ -64,8 +64,8 @@ public class ReservaDetalleRESTController {
 	
 	@GetMapping("/get-turnos/{id}/{date}")
 	public List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(@PathVariable(value="id") Integer empleado, @PathVariable(value="date")  String date) throws ParseException {
-		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		return (List<ReservaDetalle>) reservaDetalleService.findAllByEmpleadoAndFechaReservaOrderByHoraAsc(empleado, date1);
+		Date fecha = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		return (List<ReservaDetalle>) reservaDetalleService.findAllByEmpleadoAndFechaReservaOrderByHoraAsc(empleado, fecha);
 	}
 	
 	@PutMapping("/modificar/{id}")

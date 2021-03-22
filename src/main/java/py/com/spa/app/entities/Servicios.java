@@ -79,10 +79,10 @@ public class Servicios implements Serializable {
     private int costo;
     @Basic(optional = false)
     @NotNull
-    @JsonFormat(pattern="HH:mm")
-    @JsonDeserialize(using = SqlTimeDeserializer.class)
+ //   @JsonFormat(pattern="HH:mm")
+ //   @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "duracion")
-    private Time  duracion;
+    private String  duracion;
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
@@ -97,7 +97,7 @@ public class Servicios implements Serializable {
         this.servicioId = servicioId;
     }
 
-    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, Time duracion) {
+    public Servicios(Integer servicioId, String nombre, String estado, String descripcion, int costo, String duracion) {
         this.servicioId = servicioId;
         this.nombre = nombre;
         this.estado = estado;
@@ -146,11 +146,11 @@ public class Servicios implements Serializable {
         this.costo = costo;
     }
 
-    public Time getDuracion() {
+    public String getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Time date) {
+    public void setDuracion(String date) {
         this.duracion = date;
     }
 
