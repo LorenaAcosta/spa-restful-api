@@ -37,8 +37,8 @@ public class SpaAppApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg) throws Exception{
-		//fileService.deleteAll();
-		//fileService.init();
+		fileService.deleteAll();
+		fileService.init();
 	}
 	
 	  /* En caso que tenga problema con los cors agregar este Bean */
