@@ -31,6 +31,6 @@ public interface IDisponibleDao  extends JpaRepository<Disponible, Integer>{
 		 		"	join disponible d on d.empleado_id = rd.empleado\r\n" + 
 		 		"	join servicios s on s.servicio_id = d.servicio_id\r\n" + 
 		 		"	where rd.empleado = :id and rd.fecha_reserva = :fecha" ,  nativeQuery = true)
-		 List<Time> findHorasOcupadas(@Param("id") Integer id, @Param("fecha") Date fecha);
+	 List<Time> findHorasOcupadas(@Param("id") Integer id, @Param("fecha") Date fecha);
 
 }

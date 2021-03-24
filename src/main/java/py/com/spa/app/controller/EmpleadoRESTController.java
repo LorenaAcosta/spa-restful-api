@@ -31,6 +31,7 @@ import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Turnos;
+import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.EmpleadoService;
 import py.com.spa.app.services.HorarioService;
@@ -45,24 +46,7 @@ public class EmpleadoRESTController {
 	@Autowired
 	private EmpleadoService empleadoService;
 	
-	@Autowired
-	private HorarioService horarioService;
 	
-	@Autowired
-	private DisponibleService disponibleService;
-	
-	@Autowired
-	private ReservaDetalleService reservaService;
-	
-	 @Autowired
-	private DataSource dataSource;
-	
-	 @Autowired 
-	private JdbcTemplate jdbcTemplateObject;
-	 
-	 @Autowired
-	 private ServiceService servicio;
-		
 	
 	@GetMapping("/listar")
 	public List<Empleados> listarEmpleados() {
@@ -124,7 +108,6 @@ public class EmpleadoRESTController {
 			emp.setDireccion(empActual.getDireccion());
 			emp.setTelefono(empActual.getTelefono());
 			emp.setFechaNac(empActual.getFechaNac());
-			emp.setImageName(empActual.getImageName());
 			empleado = empleadoService.updateEmpleado(emp);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
@@ -168,6 +151,24 @@ public class EmpleadoRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Empleados>(emp, HttpStatus.OK); 		
+	}
+	
+	@GetMapping("/busqueda-empleados/{id}")
+	public ResponseEntity<?>  busquedaEmpleados(@PathVariable(value="id") String termino)  {
+		List<Empleados> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= empleadoService.busquedaEmpleados(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Empleados>>(lista, HttpStatus.OK);
 	}
 	
 

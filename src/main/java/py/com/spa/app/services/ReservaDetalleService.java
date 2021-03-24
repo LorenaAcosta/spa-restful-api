@@ -64,7 +64,10 @@ public class ReservaDetalleService {
 	}
 
 	
-	
+	@Transactional(readOnly=true)
+	public List<ReservaDetalle> busquedaReservas (String termino){
+		return reservaDao.busquedaReservas(termino);
+	}
 
 
 }

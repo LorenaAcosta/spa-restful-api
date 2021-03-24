@@ -87,6 +87,30 @@ public class Empleados implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "correo")
+    private String correo;
+    @Column(name = "estado_civil")
+    private String estadoCivil;
+    @Column(name = "estado")
+    private String estado;
+    @Column(name = "fecha_ingreso")
+    private String fechaIngreso;
+    @Column(name = "fecha_salida")
+    private String fecha_salida;
+    @Column(name = "celular")
+    private String celular;
+    @Column(name = "funcion")
+    private String funcion;
+    @Column(name = "sueldo")
+    private String sueldo;
+    @Column(name = "ciudad")
+    private String ciudad;
+    @Column(name = "nacionalidad")
+    private String nacionalidad;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Horario> horarioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")

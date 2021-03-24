@@ -10,6 +10,7 @@ import py.com.spa.app.dao.IEmpleadoDao;
 import py.com.spa.app.dao.daoImpl;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Turnos;
+import py.com.spa.app.entities.Usuario;
 
 @Service
 public class EmpleadoService {
@@ -67,6 +68,13 @@ public class EmpleadoService {
         }
         return response;
     }
+    
+
+	@Transactional(readOnly=true)
+	public List<Empleados> busquedaEmpleados (String termino){
+		return empleadoDao.busquedaEmpleados(termino);
+	}
+
 
 
 }

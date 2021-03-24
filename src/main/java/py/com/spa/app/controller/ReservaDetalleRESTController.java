@@ -93,4 +93,12 @@ public class ReservaDetalleRESTController {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}	
 	}
+	
+	
+	@GetMapping("/busqueda-reservas/{id}")
+	public List<ReservaDetalle> busquedaReservas(@PathVariable(value="id") String termino)  {
+		return (List<ReservaDetalle>) reservaDetalleService.busquedaReservas(termino);
+	}
+	
+	
 }
