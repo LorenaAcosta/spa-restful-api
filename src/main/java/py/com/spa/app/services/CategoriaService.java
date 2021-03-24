@@ -46,6 +46,12 @@ public class CategoriaService {
 	public List<Categorias> obtenerCategorias(String id) {
 		return (List<Categorias>) categoriaDao.findByDataType(id);
 	}
+	
+	@Transactional(readOnly=true)
+	public List<Categorias> busquedaCategorias (String termino){
+		return categoriaDao.busquedaCategorias(termino);
+	}
+
 
 }
 
