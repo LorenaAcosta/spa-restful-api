@@ -31,7 +31,6 @@ import py.com.spa.app.entities.Servicios;
 @Service
 public class DisponibleService {
 	
-	private static final Logger logger = null;
 	
 	@Autowired
 	private IDisponibleDao disponibleDao;
@@ -112,61 +111,9 @@ public class DisponibleService {
 	
 
 	
-	
-public List<Time> getHorariosDisponibles(Integer categoriaId, Integer servicioId, Integer empleadoId, Date fecha) {
-	
-		long millis=System.currentTimeMillis();  
-		java.sql.Date date=new java.sql.Date(millis);  
-		System.out.println(date); 
-			
-		if (fecha.compareTo(date) < 0 ){
-			return null;
-		}else {
-		// obtenemos la hora de entrada y hora de salida del empleado
-		Horario hor = horarioService.findByIdEmpleado(empleadoId);
-		Long inicio = (hor.getHoraInicio().getTime() / 1000L) - 14400;
-		Long fin = (hor.getHoraFin().getTime() / 1000L) - 14400;
-		Long suma = (inicio + 3600);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String fechaString = sdf.format(fecha);
-		
-		List<Time> horasOcupadas = disponibleDao.findHorasOcupadas(empleadoId, fecha);
-		//System.out.println("Tamaño : " + horasOcupadas.size());
-		
-		List<Time> horasDisponibles = new ArrayList<Time>();
-		
-		for (long i = inicio; i < fin; i = i + 3600 ) {
-		       for (Time hora : horasOcupadas) {
-		            if (((hora.getTime() / 1000L) - 14400) == i) {
-		            	i = i + 3600;
-		            }
-		        }
-		       
-		       Time hora = new Time((i * 1000L) + (14400 * 1000L) );
-           		if (((hora.getTime() / 1000L) - 14400) != fin ) {
-           			horasDisponibles.add(hora);
-           		}
-		}
-
-		if (horasDisponibles.size() == 0) {
-			Time vacio = null; //new Time((14400 - 14400) );
-			System.out.println("Hora en formato Time " + vacio);
-			horasDisponibles.add(vacio);
-		}
-		return horasDisponibles;
-		}
-		
+	public List<Disponible> findByEmpleadoId(Empleados emp) {
+		return (List<Disponible>) disponibleDao.findAllByEmpleadoId(emp);
 	}
-
-public List<Disponible> findByEmpleadoId(Empleados emp) {
-	return (List<Disponible>) disponibleDao.findAllByEmpleadoId(emp);
-}
-	
-
-	
-	
-
 }
 
 
