@@ -99,7 +99,7 @@ public class Empleados implements Serializable {
     @Column(name = "fecha_ingreso")
     private String fechaIngreso;
     @Column(name = "fecha_salida")
-    private String fecha_salida;
+    private String fechaSalida;
     @Column(name = "celular")
     private String celular;
     @Column(name = "funcion")
@@ -125,81 +125,181 @@ public class Empleados implements Serializable {
         this.empleadoId = empleadoId;
     }
 
-    public Empleados(Integer empleadoId, int cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
-        this.empleadoId = empleadoId;
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.fechaNac = fechaNac;
-    }
 
-    public Integer getEmpleadoId() {
-        return empleadoId;
-    }
 
-    public void setEmpleadoId(Integer empleadoId) {
-        this.empleadoId = empleadoId;
-    }
 
-    public int getCedula() {
-        return cedula;
-    }
 
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
-    }
 
-    public String getNombre() {
-        return nombre;
-    }
+	public Empleados(Integer empleadoId, @NotNull int cedula, @NotNull @Size(min = 1, max = 2147483647) String nombre,
+			@NotNull @Size(min = 1, max = 2147483647) String apellido,
+			@NotNull @Size(min = 1, max = 2147483647) String direccion,
+			@NotNull @Size(min = 1, max = 2147483647) String telefono,
+			@NotNull @Size(min = 1, max = 2147483647) String fechaNac, @Size(max = 2147483647) String imageName,
+			@NotNull @Size(min = 1, max = 2147483647) String correo, String estadoCivil, String estado,
+			String fechaIngreso, String celular, String funcion, String sueldo, String ciudad, String nacionalidad) {
+		super();
+		this.empleadoId = empleadoId;
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.fechaNac = fechaNac;
+		this.imageName = imageName;
+		this.correo = correo;
+		this.estadoCivil = estadoCivil;
+		this.estado = estado;
+		this.fechaIngreso = fechaIngreso;
+		this.celular = celular;
+		this.funcion = funcion;
+		this.sueldo = sueldo;
+		this.ciudad = ciudad;
+		this.nacionalidad = nacionalidad;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public Integer getEmpleadoId() {
+		return empleadoId;
+	}
 
-    public String getApellido() {
-        return apellido;
-    }
+	public void setEmpleadoId(Integer empleadoId) {
+		this.empleadoId = empleadoId;
+	}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+	public int getCedula() {
+		return cedula;
+	}
 
-    public String getDireccion() {
-        return direccion;
-    }
+	public void setCedula(int cedula) {
+		this.cedula = cedula;
+	}
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public String getTelefono() {
-        return telefono;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+	public String getApellido() {
+		return apellido;
+	}
 
-    public String getFechaNac() {
-        return fechaNac;
-    }
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
 
-    public void setFechaNac(String fechaNac) {
-        this.fechaNac = fechaNac;
-    }
+	public String getDireccion() {
+		return direccion;
+	}
 
-    public String getImageName() {
-        return imageName;
-    }
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-    
+	public String getTelefono() {
+		return telefono;
+	}
 
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(String fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public String getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(String estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(String fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	public String getFecha_salida() {
+		return fechaSalida;
+	}
+
+	public void setFecha_salida(String fecha_salida) {
+		this.fechaSalida = fecha_salida;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getFuncion() {
+		return funcion;
+	}
+
+	public void setFuncion(String funcion) {
+		this.funcion = funcion;
+	}
+
+	public String getSueldo() {
+		return sueldo;
+	}
+
+	public void setSueldo(String sueldo) {
+		this.sueldo = sueldo;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
 
 	@JsonBackReference(value="planilla-empleado")
     @XmlTransient

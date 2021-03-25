@@ -53,9 +53,13 @@ public class Usuario implements Serializable {
     private Integer usuarioId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "apellido")
+    private String apellido;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -69,18 +73,21 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "apellido")
-    private String apellido;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "cedula")
     private int cedula;
-    @Basic(optional = false)
+  
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "ciudad")
+    private String ciudad;
+    @Column(name = "nacionalidad")
+    private String nacionalidad;
+    
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "telefono")
@@ -90,10 +97,19 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "sexo")
     private String sexo;
+    
+    @Column(name = "ruc")
+    private String ruc;
+    @Column(name = "tarjeta")
+    private String tarjeta;
+    @Column(name = "fecha_nac")
+    private String fechaNac;
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private int estado;
+    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
@@ -106,100 +122,174 @@ public class Usuario implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    public Usuario(Integer usuarioId, String nombre, String username, String password, String apellido, String correo, int cedula, String telefono, String sexo, int estado) {
-        this.usuarioId = usuarioId;
-        this.nombre = nombre;
-        this.username = username;
-        this.password = password;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.cedula = cedula;
-        this.telefono = telefono;
-        this.sexo = sexo;
-        this.estado = estado;
-    }
+
+  
+
+	public Usuario(Integer usuarioId, @NotNull String nombre, @NotNull @Size(min = 1, max = 2147483647) String apellido,
+			@NotNull @Size(min = 1, max = 2147483647) String username,
+			@NotNull @Size(min = 1, max = 2147483647) String password,
+			@NotNull @Size(min = 1, max = 2147483647) String correo, @NotNull int cedula,
+			@NotNull @Size(min = 1, max = 2147483647) String direccion, String ciudad, String nacionalidad,
+			@NotNull @Size(min = 1, max = 2147483647) String telefono,
+			@NotNull @Size(min = 1, max = 2147483647) String sexo, String ruc, String tarjeta, String fechaNac,
+			@NotNull int estado) {
+		super();
+		this.usuarioId = usuarioId;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.username = username;
+		this.password = password;
+		this.correo = correo;
+		this.cedula = cedula;
+		this.direccion = direccion;
+		this.ciudad = ciudad;
+		this.nacionalidad = nacionalidad;
+		this.telefono = telefono;
+		this.sexo = sexo;
+		this.ruc = ruc;
+		this.tarjeta = tarjeta;
+		this.fechaNac = fechaNac;
+		this.estado = estado;
+	}
+
 
     public Integer getUsuarioId() {
-        return usuarioId;
-    }
+		return usuarioId;
+	}
 
-    public void setUsuarioId(Integer usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+	public void setUsuarioId(Integer usuarioId) {
+		this.usuarioId = usuarioId;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getApellido() {
+		return apellido;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getApellido() {
-        return apellido;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getCorreo() {
-        return correo;
-    }
+	public String getCorreo() {
+		return correo;
+	}
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
 
-    public int getCedula() {
-        return cedula;
-    }
+	public int getCedula() {
+		return cedula;
+	}
 
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
-    }
+	public void setCedula(int cedula) {
+		this.cedula = cedula;
+	}
 
-    public String getTelefono() {
-        return telefono;
-    }
+	public String getDireccion() {
+		return direccion;
+	}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 
-    public String getSexo() {
-        return sexo;
-    }
+	public String getCiudad() {
+		return ciudad;
+	}
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
 
-    public int getEstado() {
-        return estado;
-    }
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
 
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
 
-    @JsonBackReference(value="ventas")
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getRuc() {
+		return ruc;
+	}
+
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
+
+	public String getTarjeta() {
+		return tarjeta;
+	}
+
+	public void setTarjeta(String tarjeta) {
+		this.tarjeta = tarjeta;
+	}
+
+	public String getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(String fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public Collection<ReservaDetalle> getReservaDetalleCollection() {
+		return reservaDetalleCollection;
+	}
+
+	public void setReservaDetalleCollection(Collection<ReservaDetalle> reservaDetalleCollection) {
+		this.reservaDetalleCollection = reservaDetalleCollection;
+	}
+
+	@JsonBackReference(value="ventas")
     @XmlTransient
     public Collection<Ventas> getVentasCollection() {
         return ventasCollection;

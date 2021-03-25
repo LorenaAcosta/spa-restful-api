@@ -8,7 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -61,7 +65,7 @@ public class EmpleadoRESTController {
 		Map<String, Object> response = new HashMap<>();
 		if (emp == null) 
 		{
-			response.put("mensaje", "El  empelado ID:" .concat(id.toString().concat("no existe en la base de datos")));
+			response.put("mensaje", "El  empleado ID:" .concat(id.toString().concat("no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Empleados>(emp, HttpStatus.OK); 		
@@ -80,7 +84,7 @@ public class EmpleadoRESTController {
 		} catch (DataAccessException e) {
 			// TODO: handle exception
 			response.put("mensaje", "Error al realizar el insert");
-			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage()  );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -108,6 +112,20 @@ public class EmpleadoRESTController {
 			emp.setDireccion(empActual.getDireccion());
 			emp.setTelefono(empActual.getTelefono());
 			emp.setFechaNac(empActual.getFechaNac());
+			emp.setFechaNac(empActual.getFechaNac());
+			emp.setCorreo(empActual.getCorreo());
+			emp.setEstadoCivil(empActual.getEstadoCivil());
+			emp.setEstado(empActual.getEstado());
+			emp.setFechaIngreso(empActual.getFechaIngreso());
+			emp.setFecha_salida(empActual.getFecha_salida());
+			emp.setCelular(empActual.getCelular());
+			emp.setFuncion(empActual.getFuncion());
+			emp.setSueldo(empActual.getSueldo());
+			emp.setCiudad(empActual.getCiudad());
+			emp.setCiudad(empActual.getCiudad());
+			emp.setCiudad(empActual.getCiudad());
+			emp.setNacionalidad(empActual.getNacionalidad());			
+			
 			empleado = empleadoService.updateEmpleado(emp);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");

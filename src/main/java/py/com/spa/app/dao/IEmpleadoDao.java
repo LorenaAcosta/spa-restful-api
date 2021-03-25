@@ -21,5 +21,7 @@ public interface IEmpleadoDao extends JpaRepository<Empleados, Integer> {
 	 		+ "or UPPER(cast(e.cedula as varchar)) like CONCAT('%',UPPER(:id),'%')"
 	 		+ "or UPPER(cast(e.telefono as varchar)) like CONCAT('%',UPPER(:id),'%') ",  nativeQuery = true)
 	  List<Empleados> busquedaEmpleados(@Param("id") String termino);
+	
+
 
 }

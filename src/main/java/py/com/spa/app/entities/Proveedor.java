@@ -43,20 +43,40 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "proveedor_id")
     private Integer proveedorId;
-    @Basic(optional = false)
-    @NotNull
+    @Column(name = "razon_social", unique=true) 
+    private String razonSocial;
+    @Column(name = "empresa", unique=true) 
+    private String empresa;
+    @Column(name = "ruc", unique=true) 
+    private String ruc;
     @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_proveedor", unique=true)
-    private String nombreProveedor;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "ciudad")
+    private String ciudad;
+    @Column(name = "rubro")
+    private String rubro;
+    @Column(name = "correo")
+    private String correo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "telefono")
     private int telefono;
+    @Column(name = "nombre_gerente")
+    private int nombreGerente;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "empresa")
-    private String empresa;
+    @Column(name = "nombre_proveedor", unique=true) 
+    private String nombreProveedor;
+    @Column(name = "cargo", unique=true) 
+    private String cargo;
+    @Column(name = "telefono_contacto", unique=true) 
+    private String telefonoContacto;
+    @Column(name = "estado", unique=true) 
+    private String estado;
+   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
     private Collection<Compras> comprasCollection;
 
@@ -74,39 +94,144 @@ public class Proveedor implements Serializable {
         this.empresa = empresa;
     }
 
+    
+    
+    
+    public Proveedor(Integer proveedorId, String razonSocial, String empresa, String ruc,
+			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String rubro, String correo,
+			@NotNull int telefono, int nombreGerente, @NotNull @Size(min = 1, max = 2147483647) String nombreProveedor,
+			String cargo, String telefonoContacto, String estado) {
+		super();
+		this.proveedorId = proveedorId;
+		this.razonSocial = razonSocial;
+		this.empresa = empresa;
+		this.ruc = ruc;
+		this.direccion = direccion;
+		this.ciudad = ciudad;
+		this.rubro = rubro;
+		this.correo = correo;
+		this.telefono = telefono;
+		this.nombreGerente = nombreGerente;
+		this.nombreProveedor = nombreProveedor;
+		this.cargo = cargo;
+		this.telefonoContacto = telefonoContacto;
+		this.estado = estado;
+	}
+    
+    
     public Integer getProveedorId() {
-        return proveedorId;
-    }
+		return proveedorId;
+	}
 
-    public void setProveedorId(Integer proveedorId) {
-        this.proveedorId = proveedorId;
-    }
+	public void setProveedorId(Integer proveedorId) {
+		this.proveedorId = proveedorId;
+	}
 
-    public String getNombreProveedor() {
-        return nombreProveedor;
-    }
+	public String getRazonSocial() {
+		return razonSocial;
+	}
 
-    public void setNombreProveedor(String nombreProveedor) {
-        this.nombreProveedor = nombreProveedor;
-    }
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
+	}
 
-    public int getTelefono() {
-        return telefono;
-    }
+	public String getEmpresa() {
+		return empresa;
+	}
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}
 
-    public String getEmpresa() {
-        return empresa;
-    }
+	public String getRuc() {
+		return ruc;
+	}
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
-    }
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
+	}
 
-    @XmlTransient
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getRubro() {
+		return rubro;
+	}
+
+	public void setRubro(String rubro) {
+		this.rubro = rubro;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public int getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(int telefono) {
+		this.telefono = telefono;
+	}
+
+	public int getNombreGerente() {
+		return nombreGerente;
+	}
+
+	public void setNombreGerente(int nombreGerente) {
+		this.nombreGerente = nombreGerente;
+	}
+
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	@XmlTransient
     public Collection<Compras> getComprasCollection() {
         return comprasCollection;
     }
