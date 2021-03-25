@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  * @author Lore
  */
 @Entity
-@Table(name = "disponible" )
+@Table(name = "disponible", uniqueConstraints=@UniqueConstraint(columnNames={"empleado_id", "servicio_id"}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Disponible.findAll", query = "SELECT d FROM Disponible d"),
@@ -58,6 +59,8 @@ public class Disponible implements Serializable {
     @ManyToOne(optional = false)
     private Servicios servicioId;
 
+    
+    
     public Disponible() {
     }
 
@@ -140,5 +143,8 @@ public class Disponible implements Serializable {
     public String toString() {
         return "py.com.spa.app.Disponible[ disponibleId=" + disponibleId + " ]";
     }
+    
+
+
     
 }

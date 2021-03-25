@@ -1,5 +1,6 @@
 package py.com.spa.app.services;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,11 @@ public class UsuarioService {
 	@Transactional(readOnly=true)	
 	public Usuario findUsuarioById(Integer id) {
 		return (Usuario) UsuarioDao.findById(id).orElse(null);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Usuario> busquedaClientes (String termino){
+		return UsuarioDao.busquedaClientes(termino);
 	}
 
 

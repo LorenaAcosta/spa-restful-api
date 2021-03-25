@@ -24,11 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
+
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.DisponibleService;
+import py.com.spa.app.services.EmpleadoService;
+
 import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ServicioService;
+
 
 @RestController
 @RequestMapping("/disponible")
@@ -40,9 +45,8 @@ public class DisponibleRESTController {
 	@Autowired
 	private ServicioService servicioService;
 
-	
-	private static final Logger logger = null;
-	
+	@Autowired
+	private EmpleadoService empleadoService;
 	
 	@GetMapping("/listar")
 	public List<Disponible> listarDisponible(){
@@ -111,7 +115,22 @@ public class DisponibleRESTController {
 	public Disponible encontrarProducto(@PathVariable Integer id) {
 		return (Disponible) disponibleService.findByDisponibleId(id);
 	}
+
 	
+	@GetMapping("/encontrar-empleado/{id}")
+	public Disponible getDisponibilidad(@PathVariable(value="id") Integer id) {
+		Empleados emp = empleadoService.findEmpleadoById(id);
+		return (Disponible) disponibleService.findByDisponibleId(id);
+	}  //ver
+	
+	
+	 @GetMapping("/listar-porempleado/{empleadoId}")
+	public  List<Disponible>  listarByEmpleadoV2(@PathVariable(value="empleadoId") Integer id) {
+		Empleados emp = empleadoService.findEmpleadoById(id);
+		return ( List<Disponible> ) disponibleService.findByEmpleadoId(emp);
+	}  
+	
+
 
 	@GetMapping("/getHorariosDisponibles/{categoriaId}/{servicioId}/{empleadoId}/{fecha}")
 	public List<Time> getHorariosDisponibles(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="servicioId") Integer servicioId,
@@ -122,6 +141,5 @@ public class DisponibleRESTController {
 
 		return (List<Time>) disponibleService.getHorariosDisponibles(categoriaId, servicioId, empleadoId, fech);
 	}
-	
 	
 }

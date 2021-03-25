@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+b  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -42,6 +42,7 @@ import py.com.spa.result.SqlTimeDeserializer;
     @NamedQuery(name = "ReservaDetalle.findAll", query = "SELECT r FROM ReservaDetalle r"),
     @NamedQuery(name = "ReservaDetalle.findByReservaId", query = "SELECT r FROM ReservaDetalle r WHERE r.reservaId = :reservaId"),
     @NamedQuery(name = "ReservaDetalle.findByEmpleado", query = "SELECT r FROM ReservaDetalle r WHERE r.empleado = :empleado"),
+    @NamedQuery(name = "ReservaDetalle.findByEstado", query = "SELECT r FROM ReservaDetalle r WHERE r.estado = :estado"),
     @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
     @NamedQuery(name = "ReservaDetalle.findByDisponibleId", query = "SELECT r FROM ReservaDetalle r WHERE r.disponibleId = :disponibleId"),
     @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
@@ -71,6 +72,9 @@ public class ReservaDetalle implements Serializable {
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora")
     private Time hora;
+    
+    @Column(name = "estado")
+    private String estado;
     
     @JoinColumn(name = "disponible_id", referencedColumnName = "disponible_id")
     @ManyToOne(optional = false)
@@ -148,8 +152,17 @@ public class ReservaDetalle implements Serializable {
         this.usuarioId = usuarioId;
     }
 
+    
 
-    @Override
+    public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (reservaId != null ? reservaId.hashCode() : 0);

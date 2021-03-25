@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IProveedorDao;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Proveedor;
 
 @Service
@@ -43,6 +44,10 @@ public class ProveedorService {
 		proveedorDao.deleteById(id);
 	}
 	
+	@Transactional(readOnly=true)
+	public List<Proveedor> busquedaProveedores (String termino){
+		return proveedorDao.busquedaProveedores(termino);
+	}
 
 	
 }

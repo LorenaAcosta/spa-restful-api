@@ -49,7 +49,7 @@ public class ReservaDetalleService {
 	
 
 	@Transactional
-	public List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(Integer empleado, Date date){
+	public List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(Integer empleado, Date date) {
 		return (List<ReservaDetalle>) reservaDao.findAllByEmpleadoAndFechaReservaOrderByHoraAsc(empleado, date);
 	}
 	
@@ -64,7 +64,10 @@ public class ReservaDetalleService {
 	}
 
 	
-	
+	@Transactional(readOnly=true)
+	public List<ReservaDetalle> busquedaReservas (String termino){
+		return reservaDao.busquedaReservas(termino);
+	}
 
 
 }

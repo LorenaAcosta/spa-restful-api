@@ -87,12 +87,36 @@ public class Empleados implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "image_name")
     private String imageName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "correo")
+    private String correo;
+    @Column(name = "estado_civil")
+    private String estadoCivil;
+    @Column(name = "estado")
+    private String estado;
+    @Column(name = "fecha_ingreso")
+    private String fechaIngreso;
+    @Column(name = "fecha_salida")
+    private String fechaSalida;
+    @Column(name = "celular")
+    private String celular;
+    @Column(name = "funcion")
+    private String funcion;
+    @Column(name = "sueldo")
+    private String sueldo;
+    @Column(name = "ciudad")
+    private String ciudad;
+    @Column(name = "nacionalidad")
+    private String nacionalidad;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Horario> horarioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
-    private Collection<EmpleadoDisponible> empleadoDisponibleCollection;*/
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    private Collection<Disponible> disponibleCollection;
 
     public Empleados() {
     }
@@ -101,89 +125,181 @@ public class Empleados implements Serializable {
         this.empleadoId = empleadoId;
     }
 
-    public Empleados(Integer empleadoId, int cedula, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
-        this.empleadoId = empleadoId;
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.fechaNac = fechaNac;
-    }
 
-    public Integer getEmpleadoId() {
-        return empleadoId;
-    }
 
-    public void setEmpleadoId(Integer empleadoId) {
-        this.empleadoId = empleadoId;
-    }
 
-    public int getCedula() {
-        return cedula;
-    }
 
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
-    }
 
-    public String getNombre() {
-        return nombre;
-    }
+	public Empleados(Integer empleadoId, @NotNull int cedula, @NotNull @Size(min = 1, max = 2147483647) String nombre,
+			@NotNull @Size(min = 1, max = 2147483647) String apellido,
+			@NotNull @Size(min = 1, max = 2147483647) String direccion,
+			@NotNull @Size(min = 1, max = 2147483647) String telefono,
+			@NotNull @Size(min = 1, max = 2147483647) String fechaNac, @Size(max = 2147483647) String imageName,
+			@NotNull @Size(min = 1, max = 2147483647) String correo, String estadoCivil, String estado,
+			String fechaIngreso, String celular, String funcion, String sueldo, String ciudad, String nacionalidad) {
+		super();
+		this.empleadoId = empleadoId;
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.fechaNac = fechaNac;
+		this.imageName = imageName;
+		this.correo = correo;
+		this.estadoCivil = estadoCivil;
+		this.estado = estado;
+		this.fechaIngreso = fechaIngreso;
+		this.celular = celular;
+		this.funcion = funcion;
+		this.sueldo = sueldo;
+		this.ciudad = ciudad;
+		this.nacionalidad = nacionalidad;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public Integer getEmpleadoId() {
+		return empleadoId;
+	}
 
-    public String getApellido() {
-        return apellido;
-    }
+	public void setEmpleadoId(Integer empleadoId) {
+		this.empleadoId = empleadoId;
+	}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+	public int getCedula() {
+		return cedula;
+	}
 
-    public String getDireccion() {
-        return direccion;
-    }
+	public void setCedula(int cedula) {
+		this.cedula = cedula;
+	}
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public String getTelefono() {
-        return telefono;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+	public String getApellido() {
+		return apellido;
+	}
 
-    public String getFechaNac() {
-        return fechaNac;
-    }
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
 
-    public void setFechaNac(String fechaNac) {
-        this.fechaNac = fechaNac;
-    }
+	public String getDireccion() {
+		return direccion;
+	}
 
-    public String getImageName() {
-        return imageName;
-    }
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-    
-    @JsonBackReference(value="horario")
-    @XmlTransient
-    public Collection<Horario> getHorarioCollection() {
-        return horarioCollection;
-    }
+	public String getTelefono() {
+		return telefono;
+	}
 
-    public void setHorarioCollection(Collection<Horario> horarioCollection) {
-        this.horarioCollection = horarioCollection;
-    }
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(String fechaNac) {
+		this.fechaNac = fechaNac;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public String getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(String estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(String fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	public String getFecha_salida() {
+		return fechaSalida;
+	}
+
+	public void setFecha_salida(String fecha_salida) {
+		this.fechaSalida = fecha_salida;
+	}
+
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getFuncion() {
+		return funcion;
+	}
+
+	public void setFuncion(String funcion) {
+		this.funcion = funcion;
+	}
+
+	public String getSueldo() {
+		return sueldo;
+	}
+
+	public void setSueldo(String sueldo) {
+		this.sueldo = sueldo;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
 
 	@JsonBackReference(value="planilla-empleado")
     @XmlTransient
@@ -195,7 +311,7 @@ public class Empleados implements Serializable {
         this.planillaCollection = planillaCollection;
     }
 
-    /*@JsonBackReference(value="disponible-empleado")
+    @JsonBackReference(value="disponible-empleado")
     @XmlTransient
     public Collection<Disponible> getDisponibleCollection() {
         return disponibleCollection;
@@ -203,7 +319,7 @@ public class Empleados implements Serializable {
 
     public void setDisponibleCollection(Collection<Disponible> disponibleCollection) {
         this.disponibleCollection = disponibleCollection;
-    }*/
+    }
 
     @Override
     public int hashCode() {
@@ -227,7 +343,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spa.Empleados[ empleadoId=" + empleadoId + " ]";
+        return "py.com.spa.app.Empleados[ empleadoId=" + empleadoId + " ]";
     }
     
 }

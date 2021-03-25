@@ -1,5 +1,7 @@
 package py.com.spa.app.services;
 
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +14,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import py.com.spa.app.dao.ICategoriaDao;
+import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.dao.IServicioDao;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Disponible;
+import py.com.spa.app.entities.Empleados;
+import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
+
 import py.com.spa.app.enumeraciones.EstadoServicio;
 import py.com.spa.app.enumeraciones.TipoCategoria;
+import py.com.spa.app.entities.Turnos;
+
 
 @Service
 public class ServicioService {
@@ -26,6 +35,16 @@ public class ServicioService {
 	
 	@Autowired
 	private ICategoriaDao categoriaDao;
+	
+	@Autowired
+	private DisponibleService disponibleService;
+	
+	@Autowired
+	private EmpleadoService empleadoService;
+	
+	@Autowired
+	private ServicioService servicioService;
+
 	
 
 	@Transactional(readOnly=true)
@@ -74,4 +93,29 @@ public class ServicioService {
 		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria.getCategoriaId(), estado);
 		
 	}
+
+
+	public List<Servicios> getServiciosDisponibles(Integer empleadoId) {
+		// Buscamos el empleado por el Id
+		Empleados emp = empleadoService.findEmpleadoById(empleadoId);
+		List<Disponible> disponibles = disponibleService.findByEmpleadoId(emp);
+		List<Servicios> servicios =  servicioService.findAll();
+		
+		List<Servicios> listaNueva =  new ArrayList<Servicios>();
+		for (int i=0 ; i < servicios.size(); i++) {
+			
+			for ( Disponible dis : disponibles) {
+				if ( dis.getServicioId().getServicioId() != servicios.get(i).getServicioId()  ) {
+					
+					listaNueva.add(servicios.get(i));
+					
+				}
+			
+			}
+		}
+		
+		return listaNueva;
+	}
+
+
 }

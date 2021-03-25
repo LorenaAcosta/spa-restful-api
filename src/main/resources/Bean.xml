@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+   <!-- Initialization for data source -->
+   <bean id = "dataSourceSeguridad" 
+      class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name = "driverClassName" value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name = "url" value = "jdbc:sqlserver://10.10.0.91\\BDSERVER;databaseName=Seguridad;integratedSecurity=true"/>
+      <!--<property name = "username" value = "dimo"/>
+      <property name = "password" value = "sicoop2021"/> -->
+   </bean>
+   
+    <bean id = "dataSourceCooperativa" 
+      class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name = "driverClassName" value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name = "url" value = "jdbc:sqlserver://10.10.0.91\\BDSERVER;databaseName=Cooperativa;integratedSecurity=true"/>
+    </bean>
+   
+   <!-- Definition for studentJDBCTemplate bean -->
+   <!--<bean id = "CooperativeBussinesLogicImpl" 
+      class = "org.websparrow.service.CooperativeBussinesLogicImpl">
+      <property name = "dataSource" ref = "dataSourceSeguridad" />    
+   </bean>-->
+      
+</beans>
+
+

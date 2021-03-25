@@ -46,7 +46,7 @@ public class HorarioService {
 	public void deleteHorario(Integer id) {
 		horarioDao.deleteById(id);
 	}
-	
+
 	public Horario findByEmpleadoId(Empleados id){
 		return ( Horario ) horarioDao.findByEmpleadoId(id);
 	}
