@@ -43,36 +43,22 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "proveedor_id")
     private Integer proveedorId;
-    @Column(name = "razon_social", unique=true)
-    private String razonSocial;
-    @Column(name = "empresa") //nombre comercial
-    private String empresa;
-    @Column(name = "ruc")
-    private String ruc;
-    @Column(name = "direccion")
-    private String direccion;
-    @Column(name = "ciudad")
-    private String ciudad;
-    @Column(name = "rubro")
-    private String rubro;
-    @Column(name = "correo")
-    private String correo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nombre_proveedor", unique=true)
+    private String nombreProveedor;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "telefono")
     private int telefono;
-    @Column(name = "nombreGerente")
-    private String nombreGerente;
-    @Column(name = "nombre_proveedor")
-    private String nombreProveedor;
-    @Column(name = "cargo")
-    private String cargo;
-    @Column(name = "celular")
-    private int celular;
-    
-    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "empresa")
+    private String empresa;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
     private Collection<Compras> comprasCollection;
-   
-    
 
     public Proveedor() {
     }

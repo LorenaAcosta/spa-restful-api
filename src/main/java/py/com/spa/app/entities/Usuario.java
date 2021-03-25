@@ -94,22 +94,6 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "estado")
     private int estado;
-    
-    @Column(name = "fechaNac")
-    private String fechaNac;
-    @Column(name = "direccion")
-    private String direccion;
-    @Column(name = "ciudad")
-    private String ciudad;
-    @Column(name = "nacionalidad")
-    private String nacionalidad;
-    @Column(name = "ruc")
-    private String ruc;
-    @Column(name = "ruc")
-    private String ruc;
-    @Column(name = "tarjeta")
-    private int tarjeta;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")

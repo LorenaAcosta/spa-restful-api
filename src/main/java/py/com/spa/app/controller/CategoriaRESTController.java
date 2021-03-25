@@ -143,25 +143,6 @@ public class CategoriaRESTController  {
 		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
 	}
 	
-	
-	@GetMapping("/busqueda-categorias/{id}")
-	public ResponseEntity<?>  busquedaCategorias(@PathVariable(value="id") String termino)  {
-		List<Categorias> lista = null;
-		Map<String, Object> response = new HashMap<>();
-		try {
-			lista= UsuarioService.busquedaCategorias(termino);
-		}catch( DataAccessException e ){
-			response.put("mensaje",  "No se encontraron datos.");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		if (lista==null) {
-			response.put("mensaje",  "No hay datos.");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
-	}
-
 
 
 
