@@ -65,6 +65,8 @@ public class ComprobanteRESTController  {
 			c.setNumeroFinal(comprobante.getNumeroFinal());
 			c.setNumeroActual(comprobante.getNumeroActual());
 			c.setEstado(comprobante.getEstado());
+			c.setInicioVigencia(comprobante.getInicioVigencia());
+			c.setFinVigencia(comprobante.getFinVigencia());
 			
 			comprobanteService.updateComprobante(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);

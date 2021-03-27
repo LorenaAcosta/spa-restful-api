@@ -1,6 +1,8 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import py.com.spa.app.enumeraciones.EstadoComprobante;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 
@@ -34,6 +38,8 @@ import py.com.spa.app.enumeraciones.TipoCategoria;
 		@NamedQuery(name = "Comprobante.findByComprobanteId", query = "SELECT i FROM Comprobante i WHERE i.comprobanteId = :comprobanteId"),
 		@NamedQuery(name = "Comprobante.findByTipoComprobanteId", query = "SELECT i FROM Comprobante i WHERE i.tipoComprobanteId = :tipoComprobanteId"),
 		@NamedQuery(name = "Comprobante.findByTimbrado", query = "SELECT i FROM Comprobante i WHERE i.timbrado = :timbrado"),
+		@NamedQuery(name = "Comprobante.findByInicioVigencia", query = "SELECT i FROM Comprobante i WHERE i.inicioVigencia = :inicioVigencia"),
+		@NamedQuery(name = "Comprobante.findByfinVigencia", query = "SELECT i FROM Comprobante i WHERE i.finVigencia = :finVigencia"),
 		@NamedQuery(name = "Comprobante.findByNumeroInicial", query = "SELECT i FROM Comprobante i WHERE i.numeroInicial = :numeroInicial"),
 		@NamedQuery(name = "Comprobante.findByNumeroFinal", query = "SELECT i FROM Comprobante i WHERE i.numeroFinal = :numeroFinal"),
 		@NamedQuery(name = "Comprobante.findByNumeroActual", query = "SELECT i FROM Comprobante i WHERE i.numeroActual = :numeroActual") })
@@ -55,6 +61,18 @@ public class Comprobante implements Serializable {
 	@Column(name = "timbrado", unique = true)
 	private String timbrado;
 	/**/
+    @Basic(optional = false)
+    @NotNull
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="America/Asuncion")
+    @Column(name = "inicio_vigencia")
+    private Date inicioVigencia;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="America/Asuncion")
+    @Column(name = "fin_vigencia")
+    private Date finVigencia;
+    /**/
 	@Basic(optional = false)
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -88,15 +106,16 @@ public class Comprobante implements Serializable {
 		this.comprobanteId = comprobanteId;
 	}
 
-
-
 	public Comprobante(Integer comprobanteId, TipoComprobante tipoComprobanteId,
-			@NotNull @Size(min = 1, max = 2147483647) String timbrado, @NotNull int numeroInicial,
-			@NotNull int numeroFinal, @NotNull int numeroActual, @NotNull EstadoComprobante estado) {
+			@NotNull @Size(min = 1, max = 2147483647) String timbrado, @NotNull Date inicioVigencia,
+			@NotNull Date finVigencia, @NotNull int numeroInicial, @NotNull int numeroFinal, @NotNull int numeroActual,
+			@NotNull EstadoComprobante estado) {
 		super();
 		this.comprobanteId = comprobanteId;
 		this.tipoComprobanteId = tipoComprobanteId;
 		this.timbrado = timbrado;
+		this.inicioVigencia = inicioVigencia;
+		this.finVigencia = finVigencia;
 		this.numeroInicial = numeroInicial;
 		this.numeroFinal = numeroFinal;
 		this.numeroActual = numeroActual;
@@ -109,6 +128,22 @@ public class Comprobante implements Serializable {
 
 	public void setEstado(EstadoComprobante estado) {
 		this.estado = estado;
+	}
+
+	public Date getInicioVigencia() {
+		return inicioVigencia;
+	}
+
+	public void setInicioVigencia(Date inicioVigencia) {
+		this.inicioVigencia = inicioVigencia;
+	}
+
+	public Date getFinVigencia() {
+		return finVigencia;
+	}
+
+	public void setFinVigencia(Date finVigencia) {
+		this.finVigencia = finVigencia;
 	}
 
 	public Integer getComprobanteId() {
