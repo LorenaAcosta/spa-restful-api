@@ -22,6 +22,12 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 	
 	@Query(value="select * from servicios where categoria_id = :cat and estado = :estado", nativeQuery = true)
 	List<Servicios> findAllByCategoriaIdAndEstado(@Param("cat") Integer categoria, @Param("estado") String estado);
+	
+
+	@Query(value = "select * from servicios c \n"
+			+ "where UPPER(c.nombre) like CONCAT('%',UPPER(:id),'%') or  "
+			+ " UPPER(c.descripcion) like CONCAT('%',UPPER(:id),'%') ",  nativeQuery = true)
+	  List<Servicios> busquedaServicios(@Param("id") String termino);
 
 	
 	

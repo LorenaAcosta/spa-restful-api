@@ -21,12 +21,12 @@ public class FileServiceImp implements FileService {
 	
    @Override
     public void init() {
-        /*try {
+      /*  try {
         	Files.createDirectory(root);
         } catch (IOException e) {
             throw new RuntimeException("No se puede inicializar la carpeta uploads");
-        }*/
-    }
+        }*///descomentado
+     }
 
     @Override
     public void save(MultipartFile file) {

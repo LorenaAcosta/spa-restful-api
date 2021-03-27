@@ -20,6 +20,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 
 @Service
@@ -84,6 +85,12 @@ public class CategoriaService {
 
         return "report generated in path : " + path;
     }
+    
+	@Transactional(readOnly=true)
+	public List<Categorias> busquedaCategorias (String termino){
+		return categoriaDao.busquedaCategorias(termino);
+	}
+
 
 }
 

@@ -87,5 +87,12 @@ public class ProductoService {
 		
 	}
 	
+    
+	@Transactional(readOnly=true)
+	public List<Productos> busquedaProductos (String termino){
+		return productoDao.busquedaProductos(termino);
+	}
+
+	
 
 }

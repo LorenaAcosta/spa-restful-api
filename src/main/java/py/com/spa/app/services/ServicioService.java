@@ -116,6 +116,13 @@ public class ServicioService {
 		
 		return listaNueva;
 	}
+	
+	   
+
+		public List<Servicios> busquedaServicios (String termino){
+			return servicioDao.busquedaServicios(termino);
+		}
+
 
 
 }

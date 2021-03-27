@@ -134,6 +134,24 @@ public class ProductoRESTController {
 	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
 		return (Productos) productoService.findProductoById(id);
 	}
+	
+	@GetMapping("/busqueda-productos/{id}")
+	public ResponseEntity<?>  busquedaProductos(@PathVariable(value="id") String termino)  {
+		List<Productos> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= productoService.busquedaProductos(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Productos>>(lista, HttpStatus.OK);
+	}
 
 
 	

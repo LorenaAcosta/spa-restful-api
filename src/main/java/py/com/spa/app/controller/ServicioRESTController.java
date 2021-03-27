@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
@@ -187,7 +188,7 @@ public class ServicioRESTController {
 
 
 	@GetMapping("/get-servicios-disponibles/{id}")
-	public  ResponseEntity<?>  getServiciosDisponibles(@PathVariable Integer empleadoId) {
+	public  ResponseEntity<?>  getServiciosDisponibles(@PathVariable(value="id") Integer empleadoId) {
 		List<Servicios> servicios = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
@@ -204,6 +205,24 @@ public class ServicioRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<	List<Servicios> >(	servicios, HttpStatus.OK);
+	}
+	
+	@GetMapping("/busqueda-servicios/{id}")
+	public ResponseEntity<?>  busquedaServicios(@PathVariable(value="id") String termino)  {
+		List<Servicios> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= servicioService.busquedaServicios(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
 }
