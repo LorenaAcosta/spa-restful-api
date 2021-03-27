@@ -76,6 +76,7 @@ public class ProductoRESTController {
 			prod.setPrecioVenta(    producto.getPrecioVenta());
 			prod.setStockActual(    producto.getStockActual());
 			prod.setCategoriaId(    producto.getCategoriaId());
+			prod.setImpuestoId(    producto.getImpuestoId());
 			prod.setImageName(      producto.getImageName());
 			prod.setEstado(         producto.getEstado());
 			p = productoService.updateProducto(prod);		

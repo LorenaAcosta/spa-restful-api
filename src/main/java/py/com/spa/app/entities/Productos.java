@@ -28,10 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import py.com.spa.app.enumeraciones.EstadoProducto;
-import py.com.spa.app.enumeraciones.TipoCategoria;
 
 /**
  *
@@ -97,12 +94,18 @@ public class Productos implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<VentasDetalle> ventasDetalleCollection;
+    /**/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
+    /**/
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
-    
     @ManyToOne(optional = false)
     private Categorias categoriaId;
+    /**/
+    @JoinColumn(name = "impuesto_id", referencedColumnName = "impuesto_id")
+    @ManyToOne(optional = false)
+    private Impuesto impuestoId;
+    /**/
 
     public Productos() {
     }
@@ -216,7 +219,15 @@ public class Productos implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    @Override
+    public Impuesto getImpuestoId() {
+		return impuestoId;
+	}
+
+	public void setImpuestoId(Impuesto impuestoId) {
+		this.impuestoId = impuestoId;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (productoId != null ? productoId.hashCode() : 0);
