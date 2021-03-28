@@ -68,11 +68,6 @@ public class Servicios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", unique=true)
     private String nombre;
-    /*@Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "estado")
-    private String estado;*/
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
@@ -106,6 +101,10 @@ public class Servicios implements Serializable {
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
     private Collection<Disponible> disponibleCollection;
+    
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    private Collection<Disponible> disponibleBoxesCollection;
 
     public Servicios() {
     }

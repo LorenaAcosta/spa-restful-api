@@ -45,6 +45,7 @@ import py.com.spa.result.SqlTimeDeserializer;
     @NamedQuery(name = "ReservaDetalle.findByEstado", query = "SELECT r FROM ReservaDetalle r WHERE r.estado = :estado"),
     @NamedQuery(name = "ReservaDetalle.findByFechaReserva", query = "SELECT r FROM ReservaDetalle r WHERE r.fechaReserva = :fechaReserva"),
     @NamedQuery(name = "ReservaDetalle.findByDisponibleId", query = "SELECT r FROM ReservaDetalle r WHERE r.disponibleId = :disponibleId"),
+    @NamedQuery(name = "ReservaDetalle.findByDisponibleBoxId", query = "SELECT r FROM ReservaDetalle r WHERE r.disponibleBoxesId = :disponibleBoxesId"),
     @NamedQuery(name = "ReservaDetalle.findByHora", query = "SELECT r FROM ReservaDetalle r WHERE r.hora = :hora")})
 public class ReservaDetalle implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -80,26 +81,35 @@ public class ReservaDetalle implements Serializable {
     @ManyToOne(optional = false)
     private Disponible disponibleId;
     
+    @JoinColumn(name = "disponible_boxes_id", referencedColumnName = "disponible_boxes_id")
+    @ManyToOne(optional = false)
+    private DisponibleBoxes disponibleBoxesId;
+    
     
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
+    
 
-    public ReservaDetalle() {
+
+    public ReservaDetalle(Integer reservaId, @NotNull Integer empleado, @NotNull Date fechaReserva, @NotNull Time hora,
+			String estado, Disponible disponibleId, DisponibleBoxes disponibleBoxesId, Usuario usuarioId) {
+		super();
+		this.reservaId = reservaId;
+		this.empleado = empleado;
+		this.fechaReserva = fechaReserva;
+		this.hora = hora;
+		this.estado = estado;
+		this.disponibleId = disponibleId;
+		this.disponibleBoxesId = disponibleBoxesId;
+		this.usuarioId = usuarioId;
+	}
+
+	public ReservaDetalle() {
     }
 
     public ReservaDetalle(Integer reservaId) {
         this.reservaId = reservaId;
-    }
-
-    public ReservaDetalle(Integer reservaId, Integer empleado, Date fechaReserva, Time hora, Disponible disponibleId,
-    		Usuario usuarioId) {
-        this.reservaId = reservaId;
-        this.empleado = empleado;
-        this.fechaReserva = fechaReserva;
-        this.hora = hora;
-        this.disponibleId= disponibleId;
-        this.usuarioId =  usuarioId;
     }
 
 
@@ -154,7 +164,16 @@ public class ReservaDetalle implements Serializable {
 
     
 
-    public String getEstado() {
+
+	public DisponibleBoxes getDisponibleBoxesId() {
+		return disponibleBoxesId;
+	}
+
+	public void setDisponibleBoxesId(DisponibleBoxes disponibleBoxesId) {
+		this.disponibleBoxesId = disponibleBoxesId;
+	}
+
+	public String getEstado() {
 		return estado;
 	}
 
