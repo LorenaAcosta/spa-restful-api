@@ -1,7 +1,9 @@
 package py.com.spa.app.controller;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -19,8 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Boxes;
+import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.services.BoxesService;
+import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ReservaDetalleService;
 
@@ -32,7 +38,12 @@ public class ReservaDetalleRESTController {
 	public ReservaDetalleService reservaDetalleService;
 	
 	@Autowired
+	public BoxesService boxesService;
+	
+	@Autowired
 	public HorarioService horarioService;
+	@Autowired
+	public DisponibleService disponibleService;
 	
 	@GetMapping("/listar")
 	public List<ReservaDetalle> listarReservaDetalle(){
@@ -42,7 +53,6 @@ public class ReservaDetalleRESTController {
 	
 	@PostMapping("/agregar")
 	public void agregarReservaDetalle(@RequestBody ReservaDetalle reservadetalle) {
-		//System.out.println(reservadetalle.getFechaReserva().toString());
 		reservaDetalleService.addReservaDetalle(reservadetalle);
 	}
 	
@@ -100,5 +110,26 @@ public class ReservaDetalleRESTController {
 		return (List<ReservaDetalle>) reservaDetalleService.busquedaReservas(termino);
 	}
 	
+	
+	@GetMapping("/encontrar-reservas-fecha-hora/{fecha}/{hora}")
+	public List<ReservaDetalle> findByFechaReservaAndHora(
+			@PathVariable(value="fecha") String fecha
+			,@PathVariable(value="hora") String hora ) throws ParseException  {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fetch = sdf.parse(fecha);
+		
+		
+		LocalTime t = LocalTime.parse(hora ) ;
+		Time time = Time.valueOf( t );
+		
+		return (List<ReservaDetalle>) reservaDetalleService.findByFechaReservaAndHora(fetch, time);
+	}
+	
+
+	
+	
+	
+
 	
 }

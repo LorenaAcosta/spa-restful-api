@@ -138,6 +138,7 @@ public class DisponibleRESTController {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date fech = sdf.parse(fecha);
+		
 
 		return (List<Time>) disponibleService.getHorariosDisponibles(categoriaId, servicioId, empleadoId, fech);
 	}

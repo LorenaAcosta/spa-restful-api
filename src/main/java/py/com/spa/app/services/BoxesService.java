@@ -2,7 +2,10 @@ package py.com.spa.app.services;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.DisponibleBoxes;
 import py.com.spa.app.entities.Empleados;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 
@@ -44,6 +48,15 @@ public class BoxesService {
 	
 	@Autowired
 	private BoxesService boxesService;
+
+
+	@Autowired
+	private ReservaDetalleService reservaService;
+	
+	@Autowired
+	private DisponibleBoxesService disponibleBoxService;
+	
+
 
 	
 	
@@ -90,6 +103,20 @@ public class BoxesService {
 	}
 	
 
+	
+	public Integer obtenerBoxLibre(Date fecha, Time hora, Integer servicioId) {
+		List<Integer> lista = boxesDao.obtenerBoxLibre(fecha, hora, servicioId);
+		
+		if (lista==null) {
+			return 999999;
+		}else {
+			return lista.get(0);
+		}
+
+		
+	}
+
+	
 
 }
 

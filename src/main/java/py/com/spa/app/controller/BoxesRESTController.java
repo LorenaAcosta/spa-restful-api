@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,7 @@ import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Boxes;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Compras;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.CategoriaService;
@@ -120,6 +126,24 @@ public class BoxesRESTController  {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<	List<Boxes> >(	boxes, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/obtener-box-libre/{fecha}/{hora}/{servicioId}")
+	public Integer obtenerBoxLibre(
+			 @PathVariable(value="fecha") String fecha,
+			 @PathVariable(value="hora") String hora,
+			 @PathVariable(value="servicioId") Integer servicioId) throws ParseException  {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fech = sdf.parse(fecha);
+		
+
+		LocalTime t = LocalTime.parse(hora ) ;
+		Time time = Time.valueOf( t );
+		
+		
+		return (Integer) boxesService.obtenerBoxLibre(fech, time, servicioId);
 	}
 	
 

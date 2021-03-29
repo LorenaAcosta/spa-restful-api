@@ -56,7 +56,7 @@ public class DisponibleBoxes implements Serializable {
     private Boxes boxesId;
     
 
- 
+    @JsonBackReference(value="dispo-reserva")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "disponibleBoxesId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
     
@@ -66,6 +66,15 @@ public class DisponibleBoxes implements Serializable {
 		super();
 	}
 	
+	
+	
+	public DisponibleBoxes(Integer disponibleBoxesId) {
+		super();
+		this.disponibleBoxesId = disponibleBoxesId;
+	}
+
+
+
 	public DisponibleBoxes(Integer disponibleBoxesId, Servicios servicioId, Boxes boxesId) {
 		super();
 		this.disponibleBoxesId = disponibleBoxesId;

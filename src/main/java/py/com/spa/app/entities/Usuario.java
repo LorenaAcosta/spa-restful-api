@@ -112,6 +112,8 @@ public class Usuario implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
+    
+    @JsonBackReference(value="reservas-usuario")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
 
