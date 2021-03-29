@@ -81,25 +81,8 @@ public class BoxesService {
 	}
 	
 	public List<Boxes> getBoxesDisponibles(Integer servicioId) {
-		// Buscamos el servicio por el Id
-		Servicios servicio = servicioService.findServicioById(servicioId);
-		List<DisponibleBoxes> disponibles = disponibleboxService.findByServicioId(servicio);
-		List<Boxes> boxes =  boxesService.findAll();
-		List<Boxes> listaNueva =  new ArrayList<Boxes>();
 		
-		for (int i=0 ; i < boxes.size(); i++) {
-			
-			for ( DisponibleBoxes dis : disponibles) {
-				if ( dis.getBoxesId().getBoxesId()  != boxes.get(i).getBoxesId()  ) {
-					
-					listaNueva.add(boxes.get(i));
-					
-				}
-			
-			}
-		}
-		
-		return listaNueva;
+		return boxesDao.getBoxesDisponibles(servicioId);
 	}
 	
 
@@ -107,16 +90,12 @@ public class BoxesService {
 	public Integer obtenerBoxLibre(Date fecha, Time hora, Integer servicioId) {
 		List<Integer> lista = boxesDao.obtenerBoxLibre(fecha, hora, servicioId);
 		
-		if (lista==null) {
-			return 999999;
+		if (lista!=null&& lista.isEmpty()) {
+			return 0;
 		}else {
 			return lista.get(0);
 		}
-
-		
-	}
-
-	
+	}	
 
 }
 

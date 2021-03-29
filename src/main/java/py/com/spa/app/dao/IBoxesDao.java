@@ -38,5 +38,13 @@ public interface IBoxesDao extends JpaRepository<Boxes, Integer>{
 			,@PathVariable(value="hora") Time hora,
 			 @PathVariable(value="servicioId") Integer servicioId);
 
+	 
+	 @Query(value = "select * from boxes b\r\n"
+	 		+ "where b.boxes_id not in(select boxes_id \r\n"
+	 		+ "						from disponible_boxes dbx\r\n"
+	 		+ "					 where b.boxes_id= dbx.boxes_id\r\n"
+	 		+ "					 and dbx.servicio_id=:servicioId )",  nativeQuery = true)
+	List<Boxes> getBoxesDisponibles(Integer servicioId);
+
 	
 }

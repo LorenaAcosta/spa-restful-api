@@ -143,7 +143,7 @@ public class BoxesRESTController  {
 		Time time = Time.valueOf( t );
 		
 		
-		return (Integer) boxesService.obtenerBoxLibre(fech, time, servicioId);
+		return boxesService.obtenerBoxLibre(fech, time, servicioId);
 	}
 	
 

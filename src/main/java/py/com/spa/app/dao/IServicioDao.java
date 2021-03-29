@@ -30,5 +30,14 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 	  List<Servicios> busquedaServicios(@Param("id") String termino);
 
 	
+	@Query(value = "select * from servicios s\r\n"
+			+ "where s.servicio_id not in(select servicio_id \r\n"
+			+ "	 					from disponible dbx\r\n"
+			+ "	 					where s.servicio_id= dbx.servicio_id\r\n"
+			+ "	 					and dbx.empleado_id = :empleadoId )",  nativeQuery = true)	
+	
+	List<Servicios> getBoxesDisponibles(Integer empleadoId);
+
+	
 	
 }
