@@ -33,6 +33,7 @@ import py.com.spa.app.services.EmpleadoService;
 
 import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ServicioService;
+import py.com.spa.result.DisponibleDatosResult;
 
 
 @RestController
@@ -47,6 +48,9 @@ public class DisponibleRESTController {
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	
+	@Autowired 
+	private HorarioService horarioService;
 	
 	@GetMapping("/listar")
 	public List<Disponible> listarDisponible(){
@@ -94,10 +98,10 @@ public class DisponibleRESTController {
 	{
 		List<Disponible> lista = null;
 		Map<String, Object> response = new HashMap<>();
-		Servicios s = servicioService.findServicioById(id);
 		
 		try {
-			lista = disponibleService.findAllByCategoriaId(s);
+			//lista = disponibleService.findAllByCategoriaId(s);
+			lista = disponibleService.findEmpleadosDisponibles(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -115,7 +119,7 @@ public class DisponibleRESTController {
 	public Disponible encontrarProducto(@PathVariable Integer id) {
 		return (Disponible) disponibleService.findByDisponibleId(id);
 	}
-
+	
 	
 	@GetMapping("/encontrar-empleado/{id}")
 	public Disponible getDisponibilidad(@PathVariable(value="id") Integer id) {
@@ -142,5 +146,19 @@ public class DisponibleRESTController {
 
 		return (List<Time>) disponibleService.getHorariosDisponibles(categoriaId, servicioId, empleadoId, fech);
 	}
+	
+	@GetMapping("/encontrar-datos/{id}")
+	public DisponibleDatosResult encontraDisponibleDAtos(@PathVariable Integer id) {
+		DisponibleDatosResult data = new DisponibleDatosResult();
+		Disponible disponible = disponibleService.findByDisponibleId(id);
+		if (disponible != null ) {
+			 List<Horario> horario =  (List<Horario>)  horarioService.findByIdEmpleadoLista(disponible.getEmpleadoId().getEmpleadoId());
+			 data.setDisponible(disponible);
+			 data.setHorario(horario);	
+		}
+		
+		return data ;
+	}
+	
 	
 }

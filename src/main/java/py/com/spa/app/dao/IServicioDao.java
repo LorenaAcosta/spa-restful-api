@@ -20,8 +20,13 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 	List<Servicios> getServiciosByEstado(EstadoServicio estado);
 	
 	
-	@Query(value="select * from servicios where categoria_id = :cat and estado = :estado", nativeQuery = true)
-	List<Servicios> findAllByCategoriaIdAndEstado(@Param("cat") Integer categoria, @Param("estado") String estado);
+	@Query(value="select * from servicios s \r\n"
+			+ "where s.servicio_id  in (select s.servicio_id from disponible_boxes b \r\n"
+			+ "					where b.servicio_id = s.servicio_id)\r\n"
+			+ "and s.servicio_id in (select s.servicio_id from disponible dd \r\n"
+			+ "					where dd.servicio_id = s.servicio_id)  \r\n"
+			+ "and s.categoria_id= :categoriaId  and s.estado='ACTIVO' ", nativeQuery = true)
+	List<Servicios> getServiciosActivos(@Param("categoriaId") Integer categoria);
 	
 
 	@Query(value = "select * from servicios c \n"
@@ -35,9 +40,7 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 			+ "	 					from disponible dbx\r\n"
 			+ "	 					where s.servicio_id= dbx.servicio_id\r\n"
 			+ "	 					and dbx.empleado_id = :empleadoId )",  nativeQuery = true)	
-	
 	List<Servicios> getBoxesDisponibles(Integer empleadoId);
 
-	
-	
+
 }

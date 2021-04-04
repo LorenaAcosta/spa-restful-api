@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -47,19 +48,40 @@ public class Horario implements Serializable {
     @Basic(optional = false)
     @Column(name = "horario_id")
     private Integer horarioId;
+    
+    @Basic(optional = false)
+    @Column(name = "dia_trabajo")
+    private String diaTrabajo; 
+    
     @Basic(optional = false)
     @JsonFormat(pattern="HH:mm:ss")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_inicio")
     private Time horaInicio;
+    
     @Basic(optional = false)
     @JsonFormat(pattern="HH:mm:ss")
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "hora_fin")
     private Time horaFin; 
+    
+    @Basic(optional = false)
+    @JsonFormat(pattern="HH:mm:ss")
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
+    @Column(name = "hora_inicio_descanso")
+    private Time horaInicioDescanso; 
+    
+    @Basic(optional = false)
+    @JsonFormat(pattern="HH:mm:ss")
+    @JsonDeserialize(using = SqlTimeDeserializer.class)
+    @Column(name = "hora_fin_descanso")
+    private Time horaFinDescanso; 
+    
+   
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
     private Empleados empleadoId;
+
     
     
     public Horario() {
@@ -70,44 +92,72 @@ public class Horario implements Serializable {
     }
 
 
-	public Horario(Integer horarioId, Time horaInicio, Time horaFin, int empleadoId) {
+
+	public Horario(Empleados empleadoId) {
+		super();
+		this.empleadoId = empleadoId;
+	}
+
+	public Horario(Integer horarioId, String diaTrabajo, Time horaInicio, Time horaFin, Time horaInicioDescanso,
+			Time horaFinDescanso) {
 		super();
 		this.horarioId = horarioId;
+		this.diaTrabajo = diaTrabajo;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
-	}
-	
-	public Horario( Time horaInicio, Time horaFin) {
-		this.horaInicio = horaInicio;
-		this.horaFin = horaFin;
+		this.horaInicioDescanso = horaInicioDescanso;
+		this.horaFinDescanso = horaFinDescanso;
 	}
 
 	public Integer getHorarioId() {
-        return horarioId;
-    }
+		return horarioId;
+	}
 
-    public void setHorarioId(Integer horarioId) {
-        this.horarioId = horarioId;
-    }
+	public void setHorarioId(Integer horarioId) {
+		this.horarioId = horarioId;
+	}
 
-    public Time getHoraInicio() {
-        return horaInicio;
-    }
+	public String getDiaTrabajo() {
+		return diaTrabajo;
+	}
 
-    public void setHoraInicio(Time horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+	public void setDiaTrabajo(String diaTrabajo) {
+		this.diaTrabajo = diaTrabajo;
+	}
 
-    public Time getHoraFin() {
-        return horaFin;
-    }
+	public Time getHoraInicio() {
+		return horaInicio;
+	}
 
-    public void setHoraFin(Time horaFin) {
-        this.horaFin = horaFin;
-    }
+	public void setHoraInicio(Time horaInicio) {
+		this.horaInicio = horaInicio;
+	}
 
+	public Time getHoraFin() {
+		return horaFin;
+	}
 
-    public Empleados getEmpleadoId() {
+	public void setHoraFin(Time horaFin) {
+		this.horaFin = horaFin;
+	}
+
+	public Time getHoraInicioDescanso() {
+		return horaInicioDescanso;
+	}
+
+	public void setHoraInicioDescanso(Time horaInicioDescanso) {
+		this.horaInicioDescanso = horaInicioDescanso;
+	}
+
+	public Time getHoraFinDescanso() {
+		return horaFinDescanso;
+	}
+
+	public void setHoraFinDescanso(Time horaFinDescanso) {
+		this.horaFinDescanso = horaFinDescanso;
+	}
+
+	public Empleados getEmpleadoId() {
 		return empleadoId;
 	}
 

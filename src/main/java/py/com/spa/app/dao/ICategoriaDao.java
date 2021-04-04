@@ -14,6 +14,9 @@ public interface ICategoriaDao extends JpaRepository<Categorias, Integer>{
 	
 	//List<Categorias> findByDataType(String dataType);
 	List<Categorias> findByDataType(TipoCategoria dataType);
+	
+	@Query(value="select * from categorias where data_type=:id", nativeQuery = true)
+	List<Categorias> findByDataTypee(@Param("id")TipoCategoria dataType);
 
 	@Query(value="select descripcion from categorias", nativeQuery = true)
 	List<String> findAllByDescripcion();

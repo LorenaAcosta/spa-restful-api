@@ -17,11 +17,10 @@ import py.com.spa.app.entities.Servicios;
 
 public interface IDisponibleDao  extends JpaRepository<Disponible, Integer>{
 	
-
-	List<Disponible> findAllByServicioId(Servicios servicio);
+	 @Query(value = "select * from disponible d where d.servicio_id=:servicio and empleado_id  in (select empleado_id from horario)" ,  nativeQuery = true)
+	List<Disponible> findEmpleadosDisponibles(Integer servicio);
 	
 
-	
 	List<Disponible> findAllByEmpleadoId(Empleados id);
 	
 	 @Query(value = "select distinct hora from reserva_detalle rd\r\n" + 

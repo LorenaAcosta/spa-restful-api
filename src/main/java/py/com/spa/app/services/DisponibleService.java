@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -68,14 +69,16 @@ public class DisponibleService {
 	}
 	
 	
-	public List<Disponible> findAllByCategoriaId(Servicios servicio) {
-		return (List<Disponible>) disponibleDao.findAllByServicioId(servicio);
+	public List<Disponible> findEmpleadosDisponibles(Integer servicio) {
+		return (List<Disponible>) disponibleDao.findEmpleadosDisponibles(servicio);
 	}
 	
 	public List<Time> getHorariosDisponibles(Integer categoriaId, Integer servicioId, Integer empleadoId, Date fecha) {
-		
-		// obtenemos la hora de entrada y hora de salida del empleado
-		Horario hor = horarioService.findByIdEmpleado(empleadoId);
+		Calendar c = Calendar.getInstance();
+		c.setTime(fecha);
+		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		//Obtenemos la hora de entrada y hora de salida del empleado 
+		Horario hor = horarioService.findByIdEmpleado(empleadoId, dayOfWeek-1 );
 		Long inicio = (hor.getHoraInicio().getTime() / 1000L) - 14400;
 		Long fin = (hor.getHoraFin().getTime() / 1000L) - 14400;
 		Long suma = (inicio + 3600);

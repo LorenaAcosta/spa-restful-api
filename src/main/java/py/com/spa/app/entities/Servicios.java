@@ -38,6 +38,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import py.com.spa.app.enumeraciones.EstadoProducto;
 import py.com.spa.app.enumeraciones.EstadoServicio;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.result.SqlTimeDeserializer;
 
 /**
@@ -68,6 +69,9 @@ public class Servicios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", unique=true)
     private String nombre;
+    
+    
+    @Basic(optional = false)
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 8)

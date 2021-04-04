@@ -27,7 +27,6 @@ public class HorarioService {
 	
 	
 	@Transactional
-
 	public Horario addHorario(Horario horario) {
 		return horarioDao.save(horario);
 	}
@@ -51,8 +50,18 @@ public class HorarioService {
 		return ( Horario ) horarioDao.findByEmpleadoId(id);
 	}
 	
-	public Horario findByIdEmpleado(Integer id){
-		return ( Horario ) horarioDao.findByEmpleado(id);
+	public Horario findByIdEmpleado(Integer id, Integer diaTrabajo){
+		
+		return ( Horario ) horarioDao.findByEmpleado(id, diaTrabajo);
+	}
+	
+	public List<Horario> findByIdEmpleadoLista(Integer id){
+		return (List<Horario>) horarioDao.findByIdEmpleadoLista(id);
+	}
+
+
+	public List<Horario> getListaHorarios(Integer id) {
+		return (List<Horario>) horarioDao.getListaHorarios(id);
 	}
 
 

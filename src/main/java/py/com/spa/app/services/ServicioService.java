@@ -89,8 +89,9 @@ public class ServicioService {
 	}
 
 
-	public List<Servicios> findAllByCategoriaIdAndEstado(Categorias categoria, String estado){
-		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria.getCategoriaId(), estado);
+	public List<Servicios> getServiciosActivos(Categorias categoriaId){
+		//EstadoServicio estado1= EstadoServicio.valueOf(estado.toUpperCase());
+		return (List<Servicios>) servicioDao.getServiciosActivos(categoriaId.getCategoriaId());
 		
 	}
 

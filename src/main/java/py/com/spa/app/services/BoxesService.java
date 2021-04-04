@@ -41,9 +41,6 @@ public class BoxesService {
 	private IBoxesDao boxesDao;
 
 	@Autowired
-	private ServicioService servicioService;
-	
-	@Autowired
 	private DisponibleBoxesService disponibleboxService;
 	
 	@Autowired
@@ -55,9 +52,6 @@ public class BoxesService {
 	
 	@Autowired
 	private DisponibleBoxesService disponibleBoxService;
-	
-
-
 	
 	
 	@Transactional(readOnly=true)
