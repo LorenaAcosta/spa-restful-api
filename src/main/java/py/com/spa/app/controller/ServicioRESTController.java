@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Servicios;
+import py.com.spa.app.enumeraciones.EstadoServicio;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
 
@@ -147,15 +149,15 @@ public class ServicioRESTController {
 		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getServiciosActivos/{categoriaId}/{estado}")
-	public  ResponseEntity<?> findByCategoriaIdAndEstado(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="estado") String estado )
+	@GetMapping("/getServiciosActivos/{categoriaId}")
+	public  ResponseEntity<?> getServiciosActivos(@PathVariable(value="categoriaId")  Integer categoriaId)
 	{
 		
 		Map<String, Object> response = new HashMap<>();
 		List<Servicios> lista = null;
 		Categorias c = categoriaService.findByCategoriaId(categoriaId);
 		try {
-			lista= servicioService.findAllByCategoriaIdAndEstado(c, estado);
+			lista= servicioService.getServiciosActivos(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));

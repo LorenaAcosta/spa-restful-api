@@ -61,7 +61,6 @@ public class HorarioRESTController  {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			hora = horarioService.addHorario(horario);
-			
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
 			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -76,6 +75,7 @@ public class HorarioRESTController  {
 	public Horario obtenerhorariosId(@PathVariable(value="id") Integer id) {
 		return (Horario) horarioService.findByHorarioId(id);
 	}
+	
 	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<?> modificarhorario (@PathVariable(value="id") Integer id, @RequestBody Horario horario) {
@@ -110,6 +110,13 @@ public class HorarioRESTController  {
 	{
 		Empleados emp = empleadoService.findEmpleadoById(id);
 		return (Horario) horarioService.findByEmpleadoId(emp);
+	}
+	
+	
+	
+	@GetMapping("/listar-horarios/{id}")
+	public List<Horario> getListaHorarios(@PathVariable(value="id") Integer id){
+		return horarioService.getListaHorarios(id);
 	}
 	
 	

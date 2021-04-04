@@ -90,6 +90,12 @@ public class CategoriaService {
 	public List<Categorias> busquedaCategorias (String termino){
 		return categoriaDao.busquedaCategorias(termino);
 	}
+	
+	@Transactional(readOnly=true)
+	public List<Categorias> findByDataTypee (String dataType){
+		return categoriaDao.findByDataTypee(TipoCategoria.valueOf(dataType.toUpperCase()));
+	}
+
 
 
 }

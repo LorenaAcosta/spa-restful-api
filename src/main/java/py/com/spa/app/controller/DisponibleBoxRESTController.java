@@ -24,45 +24,41 @@ import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
-
+import py.com.spa.app.entities.DisponibleBoxes;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
-import py.com.spa.app.services.DisponibleService;
+import py.com.spa.app.services.DisponibleBoxesService;
 import py.com.spa.app.services.EmpleadoService;
 
 import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ServicioService;
-import py.com.spa.result.DisponibleDatosResult;
 
 
 @RestController
-@RequestMapping("/disponible")
-public class DisponibleRESTController {
+@RequestMapping("/disponible-boxes")
+public class DisponibleBoxRESTController {
 	
 
 	@Autowired
-	private DisponibleService disponibleService;
+	private DisponibleBoxesService disponibleBoxesService;
 	@Autowired
 	private ServicioService servicioService;
 
 	@Autowired
 	private EmpleadoService empleadoService;
 	
-	@Autowired 
-	private HorarioService horarioService;
-	
 	@GetMapping("/listar")
-	public List<Disponible> listarDisponible(){
-		return disponibleService.findAll();
+	public List<DisponibleBoxes> listarDisponible(){
+		return disponibleBoxesService.findAll();
 	}
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<?> agregarDisponible(@RequestBody Disponible disponible) {
-		Disponible disp = null;
+	public ResponseEntity<?> agregarDisponible(@RequestBody DisponibleBoxes disponible) {
+		DisponibleBoxes disp = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			disp = disponibleService.addDisponible(disponible);
+			disp = disponibleBoxesService.addDisponible(disponible);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
 			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -77,13 +73,13 @@ public class DisponibleRESTController {
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarDiponible(@PathVariable(value="id") Integer id) {
 		Map<String, Object> response = new HashMap<>();
-		Disponible d = disponibleService.findByDisponibleId(id);
+		DisponibleBoxes d = disponibleBoxesService.findByDisponibleId(id);
 		if ( d == null) {
 			response.put("mensaje",  "Error, No se pudo eliminar. La categoria no existe en la base de datos.");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
-			disponibleService.deleteCategoria(id);
+			disponibleBoxesService.deleteCategoria(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -93,15 +89,15 @@ public class DisponibleRESTController {
 	}
 
 	
-	@GetMapping("/obtener-empleados-disponibles/{id}")
+	@GetMapping("/obtener-servicios-disponibles/{id}")
 	public ResponseEntity<?> findAllByServicioId(@PathVariable Integer id)
 	{
-		List<Disponible> lista = null;
+		List<DisponibleBoxes> lista = null;
 		Map<String, Object> response = new HashMap<>();
+		Servicios s = servicioService.findServicioById(id);
 		
 		try {
-			//lista = disponibleService.findAllByCategoriaId(s);
-			lista = disponibleService.findEmpleadosDisponibles(id);
+			lista = disponibleBoxesService.findAllByCategoriaId(s);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -111,54 +107,31 @@ public class DisponibleRESTController {
 			response.put("mensaje",  "No hay datos.");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<Disponible>>(lista, HttpStatus.OK);
+		return new ResponseEntity<List<DisponibleBoxes>>(lista, HttpStatus.OK);
 	}
 	
 
 	@GetMapping("/encontrar/{id}")
-	public Disponible encontrarProducto(@PathVariable Integer id) {
-		return (Disponible) disponibleService.findByDisponibleId(id);
+	public DisponibleBoxes encontrarProducto(@PathVariable Integer id) {
+		return (DisponibleBoxes) disponibleBoxesService.findByDisponibleId(id);
 	}
-	
+
 	
 	@GetMapping("/encontrar-empleado/{id}")
-	public Disponible getDisponibilidad(@PathVariable(value="id") Integer id) {
+	public DisponibleBoxes getDisponibilidad(@PathVariable(value="id") Integer id) {
 		Empleados emp = empleadoService.findEmpleadoById(id);
-		return (Disponible) disponibleService.findByDisponibleId(id);
+		return (DisponibleBoxes) disponibleBoxesService.findByDisponibleId(id);
 	}  //ver
 	
 	
-	 @GetMapping("/listar-porempleado/{empleadoId}")
-	public  List<Disponible>  listarByEmpleadoV2(@PathVariable(value="empleadoId") Integer id) {
-		Empleados emp = empleadoService.findEmpleadoById(id);
-		return ( List<Disponible> ) disponibleService.findByEmpleadoId(emp);
+	 @GetMapping("/listar-porservicio/{servicioId}")
+	public  List<DisponibleBoxes>  listarByServicioV2(@PathVariable(value="servicioId") Integer id) {
+		Servicios emp = servicioService.findServicioById(id);
+		return ( List<DisponibleBoxes> ) disponibleBoxesService.findByServicioId(emp);
 	}  
 	
 
 
-	@GetMapping("/getHorariosDisponibles/{categoriaId}/{servicioId}/{empleadoId}/{fecha}")
-	public List<Time> getHorariosDisponibles(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="servicioId") Integer servicioId,
-												@PathVariable(value="empleadoId")  Integer empleadoId, @PathVariable(value="fecha")  String fecha) throws ParseException {
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date fech = sdf.parse(fecha);
-		
 
-		return (List<Time>) disponibleService.getHorariosDisponibles(categoriaId, servicioId, empleadoId, fech);
-	}
-	
-	@GetMapping("/encontrar-datos/{id}")
-	public DisponibleDatosResult encontraDisponibleDAtos(@PathVariable Integer id) {
-		DisponibleDatosResult data = new DisponibleDatosResult();
-		Disponible disponible = disponibleService.findByDisponibleId(id);
-		if (disponible != null ) {
-			 List<Horario> horario =  (List<Horario>)  horarioService.findByIdEmpleadoLista(disponible.getEmpleadoId().getEmpleadoId());
-			 data.setDisponible(disponible);
-			 data.setHorario(horario);	
-		}
-		
-		return data ;
-	}
-	
 	
 }

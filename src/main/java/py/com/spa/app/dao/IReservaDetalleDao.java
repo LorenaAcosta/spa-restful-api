@@ -8,12 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import py.com.spa.app.entities.Boxes;
 import py.com.spa.app.entities.ReservaDetalle;
 
 
 public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integer>{
 	
 	List<ReservaDetalle> findByEmpleado(Integer empleado);
+	
+	List<ReservaDetalle> findByFechaReservaAndHora(Date fecha, Time hora);
 	
 	List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(Integer empleado, Date date);
 	

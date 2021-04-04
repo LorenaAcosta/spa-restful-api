@@ -89,32 +89,16 @@ public class ServicioService {
 	}
 
 
-	public List<Servicios> findAllByCategoriaIdAndEstado(Categorias categoria, String estado){
-		return (List<Servicios>) servicioDao.findAllByCategoriaIdAndEstado(categoria.getCategoriaId(), estado);
+	public List<Servicios> getServiciosActivos(Categorias categoriaId){
+		//EstadoServicio estado1= EstadoServicio.valueOf(estado.toUpperCase());
+		return (List<Servicios>) servicioDao.getServiciosActivos(categoriaId.getCategoriaId());
 		
 	}
 
 
 	public List<Servicios> getServiciosDisponibles(Integer empleadoId) {
-		// Buscamos el empleado por el Id
-		Empleados emp = empleadoService.findEmpleadoById(empleadoId);
-		List<Disponible> disponibles = disponibleService.findByEmpleadoId(emp);
-		List<Servicios> servicios =  servicioService.findAll();
-		
-		List<Servicios> listaNueva =  new ArrayList<Servicios>();
-		for (int i=0 ; i < servicios.size(); i++) {
-			
-			for ( Disponible dis : disponibles) {
-				if ( dis.getServicioId().getServicioId() != servicios.get(i).getServicioId()  ) {
-					
-					listaNueva.add(servicios.get(i));
-					
-				}
-			
-			}
-		}
-		
-		return listaNueva;
+		return servicioDao.getBoxesDisponibles(empleadoId);
+	
 	}
 	
 	   

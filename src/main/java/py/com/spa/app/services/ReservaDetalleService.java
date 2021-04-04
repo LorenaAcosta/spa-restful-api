@@ -1,5 +1,7 @@
 package py.com.spa.app.services;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IReservaDetalleDao;
+import py.com.spa.app.entities.Boxes;
 import py.com.spa.app.entities.Disponible;
+import py.com.spa.app.entities.DisponibleBoxes;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Servicios;
 
 @Service
 public class ReservaDetalleService {
 	
 	@Autowired
 	private IReservaDetalleDao reservaDao;
+	
+
 	
 	
 	@Transactional(readOnly=true)
@@ -68,6 +75,13 @@ public class ReservaDetalleService {
 	public List<ReservaDetalle> busquedaReservas (String termino){
 		return reservaDao.busquedaReservas(termino);
 	}
+	
+	@Transactional(readOnly=true)
+	public List<ReservaDetalle> findByFechaReservaAndHora (Date fecha, Time hora){
+		return reservaDao.findByFechaReservaAndHora(fecha, hora);
+	}
+	
 
+	
 
 }

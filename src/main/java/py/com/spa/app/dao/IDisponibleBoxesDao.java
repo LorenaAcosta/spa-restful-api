@@ -9,19 +9,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.Disponible;
+import py.com.spa.app.entities.DisponibleBoxes;
 import py.com.spa.app.entities.Horario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Servicios;
 
-public interface IDisponibleDao  extends JpaRepository<Disponible, Integer>{
-	
-	 @Query(value = "select * from disponible d where d.servicio_id=:servicio and empleado_id  in (select empleado_id from horario)" ,  nativeQuery = true)
-	List<Disponible> findEmpleadosDisponibles(Integer servicio);
+public interface IDisponibleBoxesDao  extends JpaRepository<DisponibleBoxes, Integer>{
 	
 
-	List<Disponible> findAllByEmpleadoId(Empleados id);
+	
+	List<DisponibleBoxes> findAllByServicioId(Servicios id);
 	
 	 @Query(value = "select distinct hora from reserva_detalle rd\r\n" + 
 		 		"	join disponible d on d.empleado_id = rd.empleado\r\n" + 
