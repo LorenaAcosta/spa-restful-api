@@ -57,7 +57,7 @@ public class Comprobante implements Serializable {
 	/**/
 	@Basic(optional = false)
 	@NotNull
-	@Size(min = 1, max = 2147483647)
+	@Size(min = 1, max = 8)
 	@Column(name = "timbrado", unique = true)
 	private String timbrado;
 	/**/

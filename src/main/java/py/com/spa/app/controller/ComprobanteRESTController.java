@@ -36,6 +36,7 @@ public class ComprobanteRESTController  {
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarComprobante(@RequestBody Comprobante comprobante) {
 		Comprobante imp = null;
+		comprobante.setNumeroActual(0);
 		Map<String, Object> response = new HashMap<>();
 		try {
 			imp = comprobanteService.addComprobante(comprobante);
@@ -86,4 +87,13 @@ public class ComprobanteRESTController  {
 		}
 		
 	}	
+	@GetMapping("/numero-actual")
+	public Integer getNumeroActual() {
+		return (Integer) comprobanteService.numeroActual();
+	}
+	
+	@GetMapping("/comprobante-activo")
+	public Comprobante getComprobanteActivo() {
+		return (Comprobante) comprobanteService.getComprobanteActivo();
+	}
 }

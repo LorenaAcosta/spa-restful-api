@@ -40,6 +40,17 @@ public class ComprobanteService {
 	public void deleteComprobante(Integer id) {
 		comprobanteDao.deleteById(id);
 	}
+	
+	@Transactional(readOnly=true)
+	public Integer numeroActual() {
+		return (Integer) comprobanteDao.getNumeroActual();
+	}
+	
+	
+	@Transactional(readOnly=true)
+	public Comprobante getComprobanteActivo() {
+		return (Comprobante) comprobanteDao.getComprobanteActivo();
+	}
 
 
 }

@@ -103,7 +103,11 @@ public class Servicios implements Serializable {
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
     @ManyToOne(optional = false)
     private Categorias categoriaId;
-
+    /**/
+    @JoinColumn(name = "impuesto_id", referencedColumnName = "impuesto_id")
+    @ManyToOne(optional = false)
+    private Impuesto impuestoId;
+    /**/
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
     private Collection<Disponible> disponibleCollection;
 
@@ -214,7 +218,15 @@ public class Servicios implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    @Override
+    public Impuesto getImpuestoId() {
+		return impuestoId;
+	}
+
+	public void setImpuestoId(Impuesto impuestoId) {
+		this.impuestoId = impuestoId;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (servicioId != null ? servicioId.hashCode() : 0);

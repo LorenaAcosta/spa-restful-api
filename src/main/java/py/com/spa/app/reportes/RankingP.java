@@ -1,4 +1,4 @@
-package py.com.spa.app.entities;
+package py.com.spa.app.reportes;
 
 public interface RankingP {
 	

@@ -30,6 +30,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -37,13 +39,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ventas")
 @XmlRootElement
-@NamedQueries({
+/*@NamedQueries({
     @NamedQuery(name = "Ventas.findAll", query = "SELECT v FROM Ventas v"),
     @NamedQuery(name = "Ventas.findByVentasId", query = "SELECT v FROM Ventas v WHERE v.ventasId = :ventasId"),
     @NamedQuery(name = "Ventas.findByNumeroComprobante", query = "SELECT v FROM Ventas v WHERE v.numeroComprobante = :numeroComprobante"),
     @NamedQuery(name = "Ventas.findByFecha", query = "SELECT v FROM Ventas v WHERE v.fecha = :fecha"),
     @NamedQuery(name = "Ventas.findByMontoTotal", query = "SELECT v FROM Ventas v WHERE v.montoTotal = :montoTotal"),
-    @NamedQuery(name = "Ventas.findByEstado", query = "SELECT v FROM Ventas v WHERE v.estado = :estado")})
+    @NamedQuery(name = "Ventas.findByIvaCinco", query = "SELECT v FROM Ventas v WHERE v.ivaCinco = :ivaCinco"),
+    @NamedQuery(name = "Ventas.findByIvaDiez", query = "SELECT v FROM Ventas v WHERE v.ivaDiez = :ivaDiez"),
+    @NamedQuery(name = "Ventas.findByIvaTotal", query = "SELECT v FROM Ventas v WHERE v.ivaTotal = :ivaTotal"),
+    @NamedQuery(name = "Ventas.findByEstado", query = "SELECT v FROM Ventas v WHERE v.estado = :estado")})*/
 public class Ventas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,9 +58,20 @@ public class Ventas implements Serializable {
     private Integer ventasId;
     @Basic(optional = false)
     @NotNull
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "numero_comprobante")
     private int numeroComprobante;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "comprobante_completo", unique=false )
+    private String comprobanteCompleto;
+    /**/
+    @JoinColumn(name = "comprobante_id", referencedColumnName = "comprobante_id")
+    @ManyToOne(optional = true)
+    private Comprobante comprobanteId;
+    /**/
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
@@ -64,15 +80,60 @@ public class Ventas implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto_total")
-    private int montoTotal;
+    private Long montoTotal;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "monto_total_letras", unique=false )
+    private String montoTotalLetras;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "iva_cinco")
+    private Long ivaCinco;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "iva_diez")
+    private Long ivaDiez;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "iva_total")
+    private Long ivaTotal;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sub_total_cinco")
+    private Long subTotalCinco;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sub_total_diez")
+    private Long subTotalDiez;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sub_total_exenta")
+    private Long subTotalExenta;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sub_total_total")
+    private Long subTotalTotal;
+    /**/
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total_descuento")
+    private Long totalDescuento;
+    /**/
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "estado")
     private String estado;
-    /*@OneToOne(cascade = CascadeType.ALL, mappedBy = "ventas")
-    private VentasDetalle ventasDetalle;*/
-    /**/
+
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
@@ -81,6 +142,7 @@ public class Ventas implements Serializable {
     @ManyToOne(optional = false)
     private MediosPago medioPagoId;
     /**/
+    //@JsonBackReference(value="ventas-detalle")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")  
     private Collection<VentasDetalle> ventasDetalleCollection;
     /**/
@@ -94,23 +156,72 @@ public class Ventas implements Serializable {
         this.ventasId = ventasId;
     }
 
+	public Ventas(Integer ventasId, @NotNull int numeroComprobante,
+			@NotNull @Size(min = 1, max = 2147483647) String comprobanteCompleto, Comprobante comprobanteId,
+			@NotNull Date fecha, @NotNull Long montoTotal,
+			@NotNull @Size(min = 1, max = 2147483647) String montoTotalLetras, @NotNull Long ivaCinco,
+			@NotNull Long ivaDiez, @NotNull Long ivaTotal, @NotNull Long subTotalCinco, @NotNull Long subTotalDiez,
+			@NotNull Long subTotalExenta, @NotNull Long subTotalTotal, @NotNull Long totalDescuento,
+			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId) {
+		super();
+		this.ventasId = ventasId;
+		this.numeroComprobante = numeroComprobante;
+		this.comprobanteCompleto = comprobanteCompleto;
+		this.comprobanteId = comprobanteId;
+		this.fecha = fecha;
+		this.montoTotal = montoTotal;
+		this.montoTotalLetras = montoTotalLetras;
+		this.ivaCinco = ivaCinco;
+		this.ivaDiez = ivaDiez;
+		this.ivaTotal = ivaTotal;
+		this.subTotalCinco = subTotalCinco;
+		this.subTotalDiez = subTotalDiez;
+		this.subTotalExenta = subTotalExenta;
+		this.subTotalTotal = subTotalTotal;
+		this.totalDescuento = totalDescuento;
+		this.estado = estado;
+		this.usuarioId = usuarioId;
+		this.medioPagoId = medioPagoId;
+	}
 
-    public Ventas(Integer ventasId, @NotNull int numerocomprobante, @NotNull Date fecha, @NotNull int montoTotal,
+	public Ventas(Integer ventasId, @NotNull int numeroComprobante,
+			@NotNull @Size(min = 1, max = 2147483647) String comprobanteCompleto, Comprobante comprobanteId,
+			@NotNull Date fecha, @NotNull Long montoTotal,
+			@NotNull @Size(min = 1, max = 2147483647) String montoTotalLetras, @NotNull Long ivaCinco,
+			@NotNull Long ivaDiez, @NotNull Long ivaTotal, @NotNull Long subTotalCinco, @NotNull Long subTotalDiez,
+			@NotNull Long subTotalExenta, @NotNull Long subTotalTotal, @NotNull Long totalDescuento,
 			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId,
 			Collection<VentasDetalle> ventasDetalleCollection, Collection<PlanPago> planPagoCollection) {
 		super();
 		this.ventasId = ventasId;
-		this.numeroComprobante = numerocomprobante;
+		this.numeroComprobante = numeroComprobante;
+		this.comprobanteCompleto = comprobanteCompleto;
+		this.comprobanteId = comprobanteId;
 		this.fecha = fecha;
 		this.montoTotal = montoTotal;
+		this.montoTotalLetras = montoTotalLetras;
+		this.ivaCinco = ivaCinco;
+		this.ivaDiez = ivaDiez;
+		this.ivaTotal = ivaTotal;
+		this.subTotalCinco = subTotalCinco;
+		this.subTotalDiez = subTotalDiez;
+		this.subTotalExenta = subTotalExenta;
+		this.subTotalTotal = subTotalTotal;
+		this.totalDescuento = totalDescuento;
 		this.estado = estado;
 		this.usuarioId = usuarioId;
 		this.medioPagoId = medioPagoId;
 		this.ventasDetalleCollection = ventasDetalleCollection;
 		this.planPagoCollection = planPagoCollection;
 	}
-    
-    
+
+	public Comprobante getComprobanteId() {
+		return comprobanteId;
+	}
+
+	public void setComprobanteId(Comprobante comprobanteId) {
+		this.comprobanteId = comprobanteId;
+	}
 
 	public Collection<VentasDetalle> getVentasDetalleCollection() {
 		return ventasDetalleCollection;
@@ -136,7 +247,15 @@ public class Ventas implements Serializable {
         this.numeroComprobante = numeroComprobante;
     }
 
-    public Date getFecha() {
+    public String getComprobanteCompleto() {
+		return comprobanteCompleto;
+	}
+
+	public void setComprobanteCompleto(String comprobanteCompleto) {
+		this.comprobanteCompleto = comprobanteCompleto;
+	}
+
+	public Date getFecha() {
         return fecha;
     }
 
@@ -144,15 +263,87 @@ public class Ventas implements Serializable {
         this.fecha = fecha;
     }
 
-    public int getMontoTotal() {
+    public Long getMontoTotal() {
         return montoTotal;
     }
 
-    public void setMontoTotal(int montoTotal) {
+    public void setMontoTotal(Long montoTotal) {
         this.montoTotal = montoTotal;
     }
 
-    public String getEstado() {
+    public String getMontoTotalLetras() {
+		return montoTotalLetras;
+	}
+
+	public void setMontoTotalLetras(String montoTotalLetras) {
+		this.montoTotalLetras = montoTotalLetras;
+	}
+
+	public Long getIvaCinco() {
+		return ivaCinco;
+	}
+
+	public void setIvaCinco(Long ivaCinco) {
+		this.ivaCinco = ivaCinco;
+	}
+
+	public Long getIvaDiez() {
+		return ivaDiez;
+	}
+
+	public void setIvaDiez(Long ivaDiez) {
+		this.ivaDiez = ivaDiez;
+	}
+
+	public Long getIvaTotal() {
+		return ivaTotal;
+	}
+
+	public void setIvaTotal(Long ivaTotal) {
+		this.ivaTotal = ivaTotal;
+	}
+
+	public Long getSubTotalCinco() {
+		return subTotalCinco;
+	}
+
+	public void setSubTotalCinco(Long subTotalCinco) {
+		this.subTotalCinco = subTotalCinco;
+	}
+
+	public Long getSubTotalDiez() {
+		return subTotalDiez;
+	}
+
+	public void setSubTotalDiez(Long subTotalDiez) {
+		this.subTotalDiez = subTotalDiez;
+	}
+
+	public Long getSubTotalExenta() {
+		return subTotalExenta;
+	}
+
+	public void setSubTotalExenta(Long subTotalExenta) {
+		this.subTotalExenta = subTotalExenta;
+	}
+
+	public Long getSubTotalTotal() {
+		return subTotalTotal;
+	}
+
+	public void setSubTotalTotal(Long subTotalTotal) {
+		this.subTotalTotal = subTotalTotal;
+	}
+
+	public Long getTotalDescuento() {
+		return totalDescuento;
+	}
+
+	public void setTotalDescuento(Long totalDescuento) {
+		this.totalDescuento = totalDescuento;
+	}
+
+	public String getEstado() {
         return estado;
     }
 
@@ -205,9 +396,18 @@ public class Ventas implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.spa.Ventas[ ventasId=" + ventasId + " ]";
-    }
+	@Override
+	public String toString() {
+		return "Ventas [ventasId=" + ventasId + ", numeroComprobante=" + numeroComprobante + ", comprobanteCompleto="
+				+ comprobanteCompleto + ", comprobanteId=" + comprobanteId + ", fecha=" + fecha + ", montoTotal="
+				+ montoTotal + ", montoTotalLetras=" + montoTotalLetras + ", ivaCinco=" + ivaCinco + ", ivaDiez="
+				+ ivaDiez + ", ivaTotal=" + ivaTotal + ", subTotalCinco=" + subTotalCinco + ", subTotalDiez="
+				+ subTotalDiez + ", subTotalExenta=" + subTotalExenta + ", subTotalTotal=" + subTotalTotal
+				+ ", totalDescuento=" + totalDescuento + ", estado=" + estado + ", usuarioId=" + usuarioId
+				+ ", medioPagoId=" + medioPagoId + ", ventasDetalleCollection=" + ventasDetalleCollection
+				+ ", planPagoCollection=" + planPagoCollection + "]";
+	}
+
+
     
 }

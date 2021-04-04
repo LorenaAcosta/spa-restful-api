@@ -18,14 +18,17 @@ public class FileServiceImp implements FileService {
   	//Nombre de la carpeta donde vamos a almacenar los archivos
     //Se crea a nivel de raiz la carpeta
     private final Path root = Paths.get("uploads");
+    //directorio para reportes
+    private final Path rootReportes = Paths.get("reportes");
 	
    @Override
     public void init() {
-      /*  try {
+	 //descomentado
+       /*try {
         	Files.createDirectory(root);
         } catch (IOException e) {
             throw new RuntimeException("No se puede inicializar la carpeta uploads");
-        }*///descomentado
+        }*/
      }
 
     @Override

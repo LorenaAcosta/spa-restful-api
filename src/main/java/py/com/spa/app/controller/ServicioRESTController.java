@@ -73,6 +73,7 @@ public class ServicioRESTController {
 			s.setNombre(      servicio.getNombre());
 			s.setDescripcion( servicio.getDescripcion());
 			s.setCategoriaId( servicio.getCategoriaId());
+			s.setImpuestoId( servicio.getImpuestoId());
 			s.setEstado(      servicio.getEstado());
 			s.setDuracion(    servicio.getDuracion());
 			s.setCosto(       servicio.getCosto());
