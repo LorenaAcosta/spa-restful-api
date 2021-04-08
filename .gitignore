@@ -1,2 +1,6 @@
 uploads
+
+reportes/ventas/factura.pdf
+*.pdf
+
 src/main/resources/application.properties
