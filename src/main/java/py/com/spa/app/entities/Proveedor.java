@@ -63,7 +63,7 @@ public class Proveedor implements Serializable {
     @Column(name = "telefono")
     private int telefono;
     @Column(name = "nombre_gerente")
-    private int nombreGerente;
+    private String nombreGerente;
     
     @Basic(optional = false)
     @NotNull
@@ -73,7 +73,7 @@ public class Proveedor implements Serializable {
     @Column(name = "cargo", unique=true) 
     private String cargo;
     @Column(name = "telefono_contacto", unique=true) 
-    private String telefonoContacto;
+    private int telefonoContacto;
     @Column(name = "estado", unique=true) 
     private String estado;
    
@@ -99,8 +99,8 @@ public class Proveedor implements Serializable {
     
     public Proveedor(Integer proveedorId, String razonSocial, String empresa, String ruc,
 			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String rubro, String correo,
-			@NotNull int telefono, int nombreGerente, @NotNull @Size(min = 1, max = 2147483647) String nombreProveedor,
-			String cargo, String telefonoContacto, String estado) {
+			@NotNull int telefono, String nombreGerente, @NotNull @Size(min = 1, max = 2147483647) String nombreProveedor,
+			String cargo, int telefonoContacto, String estado) {
 		super();
 		this.proveedorId = proveedorId;
 		this.razonSocial = razonSocial;
@@ -191,11 +191,11 @@ public class Proveedor implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public int getNombreGerente() {
+	public String getNombreGerente() {
 		return nombreGerente;
 	}
 
-	public void setNombreGerente(int nombreGerente) {
+	public void setNombreGerente(String nombreGerente) {
 		this.nombreGerente = nombreGerente;
 	}
 
@@ -215,11 +215,11 @@ public class Proveedor implements Serializable {
 		this.cargo = cargo;
 	}
 
-	public String getTelefonoContacto() {
+	public int getTelefonoContacto() {
 		return telefonoContacto;
 	}
 
-	public void setTelefonoContacto(String telefonoContacto) {
+	public void setTelefonoContacto(int telefonoContacto) {
 		this.telefonoContacto = telefonoContacto;
 	}
 
