@@ -586,7 +586,15 @@ CONTADO [ X ] CREDITO [ ]]]></text>
 								<reportElement x="0" y="0" width="69" height="20" uuid="6e2357b5-1d85-462b-a0fc-fbdce4d3e2bf">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+									<topPen lineWidth="1.5"/>
+									<leftPen lineWidth="1.5"/>
+									<bottomPen lineWidth="1.5"/>
+									<rightPen lineWidth="1.5"/>
+								</box>
 								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{subtotalexenta}]]></textFieldExpression>
@@ -631,7 +639,15 @@ CONTADO [ X ] CREDITO [ ]]]></text>
 								<reportElement x="0" y="0" width="67" height="20" uuid="b574553c-9d72-4303-8aa1-69d0cc43328c">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+									<topPen lineWidth="1.5"/>
+									<leftPen lineWidth="1.5"/>
+									<bottomPen lineWidth="1.5"/>
+									<rightPen lineWidth="1.5"/>
+								</box>
 								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{subtotalcinco}]]></textFieldExpression>
@@ -679,7 +695,15 @@ CONTADO [ X ] CREDITO [ ]]]></text>
 								<reportElement x="0" y="0" width="67" height="20" uuid="8018f9a6-01a9-4fdb-9d53-fd3cee5a8eae">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+									<topPen lineWidth="1.5"/>
+									<leftPen lineWidth="1.5"/>
+									<bottomPen lineWidth="1.5"/>
+									<rightPen lineWidth="1.5"/>
+								</box>
 								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{subtotaldiez}]]></textFieldExpression>
@@ -691,7 +715,15 @@ CONTADO [ X ] CREDITO [ ]]]></text>
 								<reportElement x="0" y="0" width="67" height="20" uuid="cf34bf03-de7b-469f-8018-3b62ebc3d084">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
+								<box>
+									<pen lineWidth="1.5"/>
+									<topPen lineWidth="1.5"/>
+									<leftPen lineWidth="1.5"/>
+									<bottomPen lineWidth="1.5"/>
+									<rightPen lineWidth="1.5"/>
+								</box>
 								<textElement verticalAlignment="Middle">
+									<font isBold="true"/>
 									<paragraph leftIndent="5"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{totaldescuento}]]></textFieldExpression>

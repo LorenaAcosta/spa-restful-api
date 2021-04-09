@@ -1,2 +1,5 @@
 uploads
+*.pdf
+*.html
+
 src/main/resources/application.properties

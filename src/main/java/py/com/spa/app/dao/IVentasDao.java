@@ -32,11 +32,11 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 			"	 when (d.producto_id is null) then \r\n" + 
 			"	 	(select descripcion from servicios s\r\n" + 
 			"			join ventas_detalle dt on dt.servicio_id = s.servicio_id\r\n" + 
-			"			where dt.ventas_id = 65 and s.servicio_id = d.servicio_id)\r\n" + 
+			"			where dt.ventas_id = :ventaId and s.servicio_id = d.servicio_id)\r\n" + 
 			"	 when (d.servicio_id is null) then \r\n" + 
 			"	 	(select descripcion from productos p\r\n" + 
 			"			join ventas_detalle dt on dt.producto_id = p.producto_id\r\n" + 
-			"			where dt.ventas_id = 65 and p.producto_id = d.producto_id)\r\n" + 
+			"			where dt.ventas_id = :ventaId and p.producto_id = d.producto_id)\r\n" + 
 			"	 end) as descripcion,\r\n" + 
 			"	 d.precio,\r\n" + 
 			"	 (case \r\n" + 
