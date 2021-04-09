@@ -2,4 +2,5 @@ uploads
 *.pdf
 *.html
 
-*.properties
+
+target/
