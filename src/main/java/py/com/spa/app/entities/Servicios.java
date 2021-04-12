@@ -38,6 +38,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import py.com.spa.app.enumeraciones.EstadoProducto;
 import py.com.spa.app.enumeraciones.EstadoServicio;
+import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.result.SqlTimeDeserializer;
 
 /**
@@ -68,11 +69,9 @@ public class Servicios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre", unique=true)
     private String nombre;
-    /*@Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "estado")
-    private String estado;*/
+    
+    
+    @Basic(optional = false)
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 8)
@@ -104,8 +103,19 @@ public class Servicios implements Serializable {
     @ManyToOne(optional = false)
     private Categorias categoriaId;
 
+    /**/
+    @JoinColumn(name = "impuesto_id", referencedColumnName = "impuesto_id")
+    @ManyToOne(optional = false)
+    private Impuesto impuestoId;
+    /**/
+
+    @JsonBackReference(value="disponible")
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
     private Collection<Disponible> disponibleCollection;
+    
+    @JsonBackReference(value="disponibleBoxes")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    private Collection<Disponible> disponibleBoxesCollection;
 
     public Servicios() {
     }
@@ -214,7 +224,15 @@ public class Servicios implements Serializable {
         this.categoriaId = categoriaId;
     }
 
-    @Override
+    public Impuesto getImpuestoId() {
+		return impuestoId;
+	}
+
+	public void setImpuestoId(Impuesto impuestoId) {
+		this.impuestoId = impuestoId;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (servicioId != null ? servicioId.hashCode() : 0);

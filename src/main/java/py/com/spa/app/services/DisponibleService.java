@@ -2,7 +2,13 @@ package py.com.spa.app.services;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -17,13 +23,15 @@ import py.com.spa.app.dao.IDisponibleDao;
 import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
+
+import py.com.spa.app.entities.Empleados;
+
 import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
 
 @Service
 public class DisponibleService {
 	
-	private static final Logger logger = null;
 	
 	@Autowired
 	private IDisponibleDao disponibleDao;
@@ -61,15 +69,16 @@ public class DisponibleService {
 	}
 	
 	
-	public List<Disponible> findAllByCategoriaId(Servicios servicio) {
-	
-		return (List<Disponible>) disponibleDao.findAllByServicioId(servicio);
+	public List<Disponible> findEmpleadosDisponibles(Integer servicio) {
+		return (List<Disponible>) disponibleDao.findEmpleadosDisponibles(servicio);
 	}
 	
 	public List<Time> getHorariosDisponibles(Integer categoriaId, Integer servicioId, Integer empleadoId, Date fecha) {
-		
-		// obtenemos la hora de entrada y hora de salida del empleado
-		Horario hor = horarioService.findByIdEmpleado(empleadoId);
+		Calendar c = Calendar.getInstance();
+		c.setTime(fecha);
+		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		//Obtenemos la hora de entrada y hora de salida del empleado 
+		Horario hor = horarioService.findByIdEmpleado(empleadoId, dayOfWeek-1 );
 		Long inicio = (hor.getHoraInicio().getTime() / 1000L) - 14400;
 		Long fin = (hor.getHoraFin().getTime() / 1000L) - 14400;
 		Long suma = (inicio + 3600);
@@ -105,8 +114,9 @@ public class DisponibleService {
 	
 
 	
-	
-
+	public List<Disponible> findByEmpleadoId(Empleados emp) {
+		return (List<Disponible>) disponibleDao.findAllByEmpleadoId(emp);
+	}
 }
 
 

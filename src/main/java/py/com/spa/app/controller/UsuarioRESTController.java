@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.UsuarioService;
 
@@ -123,6 +124,24 @@ public class UsuarioRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);	
+	}
+	
+	@GetMapping("/busqueda-clientes/{id}")
+	public ResponseEntity<?>  busquedaClientes(@PathVariable(value="id") String termino)  {
+		List<Usuario> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= UsuarioService.busquedaClientes(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Usuario>>(lista, HttpStatus.OK);
 	}
 
 

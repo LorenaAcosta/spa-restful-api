@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
@@ -78,6 +80,7 @@ public class ProductoRESTController {
 			prod.setPrecioVenta(    producto.getPrecioVenta());
 			prod.setStockActual(    producto.getStockActual());
 			prod.setCategoriaId(    producto.getCategoriaId());
+			prod.setImpuestoId(    producto.getImpuestoId());
 			prod.setImageName(      producto.getImageName());
 			prod.setEstado(         producto.getEstado());
 			p = productoService.updateProducto(prod);		
@@ -136,8 +139,29 @@ public class ProductoRESTController {
 	public Productos obtenerProductosId(@PathVariable(value="id") Integer id) {
 		return (Productos) productoService.findProductoById(id);
 	}
+	
+	@GetMapping("/busqueda-productos/{id}")
+	public ResponseEntity<?>  busquedaProductos(@PathVariable(value="id") String termino)  {
+		List<Productos> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= productoService.busquedaProductos(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Productos>>(lista, HttpStatus.OK);
+	}
 
-
+    @GetMapping("/reporte")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return productoService.exportReport();
+    }
 	
 
 }

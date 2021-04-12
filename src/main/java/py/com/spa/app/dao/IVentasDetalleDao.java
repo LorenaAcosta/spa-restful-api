@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Compras;
-import py.com.spa.app.entities.ComprasDetalle;
-import py.com.spa.app.entities.RankingP;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.entities.VentasDetalle;
+import py.com.spa.app.reportes.DetalleVentaReportInterface;
+import py.com.spa.app.reportes.RankingP;
+import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
+import py.com.spa.app.reportes.VentaFooterReportInterface;
 
 public interface IVentasDetalleDao extends JpaRepository<VentasDetalle, Integer> {
 	List<VentasDetalle> findByVentas(Ventas venta);

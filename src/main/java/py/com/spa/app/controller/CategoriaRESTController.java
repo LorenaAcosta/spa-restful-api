@@ -165,9 +165,9 @@ public class CategoriaRESTController  {
 	}
 	
 
-    @GetMapping("/report/{format}")
-    public String generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
-        return categoriaService.exportReport(format);
+    @GetMapping("/report")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return categoriaService.exportReport();
     }
 
 	
@@ -181,6 +181,45 @@ public class CategoriaRESTController  {
 		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/find-categoria/{id}")
+	public ResponseEntity<?> findByDataTypee(@PathVariable(value="id") String id) {
+		List<Categorias> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			
+			lista= categoriaService.findByDataTypee(id);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
+	}
+	
+
+	@GetMapping("/busqueda-categorias/{id}")
+	public ResponseEntity<?>  busquedaCategorias(@PathVariable(value="id") String termino)  {
+		List<Categorias> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= categoriaService.busquedaCategorias(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

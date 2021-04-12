@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Proveedor;
+import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.ProveedorService;
 
 @RestController
@@ -98,6 +99,26 @@ public class ProveedorRESTController {
 	@GetMapping("/encontrar/{id}")
 	public Proveedor obtenerProveedorId(@PathVariable(value="id") Integer id) {
 		return (Proveedor) proveedorService.findById(id);
+	}
+	
+	
+	
+	@GetMapping("/busqueda-proveedores/{id}")
+	public ResponseEntity<?>  busquedaProveedores(@PathVariable(value="id") String termino)  {
+		List<Proveedor> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= proveedorService.busquedaProveedores(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Proveedor>>(lista, HttpStatus.OK);
 	}
 
 }

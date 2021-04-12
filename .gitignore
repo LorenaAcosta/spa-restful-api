@@ -1,1 +1,6 @@
 uploads
+*.pdf
+*.html
+
+
+target/

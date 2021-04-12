@@ -1,11 +1,10 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
@@ -36,7 +36,6 @@ public class ServicioRESTController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	private Logger log = LoggerFactory.getLogger(ServicioRESTController.class);
 	
 	@GetMapping("/listar")
 	public List<Servicios> listarServicios(){
@@ -73,6 +72,7 @@ public class ServicioRESTController {
 			s.setNombre(      servicio.getNombre());
 			s.setDescripcion( servicio.getDescripcion());
 			s.setCategoriaId( servicio.getCategoriaId());
+			s.setImpuestoId( servicio.getImpuestoId());
 			s.setEstado(      servicio.getEstado());
 			s.setDuracion(    servicio.getDuracion());
 			s.setCosto(       servicio.getCosto());
@@ -146,15 +146,15 @@ public class ServicioRESTController {
 		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getServiciosActivos/{categoriaId}/{estado}")
-	public  ResponseEntity<?> findByCategoriaIdAndEstado(@PathVariable(value="categoriaId")  Integer categoriaId, @PathVariable(value="estado") String estado )
+	@GetMapping("/getServiciosActivos/{categoriaId}")
+	public  ResponseEntity<?> getServiciosActivos(@PathVariable(value="categoriaId")  Integer categoriaId)
 	{
 		
 		Map<String, Object> response = new HashMap<>();
 		List<Servicios> lista = null;
 		Categorias c = categoriaService.findByCategoriaId(categoriaId);
 		try {
-			lista= servicioService.findAllByCategoriaIdAndEstado(c, estado);
+			lista= servicioService.getServiciosActivos(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
@@ -185,5 +185,50 @@ public class ServicioRESTController {
 		}
 		return new ResponseEntity<Servicios>(service, HttpStatus.OK);
 	}
+
+
+	@GetMapping("/get-servicios-disponibles/{id}")
+	public  ResponseEntity<?>  getServiciosDisponibles(@PathVariable(value="id") Integer empleadoId) {
+		List<Servicios> servicios = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			
+			servicios = (List<Servicios>)servicioService.getServiciosDisponibles(empleadoId);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "Error al realizar la consulta");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if (servicios==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<	List<Servicios> >(	servicios, HttpStatus.OK);
+	}
+	
+	@GetMapping("/busqueda-servicios/{id}")
+	public ResponseEntity<?>  busquedaServicios(@PathVariable(value="id") String termino)  {
+		List<Servicios> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= servicioService.busquedaServicios(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
+	}
+	
+	
+    @GetMapping("/reporte")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return servicioService.exportReport();
+    }
 	
 }

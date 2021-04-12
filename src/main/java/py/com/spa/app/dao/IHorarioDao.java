@@ -14,7 +14,13 @@ public interface IHorarioDao extends  JpaRepository<Horario, Integer> {
 	
 	 Horario findByEmpleadoId(Empleados id);
 	 
-	 @Query(value = "select *from horario where empleado_id = :id",  nativeQuery = true)
-	 Horario findByEmpleado(@Param("id") Integer id);
-	
+	 @Query(value = "select * from horario where empleado_id = :id and dia_trabajo=  cast(:dia as varchar)",  nativeQuery = true)
+   	 Horario findByEmpleado(@Param("id") Integer id, @Param("dia") Integer dia );
+	 
+	 @Query(value = "select * from horario where empleado_id = :id",  nativeQuery = true)
+	 List<Horario> findByIdEmpleadoLista(@Param("id") Integer id);
+
+	 @Query(value = "select * from horario where empleado_id = :id order by dia_trabajo asc",  nativeQuery = true)
+	 List<Horario> getListaHorarios(Integer id);
+
 }
