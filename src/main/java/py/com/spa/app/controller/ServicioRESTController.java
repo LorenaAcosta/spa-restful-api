@@ -1,15 +1,12 @@
 package py.com.spa.app.controller;
 
-import java.sql.Time;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Servicios;
-import py.com.spa.app.enumeraciones.EstadoServicio;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
 
@@ -38,7 +34,6 @@ public class ServicioRESTController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	private Logger log = LoggerFactory.getLogger(ServicioRESTController.class);
 	
 	@GetMapping("/listar")
 	public List<Servicios> listarServicios(){
@@ -227,5 +222,11 @@ public class ServicioRESTController {
 		}
 		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
+	
+	
+    @GetMapping("/reporte")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return servicioService.exportReport();
+    }
 	
 }

@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Boxes;
 import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Horario;
@@ -126,9 +128,14 @@ public class ReservaDetalleRESTController {
 		return (List<ReservaDetalle>) reservaDetalleService.findByFechaReservaAndHora(fetch, time);
 	}
 	
-
-	
-	
+    @GetMapping("/reporte/{fecha}")
+    public String generateReport(@PathVariable(value="fecha")  String fecha) throws FileNotFoundException, JRException, ParseException {
+        
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date fech = sdf.parse(fecha);
+		
+    	return reservaDetalleService.exportReport(fech);
+    }
 	
 
 	

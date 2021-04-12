@@ -1,4 +1,5 @@
 package py.com.spa.app.controller;
+import java.io.FileNotFoundException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Empleados;
@@ -190,7 +192,10 @@ public class EmpleadoRESTController {
 	}
 	
 
-	
+    @GetMapping("/reporte")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return empleadoService.exportReport();
+    }
 	
 	
 }

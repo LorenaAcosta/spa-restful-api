@@ -109,7 +109,7 @@ public class CategoriaService {
         /* Write content to PDF file */
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
         
-        JasperExportManager.exportReportToHtmlFile(jasperPrint, "reportes/ventas/factura.html");
+        JasperExportManager.exportReportToHtmlFile(jasperPrint, "reportes/categorias/categorias.html");
 
         System.out.println("File Generated");	
         

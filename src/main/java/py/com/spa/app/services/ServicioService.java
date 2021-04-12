@@ -1,30 +1,36 @@
 package py.com.spa.app.services;
 
-import java.sql.Time;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.ICategoriaDao;
-import py.com.spa.app.dao.IHorarioDao;
 import py.com.spa.app.dao.IServicioDao;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Disponible;
-import py.com.spa.app.entities.Empleados;
-import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
 
 import py.com.spa.app.enumeraciones.EstadoServicio;
-import py.com.spa.app.enumeraciones.TipoCategoria;
-import py.com.spa.app.entities.Turnos;
+import py.com.spa.app.reportes.ServicioReporte;
 
 
 @Service
@@ -35,15 +41,7 @@ public class ServicioService {
 	
 	@Autowired
 	private ICategoriaDao categoriaDao;
-	
-	@Autowired
-	private DisponibleService disponibleService;
-	
-	@Autowired
-	private EmpleadoService empleadoService;
-	
-	@Autowired
-	private ServicioService servicioService;
+
 
 	
 
@@ -103,9 +101,55 @@ public class ServicioService {
 	
 	   
 
-		public List<Servicios> busquedaServicios (String termino){
-			return servicioDao.busquedaServicios(termino);
-		}
+	public List<Servicios> busquedaServicios (String termino){
+		return servicioDao.busquedaServicios(termino);
+	}
+	
+	
+	
+	/*Reporte*/
+	public String exportReport() throws FileNotFoundException, JRException {
+		
+		
+        
+        List<ServicioReporte> listItems = (List<ServicioReporte>)servicioDao.getAllActivosReporte();
+
+  
+        String outputFile = "reportes/servicios/" + "servicios.pdf";
+        
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(listItems);
+
+        /* Map to hold Jasper report Parameters */
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("CollectionBeanParam", itemsJRBean);
+        
+        //read jrxml file and creating jasperdesign object
+        InputStream input = new FileInputStream(new File("reportes/servicios/servicios.jrxml"));
+                            
+        JasperDesign jasperDesign = JRXmlLoader.load(input);
+        
+        /*compiling jrxml with help of JasperReport class*/
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        /* Using jasperReport object to generate PDF */
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+        
+        /* outputStream to create PDF */
+        OutputStream outputStream = new FileOutputStream(new File(outputFile));
+        
+        /* Write content to PDF file */
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        
+        JasperExportManager.exportReportToHtmlFile(jasperPrint, "reportes/servicios/servicios.html");
+
+        System.out.println("File Generated");	
+        
+        //load("factura.pdf");
+        
+        return "Reporte generado";
+      
+    }
 
 
 

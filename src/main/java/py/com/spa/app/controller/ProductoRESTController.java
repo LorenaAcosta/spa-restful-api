@@ -1,5 +1,6 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
@@ -154,7 +156,10 @@ public class ProductoRESTController {
 		return new ResponseEntity<List<Productos>>(lista, HttpStatus.OK);
 	}
 
-
+    @GetMapping("/reporte")
+    public String generateReport() throws FileNotFoundException, JRException {
+        return productoService.exportReport();
+    }
 	
 
 }
