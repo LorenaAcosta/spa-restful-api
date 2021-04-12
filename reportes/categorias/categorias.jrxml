@@ -243,7 +243,7 @@ SAN LORENZO - PARAGUAY]]></text>
 			<staticText>
 				<reportElement x="230" y="10" width="269" height="30" uuid="4bd6b50e-afa4-4930-a6b5-3c40f677cf05"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="20" isBold="true"/>
+					<font fontName="Arial" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Listado de categorias]]></text>
 			</staticText>
