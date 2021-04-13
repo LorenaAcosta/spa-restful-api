@@ -6,14 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -27,12 +31,8 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.reportes.CategoriaReporte;
-import py.com.spa.app.reportes.DetalleVentaReportInterface;
-import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
-import py.com.spa.app.reportes.VentaFooterReportInterface;
 
 @Service
 public class CategoriaService {
@@ -40,6 +40,7 @@ public class CategoriaService {
 	@Autowired
 	private ICategoriaDao categoriaDao;
 	
+	private final Path rootReportes = Paths.get("reportes/categorias");
 	
 	@Transactional(readOnly=true)
 	public List<Categorias> findAll(){
@@ -117,6 +118,22 @@ public class CategoriaService {
         
         return "File generado";
       
+    }
+	
+    public Resource load(String filename) {
+        try {
+            Path file = rootReportes.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }else{
+                throw new RuntimeException("No se puede leer el archivo ");
+            }
+
+        }catch (MalformedURLException e){
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
     }
     
 	@Transactional(readOnly=true)
