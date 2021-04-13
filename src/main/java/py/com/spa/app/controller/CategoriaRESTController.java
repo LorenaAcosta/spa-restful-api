@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,16 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Compras;
-import py.com.spa.app.enumeraciones.TipoCategoria;
-import py.com.spa.app.services.CategoriaService;
-import py.com.spa.params.PaginadoParam;
-import py.com.spa.result.PaginadoResult;
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
-import py.com.spa.app.util.Utileria;
 
 @RestController
 @RequestMapping("/categoria" )
@@ -227,5 +221,12 @@ public class CategoriaRESTController  {
 		}
 		return new ResponseEntity<List<Categorias>>(lista, HttpStatus.OK);
 	}
+	
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = categoriaService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
+    }
 
 }
