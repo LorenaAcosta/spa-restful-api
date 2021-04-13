@@ -332,7 +332,7 @@ SAN LORENZO - PARAGUAY]]></text>
 			<staticText>
 				<reportElement x="244" y="10" width="269" height="30" uuid="4bd6b50e-afa4-4930-a6b5-3c40f677cf05"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman" size="20" isBold="true"/>
+					<font fontName="SansSerif" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Listado de servicios]]></text>
 			</staticText>
@@ -352,21 +352,21 @@ SAN LORENZO - PARAGUAY]]></text>
 				<textField evaluationTime="Report">
 					<reportElement x="725" y="0" width="17" height="16" forecolor="#FFFFFF" uuid="ac7804a4-1753-4128-b416-4467dd7f42d4"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="12" isBold="false"/>
+						<font fontName="SansSerif" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="640" y="0" width="80" height="16" forecolor="#FFFFFF" uuid="cc88a4fc-a9b9-4c9b-b28c-3b1f42dc58de"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Arial" size="12" isBold="false"/>
+						<font fontName="SansSerif" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 				</textField>
 				<textField pattern="EEEEE dd MMMMM yyyy">
 					<reportElement x="174" y="0" width="197" height="16" forecolor="#FFFFFF" uuid="b0b4ec71-e731-483b-b29a-8deb1960cbb7"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="12" isBold="false"/>
+						<font fontName="SansSerif" size="12" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
