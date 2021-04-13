@@ -6,11 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +48,7 @@ public class ServicioService {
 	private ICategoriaDao categoriaDao;
 
 
-	
+	private final Path rootReportes = Paths.get("reportes/servicios");
 
 	@Transactional(readOnly=true)
 	public List<Servicios> findAll(){
@@ -149,6 +154,22 @@ public class ServicioService {
         
         return "Reporte generado";
       
+    }
+	
+    public Resource load(String filename) {
+        try {
+            Path file = rootReportes.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }else{
+                throw new RuntimeException("No se puede leer el archivo ");
+            }
+
+        }catch (MalformedURLException e){
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
     }
 
 
