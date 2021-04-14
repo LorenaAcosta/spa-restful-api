@@ -163,5 +163,10 @@ public class ProductoRESTController {
         return productoService.exportReport();
     }
 	
-
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = productoService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
+    }
 }
