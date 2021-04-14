@@ -11,7 +11,6 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
-import py.com.spa.app.entities.Boxes;
-import py.com.spa.app.entities.Disponible;
-import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.DisponibleService;
