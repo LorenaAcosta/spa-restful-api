@@ -157,7 +157,7 @@ public class CategoriaRESTController  {
 	}
 	
 
-    @GetMapping("/report")
+    @GetMapping("/reporte")
     public String generateReport() throws FileNotFoundException, JRException {
         return categoriaService.exportReport();
     }

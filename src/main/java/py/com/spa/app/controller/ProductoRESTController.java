@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.Productos;
-import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ProductoService;
 import py.com.spa.params.PaginadoParam;
@@ -30,6 +31,7 @@ import py.com.spa.result.PaginadoResult;
 
 @RestController
 @RequestMapping("/producto")
+@CrossOrigin(value="*")
 public class ProductoRESTController {
 	
 
@@ -161,5 +163,11 @@ public class ProductoRESTController {
         return productoService.exportReport();
     }
 	
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = productoService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
+    }
 
 }

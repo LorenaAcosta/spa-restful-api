@@ -6,15 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +32,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.IReservaDetalleDao;
-import py.com.spa.app.entities.Boxes;
-import py.com.spa.app.entities.Disponible;
-import py.com.spa.app.entities.DisponibleBoxes;
-import py.com.spa.app.entities.Empleados;
 import py.com.spa.app.entities.ReservaDetalle;
-import py.com.spa.app.entities.Servicios;
-import py.com.spa.app.reportes.ProductoReporte;
 import py.com.spa.app.reportes.ReservaReporte;
 
 @Service
@@ -44,7 +41,7 @@ public class ReservaDetalleService {
 	@Autowired
 	private IReservaDetalleDao reservaDao;
 	
-
+	private final Path rootReportes = Paths.get("reportes/reservas");
 	
 	
 	@Transactional(readOnly=true)
@@ -145,6 +142,22 @@ public class ReservaDetalleService {
         
         return "Reporte generado";
       
+    }
+	
+    public Resource load(String filename) {
+        try {
+            Path file = rootReportes.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }else{
+                throw new RuntimeException("No se puede leer el archivo ");
+            }
+
+        }catch (MalformedURLException e){
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
     }
 
 	
