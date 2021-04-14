@@ -22,7 +22,7 @@ import py.com.spa.app.services.TipoComprobanteService;
 
 @RestController
 @RequestMapping("/tipo-comprobante")
-@CrossOrigin(value="*")
+@CrossOrigin(origins = "*")
 public class TipoComprobanteRESTController  {
 	
 	@Autowired

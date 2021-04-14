@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class FileController {
 	//Inyectamos el servicio
     @Autowired

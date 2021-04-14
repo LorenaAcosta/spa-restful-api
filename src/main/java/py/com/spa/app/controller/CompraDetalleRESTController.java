@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.ComprasDetalle;
-import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.CompraDetalleService;
 import py.com.spa.app.services.CompraService;
 import py.com.spa.app.services.ProductoService;
-import py.com.spa.app.services.VentaService;
 
 @RestController
 @RequestMapping("/detalles-compra")

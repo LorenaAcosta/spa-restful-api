@@ -1,18 +1,14 @@
 package py.com.spa.app.controller;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,22 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.dao.IHorarioDao;
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.DisponibleBoxes;
 import py.com.spa.app.entities.Empleados;
-import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.DisponibleBoxesService;
 import py.com.spa.app.services.EmpleadoService;
 
-import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ServicioService;
 
 
 @RestController
 @RequestMapping("/disponible-boxes")
+@CrossOrigin(origins = "*")
 public class DisponibleBoxRESTController {
 	
 
