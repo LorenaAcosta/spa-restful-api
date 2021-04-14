@@ -28,7 +28,7 @@ import py.com.spa.app.util.NumeroALetra;
 
 @RestController
 @RequestMapping("/ventas")
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "*")
 public class VentaRESTController {
 
 	@Autowired

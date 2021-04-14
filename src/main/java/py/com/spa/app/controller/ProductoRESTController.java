@@ -31,7 +31,7 @@ import py.com.spa.result.PaginadoResult;
 
 @RestController
 @RequestMapping("/producto")
-@CrossOrigin(value="*")
+@CrossOrigin(origins = "*")
 public class ProductoRESTController {
 	
 

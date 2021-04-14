@@ -27,7 +27,7 @@ import py.com.spa.app.services.EmpleadoService;
 
 @RestController
 @RequestMapping("/empleado")
-@CrossOrigin(value="*")
+@CrossOrigin(origins = "*")
 public class EmpleadoRESTController {
 
 	@Autowired

@@ -22,7 +22,7 @@ import py.com.spa.app.services.ImpuestoService;
 
 @RestController
 @RequestMapping("/impuesto")
-@CrossOrigin(value="*")
+@CrossOrigin(origins = "*")
 public class ImpuestoRESTController  {
 	
 	@Autowired
