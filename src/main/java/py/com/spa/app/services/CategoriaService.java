@@ -111,6 +111,7 @@ public class CategoriaService {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
         
         JasperExportManager.exportReportToHtmlFile(jasperPrint, "reportes/categorias/categorias.html");
+        
 
         System.out.println("File Generated");	
         

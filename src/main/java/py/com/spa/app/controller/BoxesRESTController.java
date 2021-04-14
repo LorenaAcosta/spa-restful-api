@@ -1,10 +1,5 @@
 package py.com.spa.app.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,28 +17,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Boxes;
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Compras;
-import py.com.spa.app.entities.ReservaDetalle;
-import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.services.BoxesService;
-import py.com.spa.app.services.CategoriaService;
-import py.com.spa.params.PaginadoParam;
-import py.com.spa.result.PaginadoResult;
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Servicios;
-import py.com.spa.app.services.CategoriaService;
-import py.com.spa.app.services.ServicioService;
-import py.com.spa.app.util.Utileria;
 
 @RestController
 @RequestMapping("/boxes" )

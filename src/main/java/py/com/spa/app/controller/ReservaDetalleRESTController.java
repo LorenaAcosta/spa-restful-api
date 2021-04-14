@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
-import py.com.spa.app.entities.Boxes;
-import py.com.spa.app.entities.Disponible;
-import py.com.spa.app.entities.Horario;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.DisponibleService;
@@ -137,6 +135,13 @@ public class ReservaDetalleRESTController {
 		Date fech = sdf.parse(fecha);
 		
     	return reservaDetalleService.exportReport(fech);
+    }
+    
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = reservaDetalleService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
     }
 	
 

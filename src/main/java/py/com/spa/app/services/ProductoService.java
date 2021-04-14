@@ -6,11 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -34,7 +39,6 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IProductoDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Productos;
-import py.com.spa.app.reportes.CategoriaReporte;
 import py.com.spa.app.reportes.ProductoReporte;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -42,6 +46,7 @@ import py.com.spa.result.PaginadoResult;
 @Service
 public class ProductoService {
 	
+	private final Path rootReportes = Paths.get("reportes/productos");
 	
 	@Autowired
 	private IProductoDao productoDao;
@@ -156,6 +161,22 @@ public class ProductoService {
         
         return "Reporte generado";
       
+    }
+	
+    public Resource load(String filename) {
+        try {
+            Path file = rootReportes.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }else{
+                throw new RuntimeException("No se puede leer el archivo ");
+            }
+
+        }catch (MalformedURLException e){
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
     }
 
 	

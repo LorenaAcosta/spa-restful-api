@@ -1,25 +1,16 @@
 package py.com.spa.app.controller;
 import java.io.FileNotFoundException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,26 +18,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Empleados;
-import py.com.spa.app.entities.Horario;
-import py.com.spa.app.entities.ReservaDetalle;
-import py.com.spa.app.entities.Turnos;
-import py.com.spa.app.entities.Usuario;
-import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.EmpleadoService;
-import py.com.spa.app.services.HorarioService;
-import py.com.spa.app.services.ReservaDetalleService;
-import py.com.spa.app.services.ServiceService;
-import py.com.spa.app.services.ServicioService;
+
 
 @RestController
 @RequestMapping("/empleado")
+@CrossOrigin(value="*")
 public class EmpleadoRESTController {
 
 	@Autowired
@@ -196,6 +177,13 @@ public class EmpleadoRESTController {
     public String generateReport() throws FileNotFoundException, JRException {
         return empleadoService.exportReport();
     }
+    
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = empleadoService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
+    }   
 	
 	
 }
