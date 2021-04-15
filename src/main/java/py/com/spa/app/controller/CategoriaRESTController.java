@@ -160,8 +160,9 @@ public class CategoriaRESTController  {
 	
 
     @GetMapping("/reporte")
-    public String generateReport() throws FileNotFoundException, JRException {
-        return categoriaService.exportReport();
+    public void generateReport() throws FileNotFoundException, JRException {
+        String r = categoriaService.exportReport();
+        System.out.print(r);
     }
 
 	
