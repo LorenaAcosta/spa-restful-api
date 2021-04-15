@@ -174,8 +174,9 @@ public class EmpleadoRESTController {
 	
 
     @GetMapping("/reporte")
-    public String generateReport() throws FileNotFoundException, JRException {
-        return empleadoService.exportReport();
+    public void generateReport() throws FileNotFoundException, JRException {
+        String r = empleadoService.exportReport();
+        System.out.print(r);
     }
     
     @GetMapping("/files/{filename:.+}")

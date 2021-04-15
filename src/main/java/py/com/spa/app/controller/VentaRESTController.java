@@ -119,8 +119,9 @@ public class VentaRESTController {
 	}
 	
     @GetMapping("/report/{ventaId}")
-    public String generateReport(@PathVariable Integer ventaId) throws FileNotFoundException, JRException {
-        return ventaService.exportReport(ventaId);
+    public void generateReport(@PathVariable Integer ventaId) throws FileNotFoundException, JRException {
+        String r = ventaService.exportReport(ventaId);
+        System.out.print(r);
     }
     
     @GetMapping("/files/{filename:.+}")

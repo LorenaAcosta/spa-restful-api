@@ -229,8 +229,9 @@ public class ServicioRESTController {
 	
 	
     @GetMapping("/reporte")
-    public String generateReport() throws FileNotFoundException, JRException {
-        return servicioService.exportReport();
+    public void generateReport() throws FileNotFoundException, JRException {
+        String r = servicioService.exportReport();
+        System.out.print(r);
     }
 	
     @GetMapping("/files/{filename:.+}")

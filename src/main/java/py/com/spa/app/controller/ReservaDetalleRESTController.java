@@ -129,12 +129,13 @@ public class ReservaDetalleRESTController {
 	}
 	
     @GetMapping("/reporte/{fecha}")
-    public String generateReport(@PathVariable(value="fecha")  String fecha) throws FileNotFoundException, JRException, ParseException {
+    public void generateReport(@PathVariable(value="fecha")  String fecha) throws FileNotFoundException, JRException, ParseException {
         
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date fech = sdf.parse(fecha);
 		
-    	return reservaDetalleService.exportReport(fech);
+        String r = reservaDetalleService.exportReport(fech);
+        System.out.print(r);
     }
     
     @GetMapping("/files/{filename:.+}")
