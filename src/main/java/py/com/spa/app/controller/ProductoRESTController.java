@@ -161,8 +161,9 @@ public class ProductoRESTController {
 	}
 
     @GetMapping("/reporte")
-    public String generateReport() throws FileNotFoundException, JRException {
-        return productoService.exportReport();
+    public void generateReport() throws FileNotFoundException, JRException {
+        String r = productoService.exportReport();
+        System.out.print(r);
     }
 	
     @GetMapping("/files/{filename:.+}")
