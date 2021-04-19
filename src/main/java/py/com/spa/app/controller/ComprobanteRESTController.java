@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.entities.Comprobante;
+import py.com.spa.app.entities.PuntoExpedicion;
 import py.com.spa.app.services.ComprobanteService;
+import py.com.spa.app.services.PuntoExpedicionService;
 
 @RestController
 @RequestMapping("/comprobante")
@@ -28,6 +30,9 @@ public class ComprobanteRESTController  {
 	@Autowired
 	public ComprobanteService comprobanteService;
 	
+	@Autowired
+	public PuntoExpedicionService puntoExpedicionService;
+	
 	@GetMapping("/listar")
 	public List<Comprobante> listarComprobantes(){
 		return comprobanteService.findAll();
@@ -35,8 +40,10 @@ public class ComprobanteRESTController  {
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarComprobante(@RequestBody Comprobante comprobante) {
+		
 		Comprobante imp = null;
 		comprobante.setNumeroActual(0);
+		comprobante.setPuntoExpedicionCodigo(comprobante.getPuntoExpedicionId().getCodigo());
 		Map<String, Object> response = new HashMap<>();
 		try {
 			imp = comprobanteService.addComprobante(comprobante);
@@ -61,6 +68,7 @@ public class ComprobanteRESTController  {
 		if(c!=null) {
 			c.setComprobanteId(comprobante.getComprobanteId());
 			c.setTipoComprobanteId(comprobante.getTipoComprobanteId());
+			c.setPuntoExpedicionId(comprobante.getPuntoExpedicionId());
 			c.setTimbrado(c.getTimbrado());
 			c.setNumeroInicial(comprobante.getNumeroInicial());
 			c.setNumeroFinal(comprobante.getNumeroFinal());
@@ -92,8 +100,18 @@ public class ComprobanteRESTController  {
 		return (Integer) comprobanteService.numeroActual();
 	}
 	
+	@GetMapping("/numero-actual-por-punto/{id}")
+	public Integer getNumeroActualPorPunto(@PathVariable(value="id") Integer id) {
+		return (Integer) comprobanteService.numeroActualPorPunto(id);
+	}
+	
 	@GetMapping("/comprobante-activo")
 	public Comprobante getComprobanteActivo() {
 		return (Comprobante) comprobanteService.getComprobanteActivo();
+	}
+	
+	@GetMapping("/comprobante-activo-por-punto/{id}")
+	public Comprobante getComprobanteActivo(@PathVariable(value="id") Integer id) {
+		return (Comprobante) comprobanteService.getComprobanteActivoPorPunto(id);
 	}
 }

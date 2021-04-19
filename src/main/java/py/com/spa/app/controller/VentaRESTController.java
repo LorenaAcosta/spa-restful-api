@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Comprobante;
+import py.com.spa.app.entities.PuntoExpedicion;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.ComprobanteService;
+import py.com.spa.app.services.PuntoExpedicionService;
 import py.com.spa.app.services.VentaService;
 import py.com.spa.app.util.NumeroALetra;
 
@@ -36,6 +38,9 @@ public class VentaRESTController {
 	
 	@Autowired
 	public ComprobanteService comprobanteService;
+	
+	@Autowired
+	public PuntoExpedicionService puntoExpedicionService;
 	
 	@GetMapping("/listar")
 	public List<Ventas> listarVentas(){
@@ -51,8 +56,9 @@ public class VentaRESTController {
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarVenta(@RequestBody Ventas venta) {
 		Comprobante comp = comprobanteService.findByComprobanteId(venta.getComprobanteId().getComprobanteId());
-		comp.setNumeroActual(comprobanteService.numeroActual());
-		venta.setNumeroComprobante(comprobanteService.numeroActual());
+		comp.setNumeroActual(comprobanteService.numeroActualPorPunto(comp.getPuntoExpedicionId().getPuntoExpedicionId()));
+		PuntoExpedicion pex = puntoExpedicionService.findByPuntoExpedicionId(comp.getPuntoExpedicionId().getPuntoExpedicionId());
+		venta.setNumeroComprobante(comprobanteService.numeroActualPorPunto(comp.getPuntoExpedicionId().getPuntoExpedicionId()));
 		venta.setIvaCinco(Math.round(venta.getIvaCinco()) * 1L);
 		venta.setIvaDiez(Math.round(venta.getIvaDiez()) * 1L);
 		venta.setIvaTotal(Math.round(venta.getIvaTotal()) * 1L);
@@ -64,7 +70,7 @@ public class VentaRESTController {
 		//formatear numero de factura
 		@SuppressWarnings("resource")
 		Formatter fmt = new Formatter();
-		venta.setComprobanteCompleto("001-001-" + fmt.format("%07d", venta.getNumeroComprobante()).toString());
+		venta.setComprobanteCompleto("001-"+pex.getCodigo() + "-" + fmt.format("%07d", venta.getNumeroComprobante()).toString());
 		System.out.println("El numero formateado " + fmt);
 		
 		//monto a letras
@@ -75,6 +81,7 @@ public class VentaRESTController {
 		venta.setMontoTotalLetras(NumLetra.Convertir(numero,true));
 		
 		ventaService.addVentas(venta);
+		comprobanteService.updateComprobante(comp);
 		return new ResponseEntity<Ventas>(venta, HttpStatus.OK);
 	}
 	
@@ -117,6 +124,15 @@ public class VentaRESTController {
 		}
 		
 	}
+	
+	@GetMapping("/listar/{id}")
+	public List<Ventas> getVentasPorPuntoExpedicion(@PathVariable(value="id") Integer id) {
+		return ventaService.getVentasPorPuntoExpedicion(id);		
+	}
+	
+	
+	
+	//reportes
 	
     @GetMapping("/report/{ventaId}")
     public void generateReport(@PathVariable Integer ventaId) throws FileNotFoundException, JRException {

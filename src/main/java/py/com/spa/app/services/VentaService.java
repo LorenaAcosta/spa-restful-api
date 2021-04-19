@@ -4,25 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -34,12 +29,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
-import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IVentasDao;
-import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Ventas;
-import py.com.spa.app.entities.VentasDetalle;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
 import py.com.spa.app.reportes.VentaFooterReportInterface;
@@ -83,6 +74,14 @@ public class VentaService {
 		ventasDao.deleteById(id);
 	}
 	
+	@Transactional
+	public List<Ventas> getVentasPorPuntoExpedicion(Integer id) {
+		return ventasDao.ventasActivasPorPuntoExpedicion(id);
+	}
+	
+	
+	
+	//REPORTES
 	public String exportReport(Integer ventaId) throws FileNotFoundException, JRException {
 		
 		

@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.Ventas;
-import py.com.spa.app.entities.VentasDetalle;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
-import py.com.spa.app.reportes.RankingP;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
 import py.com.spa.app.reportes.VentaFooterReportInterface;
 
@@ -20,6 +18,15 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 	
 	@Query(value="select * from ventas where upper(estado) = 'ACTIVO' order by numero_comprobante desc", nativeQuery = true)
 	List <Ventas> ventasActivas();
+	
+	//ventas por punto expedicion
+	@Query(value="select v.* from \r\n" + 
+			"ventas v\r\n" + 
+			"join comprobante c on c.comprobante_id = v.comprobante_id \r\n" + 
+			"join punto_expedicion pe on pe.punto_expedicion_id = c.punto_expedicion_id\r\n" + 
+			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId \r\n" + 
+			"order by v.numero_comprobante desc", nativeQuery = true)
+	List <Ventas> ventasActivasPorPuntoExpedicion(@Param("peId") Integer puntoExpedicionId);
 	
 	
 	Ventas findByVentasId(Integer id);

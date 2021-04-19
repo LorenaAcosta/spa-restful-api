@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import py.com.spa.app.enumeraciones.EstadoComprobante;
-import py.com.spa.app.enumeraciones.TipoCategoria;
 
 /**
  *
@@ -57,8 +56,8 @@ public class Comprobante implements Serializable {
 	/**/
 	@Basic(optional = false)
 	@NotNull
-	@Size(min = 1, max = 8)
-	@Column(name = "timbrado", unique = true)
+	@Size(min = 8, max = 8)
+	@Column(name = "timbrado")
 	private String timbrado;
 	/**/
     @Basic(optional = false)
@@ -92,6 +91,14 @@ public class Comprobante implements Serializable {
 	@Value("${numero_actual:0}")
 	private int numeroActual;
 	/**/
+	@JoinColumn(name = "punto_expedicion_id", referencedColumnName = "punto_expedicion_id")
+	@ManyToOne(optional = false)
+	private PuntoExpedicion puntoExpedicionId;
+	/**/
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "punto_expedicion_codigo" )
+    private String puntoExpedicionCodigo;
+    /**/
     @Basic(optional = false)
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -107,8 +114,9 @@ public class Comprobante implements Serializable {
 	}
 
 	public Comprobante(Integer comprobanteId, TipoComprobante tipoComprobanteId,
-			@NotNull @Size(min = 1, max = 2147483647) String timbrado, @NotNull Date inicioVigencia,
-			@NotNull Date finVigencia, @NotNull int numeroInicial, @NotNull int numeroFinal, @NotNull int numeroActual,
+			@NotNull @Size(min = 1, max = 8) String timbrado, @NotNull Date inicioVigencia, @NotNull Date finVigencia,
+			@NotNull int numeroInicial, @NotNull int numeroFinal, @NotNull int numeroActual,
+			PuntoExpedicion puntoExpedicionId, @Size(min = 1, max = 2147483647) String punto_expedicion_codigo,
 			@NotNull EstadoComprobante estado) {
 		super();
 		this.comprobanteId = comprobanteId;
@@ -119,7 +127,25 @@ public class Comprobante implements Serializable {
 		this.numeroInicial = numeroInicial;
 		this.numeroFinal = numeroFinal;
 		this.numeroActual = numeroActual;
+		this.puntoExpedicionId = puntoExpedicionId;
+		this.puntoExpedicionCodigo = punto_expedicion_codigo;
 		this.estado = estado;
+	}
+
+	public String getPuntoExpedicionCodigo() {
+		return puntoExpedicionCodigo;
+	}
+
+	public void setPuntoExpedicionCodigo(String puntoExpedicionCodigo) {
+		this.puntoExpedicionCodigo = puntoExpedicionCodigo;
+	}
+
+	public PuntoExpedicion getPuntoExpedicionId() {
+		return puntoExpedicionId;
+	}
+
+	public void setPuntoExpedicionId(PuntoExpedicion puntoExpedicionId) {
+		this.puntoExpedicionId = puntoExpedicionId;
 	}
 
 	public EstadoComprobante getEstado() {
