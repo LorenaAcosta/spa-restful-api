@@ -42,8 +42,9 @@ public class ComprobanteRESTController  {
 	public ResponseEntity<?> agregarComprobante(@RequestBody Comprobante comprobante) {
 		
 		Comprobante imp = null;
+		PuntoExpedicion pe = puntoExpedicionService.findByPuntoExpedicionId(comprobante.getPuntoExpedicionId().getPuntoExpedicionId());
 		comprobante.setNumeroActual(0);
-		comprobante.setPuntoExpedicionCodigo(comprobante.getPuntoExpedicionId().getCodigo());
+		comprobante.setPuntoExpedicionCodigo(pe.getCodigo());
 		Map<String, Object> response = new HashMap<>();
 		try {
 			imp = comprobanteService.addComprobante(comprobante);
