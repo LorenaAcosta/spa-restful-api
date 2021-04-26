@@ -91,7 +91,7 @@ public class UsuarioRESTController {
 			c.setUsername(UsuarioActual.getUsername());
 			c.setPassword(UsuarioActual.getPassword());
 			c.setApellido( UsuarioActual.getApellido());
-			c.setCorreo(UsuarioActual.getCorreo());
+			c.setEmail(UsuarioActual.getEmail());
 			c.setCedula(UsuarioActual.getCedula());
 			c.setTelefono( UsuarioActual.getTelefono());
 			c.setSexo(UsuarioActual.getSexo());
