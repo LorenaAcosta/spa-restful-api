@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.Usuario;
+import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.UsuariosService;
 import py.com.spa.app.validators.ApiUnprocessableEntity;
 import py.com.spa.app.validators.UsuarioValidatorImpl;
@@ -43,14 +45,16 @@ public class UsuarioRestControler {
 		Logger log = LoggerFactory.getLogger(UsuarioRestControler.class);
 		try {
 			validatorImpl.validator(usuario);
+			
 		} catch (ApiUnprocessableEntity e) {
 			log.error(e.getMessage() + " controler");
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 			
 		}
-		usuarioService.addUsuario(usuario);
 		
-		return ResponseEntity.ok(Boolean.TRUE);
+		usuarioService.addUsuario(usuario);
+		//return ResponseEntity.ok(Boolean.TRUE);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 	
 
@@ -96,6 +100,12 @@ public class UsuarioRestControler {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
+	}
+	
+	@PostMapping("/asignar-rol/{usuarioId}/{rolId}")
+	public void asignarRol(@PathVariable Integer usuarioId, @PathVariable Integer rolId){
+		
+		usuarioService.insertUsuariosRoles(usuarioId, rolId);
 	}
 
 }
