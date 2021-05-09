@@ -6,9 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.services.FileService;
@@ -39,15 +36,13 @@ public class SpaAppApplication implements CommandLineRunner{
 			String passwordBCrypt = passwordEncoder.encode(password);
 			System.out.println(passwordBCrypt);
 		}
-		
 		//fileService.deleteAll();
 		//fileService.init();
-		
 	}
 
 	
 	/* En caso que tenga problema con los cors agregar este Bean */
-	@Bean
+	/*@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
@@ -55,6 +50,6 @@ public class SpaAppApplication implements CommandLineRunner{
 				registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE");
 			}
 		};
-	}
+	}*/
 
 }
