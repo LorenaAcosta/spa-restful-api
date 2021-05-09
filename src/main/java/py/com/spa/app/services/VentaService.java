@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.IVentasDao;
+import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
@@ -148,5 +151,15 @@ public class VentaService {
         }
     }
 
+	@Transactional(readOnly=true)
+	public List<Ventas> busquedaVentas (String termino){
+		return ventasDao.busquedaVentas(termino);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Ventas> findByFechaReserva(Date fecha) {
+		return (List<Ventas>) ventasDao.findByFecha(fecha);
+	}
+	
 
 }

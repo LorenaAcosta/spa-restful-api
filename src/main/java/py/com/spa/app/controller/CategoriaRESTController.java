@@ -148,7 +148,7 @@ public class CategoriaRESTController  {
 		}
 		try {
 			categoriaService.deleteCategoria(id);
-			
+		
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));

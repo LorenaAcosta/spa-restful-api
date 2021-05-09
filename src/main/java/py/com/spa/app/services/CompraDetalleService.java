@@ -73,6 +73,10 @@ public class CompraDetalleService {
 		/* actualizar stock de productos */
 		detallesDao.deleteById(id);
 	}
+
+	public List<ComprasDetalle> getDetalles(Compras c) {
+		return (List<ComprasDetalle>) detallesDao.getDetalles(c.getComprasId());
+	}
 	
 
 	

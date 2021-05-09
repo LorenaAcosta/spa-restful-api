@@ -55,5 +55,11 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 			"where estado = 'ACTIVO'", nativeQuery = true)
 	List<ServicioReporte> getAllActivosReporte();
 
+	
+	
+	@Query(value="select * from servicios s \r\n"
+			+ "where s.estado='ACTIVO' ", nativeQuery = true)
+	List<Servicios> findActivos();
+
 
 }

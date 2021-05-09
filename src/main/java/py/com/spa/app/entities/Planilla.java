@@ -6,6 +6,8 @@
 package py.com.spa.app.entities;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,10 +34,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Planilla.findAll", query = "SELECT p FROM Planilla p"),
-    @NamedQuery(name = "Planilla.findByPlanillaId", query = "SELECT p FROM Planilla p WHERE p.planillaId = :planillaId"),
-    @NamedQuery(name = "Planilla.findBySalarioBase", query = "SELECT p FROM Planilla p WHERE p.salarioBase = :salarioBase"),
-    @NamedQuery(name = "Planilla.findByBonificacionVentas", query = "SELECT p FROM Planilla p WHERE p.bonificacionVentas = :bonificacionVentas"),
-    @NamedQuery(name = "Planilla.findByLiquidoCobrado", query = "SELECT p FROM Planilla p WHERE p.liquidoCobrado = :liquidoCobrado")})
+    @NamedQuery(name = "Planilla.findByPlanillaId", query = "SELECT p FROM Planilla p WHERE p.planillaId = :planillaId")})
 public class Planilla implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,78 +42,175 @@ public class Planilla implements Serializable {
     @Basic(optional = false)
     @Column(name = "planilla_id")
     private Integer planillaId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "salario_base")
-    private int salarioBase;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "bonificacion_ventas")
-    private int bonificacionVentas;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "liquido_cobrado")
-    private int liquidoCobrado;
+    
+    @Column(name = "numero_patronal")
+    private Integer numeroPatronal;
+    
+    @Column(name = "numero_patronalips")
+    private Integer numeroPatronalips;
+    
+    @Column(name = "fecha_pago")
+    private Date fechaPago;
+    
+    @Column(name = "mes_pago")
+    private String mesPago;
+    
+    @Column(name = "total")
+    private Integer total;
+    
+    
+    @Column(name = "descuento")
+    private Integer descuento;
+    
+    @Column(name = "saldo")
+    private Integer saldo;
+    
+    
+
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
     private Empleados empleadoId;
+    
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioId;
+    
+    
 
     public Planilla() {
     }
+    
 
-    public Planilla(Integer planillaId) {
-        this.planillaId = planillaId;
-    }
 
-    public Planilla(Integer planillaId, int salarioBase, int bonificacionVentas, int liquidoCobrado) {
-        this.planillaId = planillaId;
-        this.salarioBase = salarioBase;
-        this.bonificacionVentas = bonificacionVentas;
-        this.liquidoCobrado = liquidoCobrado;
-    }
+    public Planilla(Integer planillaId, Integer numeroPatronal, Integer numeroPatronalips, Date fechaPago,
+			Integer total, Integer descuento, Integer saldo, Empleados empleadoId) {
+		super();
+		this.planillaId = planillaId;
+		this.numeroPatronal = numeroPatronal;
+		this.numeroPatronalips = numeroPatronalips;
+		this.fechaPago = fechaPago;
+		this.total = total;
+		this.descuento = descuento;
+		this.saldo = saldo;
+		this.empleadoId = empleadoId;
+	}
 
-    public Integer getPlanillaId() {
-        return planillaId;
-    }
 
-    public void setPlanillaId(Integer planillaId) {
-        this.planillaId = planillaId;
-    }
 
-    public int getSalarioBase() {
-        return salarioBase;
-    }
 
-    public void setSalarioBase(int salarioBase) {
-        this.salarioBase = salarioBase;
-    }
+	public Integer getPlanillaId() {
+		return planillaId;
+	}
 
-    public int getBonificacionVentas() {
-        return bonificacionVentas;
-    }
 
-    public void setBonificacionVentas(int bonificacionVentas) {
-        this.bonificacionVentas = bonificacionVentas;
-    }
 
-    public int getLiquidoCobrado() {
-        return liquidoCobrado;
-    }
 
-    public void setLiquidoCobrado(int liquidoCobrado) {
-        this.liquidoCobrado = liquidoCobrado;
-    }
+	public void setPlanillaId(Integer planillaId) {
+		this.planillaId = planillaId;
+	}
 
-    @JsonBackReference(value="planilla-empleado")
-    public Empleados getEmpleadoId() {
-        return empleadoId;
-    }
 
-    public void setEmpleadoId(Empleados empleadoId) {
-        this.empleadoId = empleadoId;
-    }
 
-    @Override
+
+	public Integer getNumeroPatronal() {
+		return numeroPatronal;
+	}
+
+
+
+
+	public void setNumeroPatronal(Integer numeroPatronal) {
+		this.numeroPatronal = numeroPatronal;
+	}
+
+
+
+
+	public Integer getNumeroPatronalips() {
+		return numeroPatronalips;
+	}
+
+
+
+
+	public void setNumeroPatronalips(Integer numeroPatronalips) {
+		this.numeroPatronalips = numeroPatronalips;
+	}
+
+
+
+
+	public Date getFechaPago() {
+		return fechaPago;
+	}
+
+
+
+
+	public void setFechaPago(Date fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
+
+
+
+	public Integer getTotal() {
+		return total;
+	}
+
+
+
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+
+
+
+	public Integer getDescuento() {
+		return descuento;
+	}
+
+
+
+
+	public void setDescuento(Integer descuento) {
+		this.descuento = descuento;
+	}
+
+
+
+
+	public Integer getSaldo() {
+		return saldo;
+	}
+
+
+
+
+	public void setSaldo(Integer saldo) {
+		this.saldo = saldo;
+	}
+
+
+
+
+	public Empleados getEmpleadoId() {
+		return empleadoId;
+	}
+
+
+
+
+	public void setEmpleadoId(Empleados empleadoId) {
+		this.empleadoId = empleadoId;
+	}
+
+
+
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (planillaId != null ? planillaId.hashCode() : 0);

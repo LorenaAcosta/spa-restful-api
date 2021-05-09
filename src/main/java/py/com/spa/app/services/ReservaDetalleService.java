@@ -159,6 +159,12 @@ public class ReservaDetalleService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+    
+    @Transactional(readOnly=true)
+	public List<ReservaDetalle> reservasConfirmadas (Integer empleadoId, Integer mes){
+		return reservaDao.reservasConfirmadas(empleadoId, mes);
+	}
+	
 
 	
 

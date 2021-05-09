@@ -1,11 +1,14 @@
 package py.com.spa.app.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
@@ -27,6 +30,8 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId \r\n" + 
 			"order by v.numero_comprobante desc", nativeQuery = true)
 	List <Ventas> ventasActivasPorPuntoExpedicion(@Param("peId") Integer puntoExpedicionId);
+	
+	List<Ventas> findByFecha(Date fecha);
 	
 	
 	Ventas findByVentasId(Integer id);
@@ -85,4 +90,15 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 			"iva_total as ivatotal, monto_total as montototal\r\n" + 
 			"from ventas where ventas_id = :ventaId", nativeQuery = true)
 	List <VentaFooterReportInterface> getVentasFooterReport(@Param("ventaId") Integer ventaId);
+	
+	
+	@Query(value = "select * from ventas v \r\n"
+			+ "inner join usuario c on v.usuario_id = c.usuario_id and upper(v.estado)='ACTIVO'\r\n"
+			+ "inner join medios_pago m on m.medio_pago_id = v.medio_pago_id\r\n"
+			+ "where UPPER(v.comprobante_completo) like CONCAT('%',UPPER(:id),'%')\r\n"
+			+ "or UPPER(c.nombre) like CONCAT('%',UPPER(:id),'%')   \r\n"
+			+ "or UPPER(c.apellido) like CONCAT('%',UPPER(:id),'%')  \r\n"
+			+ "or UPPER(m.descripcion) like CONCAT('%',UPPER(:id),'%')\r\n",  nativeQuery = true)
+	  List<Ventas> busquedaVentas(@Param("id") String termino);
+	
 }

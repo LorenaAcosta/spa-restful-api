@@ -39,6 +39,7 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IProductoDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Productos;
+import py.com.spa.app.enumeraciones.EstadoProducto;
 import py.com.spa.app.reportes.ProductoReporte;
 import py.com.spa.params.PaginadoParam;
 import py.com.spa.result.PaginadoResult;
@@ -58,6 +59,14 @@ public class ProductoService {
 	public List<Productos> findAll(){
 		return (List<Productos>) productoDao.findAll(); 
 	}
+	
+
+	@Transactional(readOnly=true)
+	public List<Productos> findByEstado(){
+		 EstadoProducto e = null;
+		return (List<Productos>) productoDao.findActivos(); 
+	}
+	
 	@Transactional
 	public Productos addProducto(Productos producto) {
 		return productoDao.save(producto);

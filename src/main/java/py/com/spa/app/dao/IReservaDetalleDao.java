@@ -34,6 +34,14 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	  List<ReservaDetalle> busquedaReservas(@Param("id") String termino);
 	 
 	 
+	 @Query(value = "select * from reserva_detalle r  \r\n"
+		 		+ "inner join disponible d on r.disponible_id= d.disponible_id \r\n"
+		 		+ "--inner join ventas_detalle v on v.servicio_id = d.servicio_id \r\n"
+		 		+ "where r.estado='Confirmado' and d.empleado_id= :id \r\n"
+		 		+ "and EXTRACT(MONTH FROM r.fecha_reserva)= :mes",  nativeQuery = true)
+	    List<ReservaDetalle> reservasConfirmadas(@Param("id") Integer empleadoId, @Param("mes") Integer mes );
+	 
+	 
 		/*dao para reporte*/
 		@Query(value="Select ROW_NUMBER() OVER (ORDER BY r.reserva_id) as item, s.nombre as servicio,\r\n" + 
 				"(u.nombre || ' ' || u.apellido) as cliente, to_char(r.fecha_reserva,'DD/mm/YYYY') as fecha,\r\n" + 
@@ -47,7 +55,9 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 				"join boxes b on b.boxes_id = db.boxes_id\r\n" + 
 				"where r.fecha_reserva = :fecha", nativeQuery = true)
 		List<ReservaReporte> getPorFechaReporte(@Param("fecha") Date fecha);
-	
+		
+		
 
+	
 	
 }

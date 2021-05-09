@@ -58,6 +58,13 @@ public class CompraDetalleRESTController {
 	}
 	
 
+	@GetMapping("/get-detalles/{id}")
+	public List<ComprasDetalle> getPorComprasId(@PathVariable Integer id) {
+		Compras c = compraService.findByComprasId(id);
+		return (List<ComprasDetalle>) compraDetalleService.getDetalles(c);
+	}
+	
+
 	
 	
 	@PutMapping("/modificar/{id}")
