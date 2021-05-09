@@ -27,7 +27,7 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 			"ventas v\r\n" + 
 			"join comprobante c on c.comprobante_id = v.comprobante_id \r\n" + 
 			"join punto_expedicion pe on pe.punto_expedicion_id = c.punto_expedicion_id\r\n" + 
-			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId \r\n" + 
+			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId and v.fecha = current_date \r\n" + 
 			"order by v.numero_comprobante desc", nativeQuery = true)
 	List <Ventas> ventasActivasPorPuntoExpedicion(@Param("peId") Integer puntoExpedicionId);
 	

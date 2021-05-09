@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.entities.Comprobante;
 import py.com.spa.app.entities.PuntoExpedicion;
+import py.com.spa.app.enumeraciones.EstadoComprobante;
 import py.com.spa.app.services.ComprobanteService;
 import py.com.spa.app.services.PuntoExpedicionService;
 
@@ -42,8 +43,9 @@ public class ComprobanteRESTController  {
 	public ResponseEntity<?> agregarComprobante(@RequestBody Comprobante comprobante) {
 		
 		Comprobante imp = null;
+		PuntoExpedicion pe = puntoExpedicionService.findByPuntoExpedicionId(comprobante.getPuntoExpedicionId().getPuntoExpedicionId());
 		comprobante.setNumeroActual(0);
-		comprobante.setPuntoExpedicionCodigo(comprobante.getPuntoExpedicionId().getCodigo());
+		comprobante.setPuntoExpedicionCodigo(pe.getCodigo());
 		Map<String, Object> response = new HashMap<>();
 		try {
 			imp = comprobanteService.addComprobante(comprobante);
@@ -88,7 +90,8 @@ public class ComprobanteRESTController  {
 	public ResponseEntity<?> eliminarComprobante(@PathVariable(value="id") Integer id) {
 		Comprobante c = comprobanteService.findByComprobanteId(id);
 		if (c!=null) {
-			comprobanteService.deleteComprobante(id);
+			c.setEstado(EstadoComprobante.INACTIVO);
+			comprobanteService.updateComprobante(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
