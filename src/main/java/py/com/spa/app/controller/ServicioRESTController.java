@@ -44,6 +44,12 @@ public class ServicioRESTController {
 		return servicioService.findAll();
 	}
 	
+	
+	@GetMapping("/listarActivos")
+	public List<Servicios> listarServiciosActivos(){
+		return servicioService.findActivos();
+	}
+	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarServicio(@RequestBody Servicios p) {
 		Map<String, Object> response = new HashMap<>();

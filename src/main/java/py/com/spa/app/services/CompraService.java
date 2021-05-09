@@ -1,6 +1,7 @@
 package py.com.spa.app.services;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import py.com.spa.app.dao.IComprasDao;
 import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.ComprasDetalle;
+import py.com.spa.app.entities.Ventas;
 
 @Service
 public class CompraService {
@@ -50,6 +52,16 @@ public class CompraService {
 		}
 		/**/
 		comprasDao.deleteById(id);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Compras> busquedaCompras (String termino){
+		return comprasDao.busquedaCompras(termino);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Compras> findByFecha(Date fecha) {
+		return (List<Compras>) comprasDao.findByFecha(fecha);
 	}
 	
 

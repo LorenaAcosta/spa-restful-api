@@ -55,6 +55,11 @@ public class ServicioService {
 		return (List<Servicios>) servicioDao.findAll(); 
 	}
 	
+	@Transactional(readOnly=true)
+	public List<Servicios> findActivos(){
+		return (List<Servicios>) servicioDao.findActivos(); 
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public Servicios findServicioById(Integer id){

@@ -45,15 +45,20 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "proveedor_id")
     private Integer proveedorId;
+    @NotNull
     @Column(name = "razon_social", unique=true) 
     private String razonSocial;
+    @NotNull
     @Column(name = "empresa", unique=true) 
     private String empresa;
+    @NotNull
     @Column(name = "ruc", unique=true) 
     private String ruc;
+    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
     private String direccion;
+    @NotNull
     @Column(name = "ciudad")
     private String ciudad;
     @Column(name = "rubro")
@@ -61,14 +66,11 @@ public class Proveedor implements Serializable {
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "telefono")
     private int telefono;
     @Column(name = "nombre_gerente")
     private String nombreGerente;
-    
     @Basic(optional = false)
-    @NotNull
     @Column(name = "nombre_proveedor") 
     private String nombreProveedor;
     @Column(name = "cargo") 
@@ -83,11 +85,8 @@ public class Proveedor implements Serializable {
 
     public Proveedor() {
     }
-
-    public Proveedor(Integer proveedorId) {
-        this.proveedorId = proveedorId;
-    }
-
+    
+    
     public Proveedor( String nombreProveedor, int telefono, String empresa, String direccion, String ciudad) {
         this.nombreProveedor = nombreProveedor;
         this.telefono = telefono;
@@ -117,11 +116,19 @@ public class Proveedor implements Serializable {
 		this.telefonoContacto = telefonoContacto;
 		this.estado = estado;
 	}
-    
-    
-    public Integer getProveedorId() {
+	
+
+    public Proveedor(Integer proveedorId) {
+        this.proveedorId = proveedorId;
+    }
+
+	
+	public Integer getProveedorId() {
 		return proveedorId;
 	}
+
+
+
 
 	public void setProveedorId(Integer proveedorId) {
 		this.proveedorId = proveedorId;

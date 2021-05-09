@@ -46,6 +46,12 @@ public class ProductoRESTController {
 		return productoService.findAll();
 	}
 	
+
+	@GetMapping("/listarActivos")
+	public List<Productos> listarProductosActivos(){
+		return productoService.findByEstado();
+	}
+	
 	
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarProducto(@RequestBody Productos producto) {

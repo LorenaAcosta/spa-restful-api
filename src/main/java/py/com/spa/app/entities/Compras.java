@@ -62,7 +62,7 @@ public class Compras implements Serializable {
     private String montoTotal;
     
     
-    @Column(name = "numero_factura")
+    @Column(name = "numero_factura", unique = true  )
     private String numeroFactura;
     @Column(name = "timbrado")
     private int timbrado;
@@ -119,7 +119,26 @@ public class Compras implements Serializable {
     public void setProveedorId(Proveedor proveedorId) {
         this.proveedorId = proveedorId;
     }
-    //@JsonBackReference(value="compras-detalle")
+    
+    
+    
+    public String getNumeroFactura() {
+		return numeroFactura;
+	}
+
+	public void setNumeroFactura(String numeroFactura) {
+		this.numeroFactura = numeroFactura;
+	}
+
+	public int getTimbrado() {
+		return timbrado;
+	}
+
+	public void setTimbrado(int timbrado) {
+		this.timbrado = timbrado;
+	}
+
+	//@JsonBackReference(value="compras-detalle")
     @XmlTransient
     public Collection<ComprasDetalle> getDetallesCollection() {
         return detallesCollection;
