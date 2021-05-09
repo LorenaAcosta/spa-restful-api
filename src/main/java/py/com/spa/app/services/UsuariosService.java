@@ -49,10 +49,5 @@ public class UsuariosService {
 		public void deleteUsuario(Integer id) {
 			usuarioDao.deleteById(id);
 		}
-		
-		@Transactional
-		public void insertUsuariosRoles(Integer usuarioId, Integer rolId) {
-			usuarioDao.insertUsuariosRoles(usuarioId, rolId);
-		}
 	
 }

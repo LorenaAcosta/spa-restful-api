@@ -20,19 +20,6 @@ public class Rol implements Serializable {
 	@Column(unique = true, length = 30)
 	private String nombre;
 
-	public Rol(Integer id) {
-		this.id = id;
-	}
-
-	public Rol() {
-	}
-
-	public Rol(Integer id, String nombre) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-	}
-
 	public Integer getId() {
 		return id;
 	}

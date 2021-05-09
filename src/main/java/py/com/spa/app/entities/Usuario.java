@@ -48,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username"),
     @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password"),
     @NamedQuery(name = "Usuario.findByApellido", query = "SELECT u FROM Usuario u WHERE u.apellido = :apellido"),
-    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
+    @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
     @NamedQuery(name = "Usuario.findByCedula", query = "SELECT u FROM Usuario u WHERE u.cedula = :cedula"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
     @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo"),
@@ -136,33 +136,6 @@ public class Usuario implements Serializable {
     public Usuario(Integer usuarioId) {
         this.usuarioId = usuarioId;
     }
-
-	public Usuario(Integer usuarioId, @NotNull String nombre, @NotNull @Size(min = 1, max = 2147483647) String apellido,
-			String username, String password, @Email String email, Boolean enabled, @NotNull int cedula,
-			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String nacionalidad,
-			@NotNull @Size(min = 1, max = 2147483647) String telefono,
-			@NotNull @Size(min = 1, max = 2147483647) String sexo, String ruc, String tarjeta, String fechaNac,
-			@NotNull int estado, List<Rol> roles) {
-		super();
-		this.usuarioId = usuarioId;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.enabled = enabled;
-		this.cedula = cedula;
-		this.direccion = direccion;
-		this.ciudad = ciudad;
-		this.nacionalidad = nacionalidad;
-		this.telefono = telefono;
-		this.sexo = sexo;
-		this.ruc = ruc;
-		this.tarjeta = tarjeta;
-		this.fechaNac = fechaNac;
-		this.estado = estado;
-		this.roles = roles;
-	}
 
 	public Integer getUsuarioId() {
 		return usuarioId;
