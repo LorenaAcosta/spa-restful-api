@@ -23,6 +23,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /**
  *
  * @author Lore
@@ -43,15 +45,20 @@ public class Proveedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "proveedor_id")
     private Integer proveedorId;
+    @NotNull
     @Column(name = "razon_social", unique=true) 
     private String razonSocial;
+    @NotNull
     @Column(name = "empresa", unique=true) 
     private String empresa;
+    @NotNull
     @Column(name = "ruc", unique=true) 
     private String ruc;
+    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
     private String direccion;
+    @NotNull
     @Column(name = "ciudad")
     private String ciudad;
     @Column(name = "rubro")
@@ -59,45 +66,37 @@ public class Proveedor implements Serializable {
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "telefono")
     private int telefono;
     @Column(name = "nombre_gerente")
     private String nombreGerente;
-    
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "nombre_proveedor", unique=true) 
+    @Column(name = "nombre_proveedor") 
     private String nombreProveedor;
-    @Column(name = "cargo", unique=true) 
+    @Column(name = "cargo") 
     private String cargo;
-    @Column(name = "telefono_contacto", unique=true) 
+    @Column(name = "telefono_contacto") 
     private int telefonoContacto;
-    @Column(name = "estado", unique=true) 
+    @Column(name = "estado") 
     private String estado;
-   
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
     private Collection<Compras> comprasCollection;
 
     public Proveedor() {
     }
-
-    public Proveedor(Integer proveedorId) {
-        this.proveedorId = proveedorId;
-    }
-
-    public Proveedor(Integer proveedorId, String nombreProveedor, int telefono, String empresa) {
-        this.proveedorId = proveedorId;
+    
+    
+    public Proveedor( String nombreProveedor, int telefono, String empresa, String direccion, String ciudad) {
         this.nombreProveedor = nombreProveedor;
         this.telefono = telefono;
         this.empresa = empresa;
+        this.direccion = direccion;
+        this.ciudad=  ciudad;
     }
 
-    
-    
-    
-    public Proveedor(Integer proveedorId, String razonSocial, String empresa, String ruc,
+
+	public Proveedor(Integer proveedorId, String razonSocial, String empresa, String ruc,
 			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String rubro, String correo,
 			@NotNull int telefono, String nombreGerente, @NotNull @Size(min = 1, max = 2147483647) String nombreProveedor,
 			String cargo, int telefonoContacto, String estado) {
@@ -117,11 +116,19 @@ public class Proveedor implements Serializable {
 		this.telefonoContacto = telefonoContacto;
 		this.estado = estado;
 	}
-    
-    
-    public Integer getProveedorId() {
+	
+
+    public Proveedor(Integer proveedorId) {
+        this.proveedorId = proveedorId;
+    }
+
+	
+	public Integer getProveedorId() {
 		return proveedorId;
 	}
+
+
+
 
 	public void setProveedorId(Integer proveedorId) {
 		this.proveedorId = proveedorId;

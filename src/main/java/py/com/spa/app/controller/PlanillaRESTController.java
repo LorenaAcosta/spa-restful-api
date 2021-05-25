@@ -48,8 +48,6 @@ public class PlanillaRESTController  {
 		Planilla c = planillaService.findByPlanillaId(id);
 		if(c!=null) {
 			c.setEmpleadoId(planilla.getEmpleadoId());
-			c.setBonificacionVentas(planilla.getBonificacionVentas());
-			c.setSalarioBase(planilla.getSalarioBase());
 			planillaService.updatePlanilla(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {

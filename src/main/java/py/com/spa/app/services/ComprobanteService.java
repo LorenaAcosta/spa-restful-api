@@ -46,10 +46,28 @@ public class ComprobanteService {
 		return (Integer) comprobanteDao.getNumeroActual();
 	}
 	
+	@Transactional(readOnly=true)
+	public Integer numeroActualPorPunto(Integer id) {
+		return (Integer) comprobanteDao.getNumeroActualPorPunto(id);
+	}
 	
 	@Transactional(readOnly=true)
 	public Comprobante getComprobanteActivo() {
 		return (Comprobante) comprobanteDao.getComprobanteActivo();
+	}
+	
+	@Transactional(readOnly=true)
+	public Boolean getComprobanteActivoPorPunto(Integer id) {
+		Boolean valor = comprobanteDao.getComprobanteActivoPorPunto(id);
+		if (valor == null) {
+			valor = false;
+		}
+		return (Boolean) valor;
+	}
+	
+	@Transactional(readOnly=true)
+	public Comprobante getComprobanteActivoPorPunto2(Integer id) {
+		return (Comprobante) comprobanteDao.getComprobanteActivoPorPunto2(id);
 	}
 
 

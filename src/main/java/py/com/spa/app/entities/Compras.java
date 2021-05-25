@@ -60,6 +60,13 @@ public class Compras implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "monto_total")
     private String montoTotal;
+    
+    
+    @Column(name = "numero_factura", unique = true  )
+    private String numeroFactura;
+    @Column(name = "timbrado")
+    private int timbrado;
+    
     @JoinColumn(name = "proveedor_id", referencedColumnName = "proveedor_id")
     @ManyToOne(optional = false)
     private Proveedor proveedorId;
@@ -74,10 +81,12 @@ public class Compras implements Serializable {
         this.comprasId = comprasId;
     }
 
-    public Compras(Integer comprasId, Date fecha, String montoTotal) {
+    public Compras(Integer comprasId, Date fecha, String montoTotal, String numeroFactura, int timbrado) {
         this.comprasId = comprasId;
         this.fecha = fecha;
         this.montoTotal = montoTotal;
+        this.numeroFactura= numeroFactura;
+        this.timbrado= timbrado;
     }
 
     public Integer getComprasId() {
@@ -110,7 +119,26 @@ public class Compras implements Serializable {
     public void setProveedorId(Proveedor proveedorId) {
         this.proveedorId = proveedorId;
     }
-    //@JsonBackReference(value="compras-detalle")
+    
+    
+    
+    public String getNumeroFactura() {
+		return numeroFactura;
+	}
+
+	public void setNumeroFactura(String numeroFactura) {
+		this.numeroFactura = numeroFactura;
+	}
+
+	public int getTimbrado() {
+		return timbrado;
+	}
+
+	public void setTimbrado(int timbrado) {
+		this.timbrado = timbrado;
+	}
+
+	//@JsonBackReference(value="compras-detalle")
     @XmlTransient
     public Collection<ComprasDetalle> getDetallesCollection() {
         return detallesCollection;

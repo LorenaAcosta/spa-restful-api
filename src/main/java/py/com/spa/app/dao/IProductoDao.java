@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Productos;
+import py.com.spa.app.enumeraciones.EstadoProducto;
 import py.com.spa.app.reportes.CategoriaReporte;
 import py.com.spa.app.reportes.ProductoReporte;
 
@@ -29,4 +30,13 @@ public interface IProductoDao extends JpaRepository<Productos, Integer>{
 			"join impuesto i on i.impuesto_id = p.impuesto_id\r\n" + 
 			"where estado = 'ACTIVO'", nativeQuery = true)
 	List<ProductoReporte> getAllActivosReporte();
+	
+	
+	@Query(value = "select * from productos c \n"
+			+ "where ESTADO= 'ACTIVO' ",  nativeQuery = true)
+	List<Productos> findActivos();
+	
+	
+	
+	
 }

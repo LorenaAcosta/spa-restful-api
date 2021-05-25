@@ -1,5 +1,8 @@
 package py.com.spa.app.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import py.com.spa.app.entities.Compras;
+import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.CompraService;
 
 @RestController
@@ -103,6 +107,32 @@ public class CompraRESTController {
 	public Compras obtenerComprasId(@PathVariable(value="id") Integer id) {
 		return (Compras) compraService.findByComprasId(id);
 	}
+	
+	
+	@GetMapping("/busqueda-compras/{id}")
+	public ResponseEntity<?>  busquedaCompras(@PathVariable(value="id") String termino)  {
+		List<Compras> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista=compraService.busquedaCompras(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Compras>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/listarporfecha/{fecha}")
+	public List<Compras> findByFecha(@PathVariable(value="fecha") String fecha) throws ParseException {
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+		return (List<Compras>) compraService.findByFecha(date1);
+	}
+	
 	
 	
 }

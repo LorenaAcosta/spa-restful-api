@@ -1,4 +1,4 @@
-package py.com.spa.app.controller;
+ package py.com.spa.app.controller;
 
 import java.io.FileNotFoundException;
 import java.sql.Time;
@@ -81,13 +81,10 @@ public class ReservaDetalleRESTController {
 	}
 	
 	@PutMapping("/modificar/{id}")
-	public ResponseEntity<?> modificarReservaDetalle(@PathVariable(value="id") Integer id, @RequestBody ReservaDetalle reservadetalle) {
+	public ResponseEntity<?> modificarReservaDetalle(@PathVariable(value="id") Integer id, @RequestBody String valorEstado) {
 		ReservaDetalle c = reservaDetalleService.findByReservaDetalleId(id);
 		if(c!=null) {
-		//	c.setServicioId(reservadetalle.get
-		//c.setEmpleadoId(reservadetalle.getEmpleadoId());
-			c.setFechaReserva(reservadetalle.getFechaReserva());
-			c.setHora(reservadetalle.getHora());
+			c.setEstado(valorEstado);
 			reservaDetalleService.updateReserva(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
@@ -145,6 +142,16 @@ public class ReservaDetalleRESTController {
                 "attachment; filename=\""+file.getFilename() + "\"").body(file);
     }
 	
+    
+    @GetMapping("/reservas-confirmadas/{id}/{mes}")
+	public List<ReservaDetalle> reservasConfirmadas(@PathVariable(value="id") Integer empleadoId, @PathVariable(value="mes") Integer mes)  {
+		return (List<ReservaDetalle>) reservaDetalleService.reservasConfirmadas(empleadoId, mes);
+	}
+    
+    @GetMapping("/mis-reservas/{id}")
+	public List<ReservaDetalle> misReservas(@PathVariable(value="id") Integer usuarioId){
+		return reservaDetalleService.misReservas(usuarioId);
+	}
 
 	
 }

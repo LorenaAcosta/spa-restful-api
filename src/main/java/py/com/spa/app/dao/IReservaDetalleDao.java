@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Rol;
 import py.com.spa.app.reportes.ReservaReporte;
 
 
@@ -22,6 +23,9 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	
 	List<ReservaDetalle> findByFechaReserva(Date fechaReserva);
 	
+	@Query(value = "select * from reserva_detalle where usuario_id =:id",  nativeQuery = true)
+	  List<ReservaDetalle> findByUsuarioId(@Param("id") Integer usuarioId);
+	
 	 @Query(value = "select *\n"
 	 		+ "from reserva_detalle r \n"
 	 		+ "join empleados e on e.empleado_id =  r.empleado\n"
@@ -32,6 +36,14 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	 		+ "or UPPER(s.nombre) like CONCAT('%',UPPER(:id),'%')"
 	 		+ "or UPPER(u.nombre) like CONCAT('%',UPPER(:id),'%')",  nativeQuery = true)
 	  List<ReservaDetalle> busquedaReservas(@Param("id") String termino);
+	 
+	 
+	 @Query(value = "select * from reserva_detalle r  \r\n"
+		 		+ "inner join disponible d on r.disponible_id= d.disponible_id \r\n"
+		 		+ "--inner join ventas_detalle v on v.servicio_id = d.servicio_id \r\n"
+		 		+ "where r.estado='Confirmado' and d.empleado_id= :id \r\n"
+		 		+ "and EXTRACT(MONTH FROM r.fecha_reserva)= :mes",  nativeQuery = true)
+	    List<ReservaDetalle> reservasConfirmadas(@Param("id") Integer empleadoId, @Param("mes") Integer mes );
 	 
 	 
 		/*dao para reporte*/
@@ -47,7 +59,9 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 				"join boxes b on b.boxes_id = db.boxes_id\r\n" + 
 				"where r.fecha_reserva = :fecha", nativeQuery = true)
 		List<ReservaReporte> getPorFechaReporte(@Param("fecha") Date fecha);
-	
+		
+		
 
+	
 	
 }

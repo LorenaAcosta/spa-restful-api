@@ -1,11 +1,17 @@
 package py.com.spa.app.controller;
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
+import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Comprobante;
+import py.com.spa.app.entities.PuntoExpedicion;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.ComprobanteService;
+import py.com.spa.app.services.PuntoExpedicionService;
 import py.com.spa.app.services.VentaService;
 import py.com.spa.app.util.NumeroALetra;
 
@@ -36,6 +46,9 @@ public class VentaRESTController {
 	
 	@Autowired
 	public ComprobanteService comprobanteService;
+	
+	@Autowired
+	public PuntoExpedicionService puntoExpedicionService;
 	
 	@GetMapping("/listar")
 	public List<Ventas> listarVentas(){
@@ -51,8 +64,9 @@ public class VentaRESTController {
 	@PostMapping("/agregar")
 	public ResponseEntity<?> agregarVenta(@RequestBody Ventas venta) {
 		Comprobante comp = comprobanteService.findByComprobanteId(venta.getComprobanteId().getComprobanteId());
-		comp.setNumeroActual(comprobanteService.numeroActual());
-		venta.setNumeroComprobante(comprobanteService.numeroActual());
+		comp.setNumeroActual(comprobanteService.numeroActualPorPunto(comp.getPuntoExpedicionId().getPuntoExpedicionId()));
+		PuntoExpedicion pex = puntoExpedicionService.findByPuntoExpedicionId(comp.getPuntoExpedicionId().getPuntoExpedicionId());
+		venta.setNumeroComprobante(comprobanteService.numeroActualPorPunto(comp.getPuntoExpedicionId().getPuntoExpedicionId()));
 		venta.setIvaCinco(Math.round(venta.getIvaCinco()) * 1L);
 		venta.setIvaDiez(Math.round(venta.getIvaDiez()) * 1L);
 		venta.setIvaTotal(Math.round(venta.getIvaTotal()) * 1L);
@@ -64,7 +78,7 @@ public class VentaRESTController {
 		//formatear numero de factura
 		@SuppressWarnings("resource")
 		Formatter fmt = new Formatter();
-		venta.setComprobanteCompleto("001-001-" + fmt.format("%07d", venta.getNumeroComprobante()).toString());
+		venta.setComprobanteCompleto("001-"+pex.getCodigo() + "-" + fmt.format("%07d", venta.getNumeroComprobante()).toString());
 		System.out.println("El numero formateado " + fmt);
 		
 		//monto a letras
@@ -75,6 +89,7 @@ public class VentaRESTController {
 		venta.setMontoTotalLetras(NumLetra.Convertir(numero,true));
 		
 		ventaService.addVentas(venta);
+		comprobanteService.updateComprobante(comp);
 		return new ResponseEntity<Ventas>(venta, HttpStatus.OK);
 	}
 	
@@ -84,23 +99,40 @@ public class VentaRESTController {
 	}
 	
 	@PutMapping("/modificar/{id}")
-	public ResponseEntity<?> modificarVenta(@PathVariable(value="id") Integer id, @RequestBody Ventas venta) {
+	public ResponseEntity<?> modificarVenta(@PathVariable(value="id") Integer id, @RequestBody String estado) {
 		Ventas c = ventaService.findByVentasId(id);
-		System.out.println(venta.toString());
 		if(c!=null) {
-			c.setFecha(venta.getFecha());
-			c.setMontoTotal(venta.getMontoTotal());
-			c.setIvaCinco(venta.getIvaCinco());
-			c.setIvaDiez(venta.getIvaDiez());
-			c.setIvaTotal(venta.getIvaTotal());
-			c.setSubTotalTotal(venta.getSubTotalTotal());
-			c.setMedioPagoId(venta.getMedioPagoId());
-			c.setEstado(venta.getEstado());
+			c.setEstado(estado);
 			ventaService.updateVentas(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+
+	@GetMapping("/busqueda-ventas/{id}")
+	public ResponseEntity<?>  busquedaVentas(@PathVariable(value="id") String termino)  {
+		List<Ventas> lista = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			lista= ventaService.busquedaVentas(termino);
+		}catch( DataAccessException e ){
+			response.put("mensaje",  "No se encontraron datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (lista==null) {
+			response.put("mensaje",  "No hay datos.");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Ventas>>(lista, HttpStatus.OK);
+	}
+	
+	@GetMapping("/listarporfecha/{fecha}")
+	public List<Ventas> findByFechaReserva(@PathVariable(value="fecha") String fecha) throws ParseException {
+		Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+		return (List<Ventas>) ventaService.findByFechaReserva(date1);
 	}
 	
 	
@@ -117,6 +149,15 @@ public class VentaRESTController {
 		}
 		
 	}
+	
+	@GetMapping("/listar/{id}")
+	public List<Ventas> getVentasPorPuntoExpedicion(@PathVariable(value="id") Integer id) {
+		return ventaService.getVentasPorPuntoExpedicion(id);		
+	}
+	
+	
+	
+	//reportes
 	
     @GetMapping("/report/{ventaId}")
     public void generateReport(@PathVariable Integer ventaId) throws FileNotFoundException, JRException {

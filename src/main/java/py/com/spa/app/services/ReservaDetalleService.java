@@ -49,6 +49,11 @@ public class ReservaDetalleService {
 		return (List<ReservaDetalle>) reservaDao.findAll();
 	}
 	
+	@Transactional(readOnly=true)
+	public List<ReservaDetalle> misReservas(Integer usuarioId){
+		return (List<ReservaDetalle>) reservaDao.findByUsuarioId(usuarioId);
+	}
+	
 	@Transactional
 	public void addReservaDetalle(ReservaDetalle reserva) {
 		System.out.println(reserva.getFechaReserva());
@@ -159,6 +164,12 @@ public class ReservaDetalleService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+    
+    @Transactional(readOnly=true)
+	public List<ReservaDetalle> reservasConfirmadas (Integer empleadoId, Integer mes){
+		return reservaDao.reservasConfirmadas(empleadoId, mes);
+	}
+	
 
 	
 
