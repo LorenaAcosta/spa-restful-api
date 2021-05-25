@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Rol;
 import py.com.spa.app.reportes.ReservaReporte;
 
 
@@ -21,6 +22,9 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	List<ReservaDetalle> findAllByEmpleadoAndFechaReservaOrderByHoraAsc(Integer empleado, Date date);
 	
 	List<ReservaDetalle> findByFechaReserva(Date fechaReserva);
+	
+	@Query(value = "select * from reserva_detalle where usuario_id =:id",  nativeQuery = true)
+	  List<ReservaDetalle> findByUsuarioId(@Param("id") Integer usuarioId);
 	
 	 @Query(value = "select *\n"
 	 		+ "from reserva_detalle r \n"

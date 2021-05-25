@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import py.com.spa.app.entities.Rol;
 import py.com.spa.app.entities.Usuario;
 
 
@@ -31,4 +32,7 @@ public interface UsuarioDao extends JpaRepository<Usuario, Integer>{
 	@Transactional
 	@Query(value = "insert into usuarios_roles (usuario_id, rol_id) VALUES (:usuarioId,:rolId)", nativeQuery = true)
 	void insertUsuariosRoles(@Param("usuarioId") Integer usuarioId, @Param("rolId") Integer rolId);
+	
+	@Query(value = "select id, nombre from roles", nativeQuery = true)
+	List<Rol> obtenerRoles();
 }

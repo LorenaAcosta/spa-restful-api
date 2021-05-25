@@ -33,5 +33,8 @@ public interface IComprobanteDao extends  JpaRepository<Comprobante, Integer> {
 			"		end) as f\r\n" + 
 			"from comprobante where punto_expedicion_id =:peId", nativeQuery = true)
 	Boolean getComprobanteActivoPorPunto(@Param("peId") Integer puntoExpedicionId);
+	
+	@Query(value="select * from comprobante where punto_expedicion_id =:peId and estado = 'ACTIVO'", nativeQuery = true)
+	Comprobante getComprobanteActivoPorPunto2(@Param("peId") Integer puntoExpedicionId);
 
 }

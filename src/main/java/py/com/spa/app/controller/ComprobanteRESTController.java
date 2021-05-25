@@ -125,10 +125,10 @@ public class ComprobanteRESTController  {
 	@GetMapping("/comprobante-activo-por-punto/{id}")
 	public ResponseEntity<?> getComprobanteActivo(@PathVariable(value="id") Integer id) {
 		//return (Boolean) comprobanteService.getComprobanteActivoPorPunto(id);
-		Boolean imp;
+		Comprobante imp;
 		Map<String, Object> response = new HashMap<>();
-		imp = comprobanteService.getComprobanteActivoPorPunto(id);
-		try {
+		imp = comprobanteService.getComprobanteActivoPorPunto2(id);
+		/*try {
 			if(imp) {
 				ApiUnprocessableEntity e = new ApiUnprocessableEntity(" ");
 				response.put("mensaje",  "Debe darlo de baja para registrar uno nuevo");
@@ -139,10 +139,10 @@ public class ComprobanteRESTController  {
 			response.put("mensaje",  "Error al realizar el insert en la bd");
 			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}*/
 		response.put("mensaje", "Comprobante guardado.");
 		response.put("comprobante", imp);
-		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
+		return new ResponseEntity<Comprobante>(imp, HttpStatus.CREATED);		
 
 	}
 }

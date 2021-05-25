@@ -25,6 +25,16 @@ public class RolService {
 			return (List<Rol>) rolDao.findAll();
 		}
 		
+		@Transactional(readOnly=true)
+		public List<Rol> listarRolPorUsuario(Integer usuario){
+			return (List<Rol>) rolDao.listarRolPorUsuario(usuario);
+		}
+		
+		@Transactional(readOnly=true)
+		public List<Rol> listarRolNoAsignadosPorUsuario(Integer usuario){
+			return (List<Rol>) rolDao.listarRolNoAsignadosPorUsuario(usuario);
+		}
+		
 		@Transactional
 		public void addRol(Rol rol) {
 			rolDao.save(rol);
@@ -43,6 +53,18 @@ public class RolService {
 		@Transactional
 		public void deleteRol(Integer id) {
 			rolDao.deleteById(id);
+		}
+		
+		//Tabla usuarios_roles
+		
+		@Transactional
+		public void insertUsuariosRoles(Integer usuarioId, Integer rolId) {
+			rolDao.insertUsuariosRoles(usuarioId, rolId);
+		}
+		
+		@Transactional
+		public void deleteUsuariosRoles(Integer usuarioId, Integer rolId) {
+			rolDao.deleteUsuariosRoles(usuarioId, rolId);
 		}
 	
 }

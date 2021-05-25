@@ -64,6 +64,11 @@ public class ComprobanteService {
 		}
 		return (Boolean) valor;
 	}
+	
+	@Transactional(readOnly=true)
+	public Comprobante getComprobanteActivoPorPunto2(Integer id) {
+		return (Comprobante) comprobanteDao.getComprobanteActivoPorPunto2(id);
+	}
 
 
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import py.com.spa.app.entities.Rol;
 import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.UsuariosService;
@@ -26,6 +28,7 @@ import py.com.spa.app.validators.UsuarioValidatorImpl;
 
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioRestControler {
 
 	@Autowired
@@ -63,7 +66,7 @@ public class UsuarioRestControler {
 		return (Usuario) usuarioService.findByUsuarioId(id);
 	}
 
-	@PutMapping("/usuarios/modificar/{id}")
+	@PutMapping("/modificar/{id}")
 	public ResponseEntity<Void> modificarReserva(@PathVariable(value = "id") Integer usuarioId,
 			@RequestBody Usuario usuario) {
 		Usuario us = null;
@@ -71,17 +74,19 @@ public class UsuarioRestControler {
 		us = usuarioService.findByUsuarioId(usuarioId);
 
 		if (us != null) {
+			System.out.println(us.getEmail());
+			System.out.println(usuario.getEmail());
 			us.setApellido(usuario.getApellido());
-			us.setEmail(us.getEmail());
-			us.setEnabled(us.getEnabled());
-			us.setUsuarioId(us.getUsuarioId());
-			us.setNombre(us.getNombre());
-			us.setPassword(us.getPassword());
-			us.setRoles(us.getRoles());
-			us.setUsername(us.getUsername());
-			us.setRuc(us.getRuc());
-			us.setSexo(us.getSexo());
-			us.setTelefono(us.getTelefono());
+			us.setEmail(usuario.getEmail());
+			//us.setEnabled(usuario.getEnabled());
+			//us.setUsuarioId(us.getUsuarioId());
+			us.setNombre(usuario.getNombre());
+			//us.setPassword(us.getPassword());
+			//us.setRoles(usuario.getRoles());
+			us.setUsername(usuario.getUsername());
+			us.setRuc(usuario.getRuc());
+			us.setSexo(usuario.getSexo());
+			us.setTelefono(usuario.getTelefono());
 			usuarioService.updateUsuario(us);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 
@@ -106,6 +111,13 @@ public class UsuarioRestControler {
 	public void asignarRol(@PathVariable Integer usuarioId, @PathVariable Integer rolId){
 		
 		usuarioService.insertUsuariosRoles(usuarioId, rolId);
+	}
+	
+	@GetMapping("/listar-roles")
+	public List<Rol> listarRoles(){
+		
+		return usuarioService.obtenerRoles();
+		
 	}
 
 }

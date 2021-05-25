@@ -122,6 +122,7 @@ public class Usuario implements Serializable {
 	uniqueConstraints = { @UniqueConstraint (columnNames = {"usuario_id", "rol_id"})})
 	private List <Rol> roles;
 	/**/
+	@JsonBackReference(value="ventas-usuario")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
     /**/

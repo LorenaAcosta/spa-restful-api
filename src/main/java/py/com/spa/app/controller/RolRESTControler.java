@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import py.com.spa.app.validators.ApiUnprocessableEntity;
 
 @RestController
 @RequestMapping("/roles")
+@CrossOrigin(origins = "*")
 public class RolRESTControler {
 
 	@Autowired
@@ -29,6 +31,16 @@ public class RolRESTControler {
 	@GetMapping("/listar")
 	public List<Rol> listarusuarios() {
 		return rolService.findAll();
+	}
+	
+	@GetMapping("/listar-usuario/{id}")
+	public List<Rol> listarRolPorUsuario(@PathVariable(value = "id") Integer id) {
+		return rolService.listarRolPorUsuario(id);
+	}
+	
+	@GetMapping("/listar-usuario-na/{id}")
+	public List<Rol> listarRolNoAsignadosPorUsuario(@PathVariable(value = "id") Integer id) {
+		return rolService.listarRolNoAsignadosPorUsuario(id);
 	}
 
 	@PostMapping("/agregar")
@@ -71,6 +83,18 @@ public class RolRESTControler {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
+	}
+	
+	@PostMapping("/asignar-rol/{usuarioId}/{rolId}")
+	public void asignarRol(@PathVariable Integer usuarioId, @PathVariable Integer rolId){
+		
+		rolService.insertUsuariosRoles(usuarioId, rolId);
+	}
+	
+	@DeleteMapping("/eliminar/rol-asignado/{usuarioId}/{rolId}")
+	public void eliminarRolAsignado(@PathVariable Integer usuarioId, @PathVariable Integer rolId){
+		
+		rolService.deleteUsuariosRoles(usuarioId, rolId);
 	}
 
 }
