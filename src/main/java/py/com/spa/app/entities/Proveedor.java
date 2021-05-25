@@ -70,7 +70,7 @@ public class Proveedor implements Serializable {
     private int telefono;
     @Column(name = "nombre_gerente")
     private String nombreGerente;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "nombre_proveedor") 
     private String nombreProveedor;
     @Column(name = "cargo") 
@@ -87,8 +87,8 @@ public class Proveedor implements Serializable {
     }
     
     
-    public Proveedor( String nombreProveedor, int telefono, String empresa, String direccion, String ciudad) {
-        this.nombreProveedor = nombreProveedor;
+    public Proveedor( String razonSocial, int telefono, String empresa, String direccion, String ciudad) {
+        this.razonSocial = razonSocial;
         this.telefono = telefono;
         this.empresa = empresa;
         this.direccion = direccion;
