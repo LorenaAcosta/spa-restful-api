@@ -82,18 +82,27 @@ public class Planilla implements Serializable {
     
 
 
-    public Planilla(Integer planillaId, Integer numeroPatronal, Integer numeroPatronalips, Date fechaPago,
-			Integer total, Integer descuento, Integer saldo, Empleados empleadoId) {
+
+
+
+
+	public Planilla(Integer planillaId, Integer numeroPatronal, Integer numeroPatronalips, Date fechaPago,
+			String mesPago, Integer total, Integer descuento, Integer saldo, Empleados empleadoId, Usuario usuarioId) {
 		super();
 		this.planillaId = planillaId;
 		this.numeroPatronal = numeroPatronal;
 		this.numeroPatronalips = numeroPatronalips;
 		this.fechaPago = fechaPago;
+		this.mesPago = mesPago;
 		this.total = total;
 		this.descuento = descuento;
 		this.saldo = saldo;
 		this.empleadoId = empleadoId;
+		this.usuarioId = usuarioId;
 	}
+
+
+
 
 
 

@@ -38,7 +38,7 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 		 		+ "inner join disponible d on r.disponible_id= d.disponible_id \r\n"
 		 		+ "--inner join ventas_detalle v on v.servicio_id = d.servicio_id \r\n"
 		 		+ "where r.estado='Confirmado' and d.empleado_id= :id \r\n"
-		 		+ "and EXTRACT(MONTH FROM r.fecha_reserva)= :mes",  nativeQuery = true)
+		 		+ "and EXTRACT(MONTH FROM r.fecha_reserva)= :mes order by fecha_reserva ASC",  nativeQuery = true)
 	    List<ReservaDetalle> reservasConfirmadas(@Param("id") Integer empleadoId, @Param("mes") Integer mes );
 	 
 	 
@@ -55,9 +55,7 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 				"join boxes b on b.boxes_id = db.boxes_id\r\n" + 
 				"where r.fecha_reserva = :fecha", nativeQuery = true)
 		List<ReservaReporte> getPorFechaReporte(@Param("fecha") Date fecha);
-		
-		
-
+	
 	
 	
 }
