@@ -1,4 +1,5 @@
-uploads
+*.jpg
+*.png
 *.pdf
 *.html
 

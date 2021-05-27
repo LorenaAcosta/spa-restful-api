@@ -22,6 +22,7 @@ import py.com.spa.app.entities.PuntoExpedicion;
 import py.com.spa.app.enumeraciones.EstadoComprobante;
 import py.com.spa.app.services.ComprobanteService;
 import py.com.spa.app.services.PuntoExpedicionService;
+import py.com.spa.app.validators.ApiUnprocessableEntity;
 
 @RestController
 @RequestMapping("/comprobante")
@@ -46,8 +47,16 @@ public class ComprobanteRESTController  {
 		PuntoExpedicion pe = puntoExpedicionService.findByPuntoExpedicionId(comprobante.getPuntoExpedicionId().getPuntoExpedicionId());
 		comprobante.setNumeroActual(0);
 		comprobante.setPuntoExpedicionCodigo(pe.getCodigo());
+		Boolean imp1 = comprobanteService.getComprobanteActivoPorPunto(comprobante.getPuntoExpedicionId().getPuntoExpedicionId());
+		System.out.println(imp1);
 		Map<String, Object> response = new HashMap<>();
 		try {
+			if(imp1 == true) {
+				ApiUnprocessableEntity e = new ApiUnprocessableEntity(" ");
+				response.put("mensaje",  "Debe darlo de baja para registrar uno nuevo");
+				response.put("error",  "Ya existe un comprobante para este punto!");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 			imp = comprobanteService.addComprobante(comprobante);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
@@ -114,7 +123,26 @@ public class ComprobanteRESTController  {
 	}
 	
 	@GetMapping("/comprobante-activo-por-punto/{id}")
-	public Comprobante getComprobanteActivo(@PathVariable(value="id") Integer id) {
-		return (Comprobante) comprobanteService.getComprobanteActivoPorPunto(id);
+	public ResponseEntity<?> getComprobanteActivo(@PathVariable(value="id") Integer id) {
+		//return (Boolean) comprobanteService.getComprobanteActivoPorPunto(id);
+		Comprobante imp;
+		Map<String, Object> response = new HashMap<>();
+		imp = comprobanteService.getComprobanteActivoPorPunto2(id);
+		/*try {
+			if(imp) {
+				ApiUnprocessableEntity e = new ApiUnprocessableEntity(" ");
+				response.put("mensaje",  "Debe darlo de baja para registrar uno nuevo");
+				response.put("error",  "Ya existe un comprobante para este punto!");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}catch(DataAccessException e ){
+			response.put("mensaje",  "Error al realizar el insert en la bd");
+			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}*/
+		response.put("mensaje", "Comprobante guardado.");
+		response.put("comprobante", imp);
+		return new ResponseEntity<Comprobante>(imp, HttpStatus.CREATED);		
+
 	}
 }

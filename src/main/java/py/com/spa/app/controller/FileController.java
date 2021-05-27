@@ -37,6 +37,7 @@ public class FileController {
     FileService fileService;
 
     @PostMapping("/upload")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<FileMessage> uploadFiles(@RequestParam("files")MultipartFile[] files){
         String message = "";
         try{
@@ -55,7 +56,8 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new FileMessage(message));
         }
     }
-
+    
+    @CrossOrigin(origins = "*")
     @GetMapping("/files")
     public ResponseEntity<List<FileModel>> getFiles(){
         List<FileModel> fileInfos = fileService.loadAll().map(path -> {
@@ -68,7 +70,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
 
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/files/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename){
         Resource file = fileService.load(filename);
@@ -77,6 +79,7 @@ public class FileController {
     }
 
     @GetMapping("/delete/{filename:.+}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<FileMessage> deleteFile(@PathVariable String filename) {
         String message = "";
         try {

@@ -7,23 +7,31 @@ package py.com.spa.app.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  *
@@ -31,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  */
 @Entity
 @Table(name = "usuario")
+@JsonIgnoreProperties("inspection")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
@@ -39,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username"),
     @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password"),
     @NamedQuery(name = "Usuario.findByApellido", query = "SELECT u FROM Usuario u WHERE u.apellido = :apellido"),
-    @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
+    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findByCedula", query = "SELECT u FROM Usuario u WHERE u.cedula = :cedula"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
     @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo"),
@@ -60,21 +69,19 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "apellido")
     private String apellido;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "username", unique=true)
-    private String username;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "password")
-    private String password;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "correo")
-    private String correo;
+    /**/
+	@Column(unique = true, length = 20)
+	private String username;
+	/**/
+	@Column(length = 60)
+	private String password;
+    /**/
+	@Column(unique = true, length = 100)
+	@Email
+	private String email;
+	/**/
+	private Boolean enabled = true;
+	/**/
     @Basic(optional = false)
     @NotNull
     @Column(name = "cedula")
@@ -92,8 +99,8 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "telefono")
     private String telefono;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
+    //@NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "sexo")
     private String sexo;
@@ -108,14 +115,21 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "estado")
     private int estado;
-    
-
+    /**/
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="usuarios_roles", joinColumns = @JoinColumn(name="usuario_id"),
+	inverseJoinColumns = @JoinColumn(name="rol_id"),
+	uniqueConstraints = { @UniqueConstraint (columnNames = {"usuario_id", "rol_id"})})
+	private List <Rol> roles;
+	/**/
+	@JsonBackReference(value="ventas-usuario")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
-    
+    /**/
     @JsonBackReference(value="reservas-usuario")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
+    /**/
 
     public Usuario() {
     }
@@ -124,24 +138,20 @@ public class Usuario implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-
-  
-
 	public Usuario(Integer usuarioId, @NotNull String nombre, @NotNull @Size(min = 1, max = 2147483647) String apellido,
-			@NotNull @Size(min = 1, max = 2147483647) String username,
-			@NotNull @Size(min = 1, max = 2147483647) String password,
-			@NotNull @Size(min = 1, max = 2147483647) String correo, @NotNull int cedula,
-			@NotNull @Size(min = 1, max = 2147483647) String direccion, String ciudad, String nacionalidad,
+			String username, String password, @Email String email, Boolean enabled, @NotNull int cedula,
+			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String nacionalidad,
 			@NotNull @Size(min = 1, max = 2147483647) String telefono,
 			@NotNull @Size(min = 1, max = 2147483647) String sexo, String ruc, String tarjeta, String fechaNac,
-			@NotNull int estado) {
+			@NotNull int estado, List<Rol> roles) {
 		super();
 		this.usuarioId = usuarioId;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.username = username;
 		this.password = password;
-		this.correo = correo;
+		this.email = email;
+		this.enabled = enabled;
 		this.cedula = cedula;
 		this.direccion = direccion;
 		this.ciudad = ciudad;
@@ -152,10 +162,10 @@ public class Usuario implements Serializable {
 		this.tarjeta = tarjeta;
 		this.fechaNac = fechaNac;
 		this.estado = estado;
+		this.roles = roles;
 	}
 
-
-    public Integer getUsuarioId() {
+	public Integer getUsuarioId() {
 		return usuarioId;
 	}
 
@@ -195,12 +205,20 @@ public class Usuario implements Serializable {
 		this.password = password;
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public int getCedula() {
@@ -283,6 +301,22 @@ public class Usuario implements Serializable {
 		this.estado = estado;
 	}
 
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+	public Collection<Ventas> getVentasCollection() {
+		return ventasCollection;
+	}
+
+	public void setVentasCollection(Collection<Ventas> ventasCollection) {
+		this.ventasCollection = ventasCollection;
+	}
+
 	public Collection<ReservaDetalle> getReservaDetalleCollection() {
 		return reservaDetalleCollection;
 	}
@@ -291,48 +325,7 @@ public class Usuario implements Serializable {
 		this.reservaDetalleCollection = reservaDetalleCollection;
 	}
 
-	@JsonBackReference(value="ventas")
-    @XmlTransient
-    public Collection<Ventas> getVentasCollection() {
-        return ventasCollection;
-    }
 
-    public void setVentasCollection(Collection<Ventas> ventasCollection) {
-        this.ventasCollection = ventasCollection;
-    }
-    @JsonBackReference(value="reservas")
-    @XmlTransient
-    public Collection<ReservaDetalle> getReservaCollection() {
-        return reservaDetalleCollection;
-    }
 
-    public void setReservaCollection(Collection<ReservaDetalle> reservaCollection) {
-        this.reservaDetalleCollection = reservaCollection;
-    }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (usuarioId != null ? usuarioId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario)) {
-            return false;
-        }
-        Usuario other = (Usuario) object;
-        if ((this.usuarioId == null && other.usuarioId != null) || (this.usuarioId != null && !this.usuarioId.equals(other.usuarioId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "py.com.spa.app.entities.Usuario[ usuarioId=" + usuarioId + " ]";
-    }
-    
 }

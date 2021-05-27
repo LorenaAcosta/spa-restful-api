@@ -147,6 +147,11 @@ public class ReservaDetalleRESTController {
 	public List<ReservaDetalle> reservasConfirmadas(@PathVariable(value="id") Integer empleadoId, @PathVariable(value="mes") Integer mes)  {
 		return (List<ReservaDetalle>) reservaDetalleService.reservasConfirmadas(empleadoId, mes);
 	}
+    
+    @GetMapping("/mis-reservas/{id}")
+	public List<ReservaDetalle> misReservas(@PathVariable(value="id") Integer usuarioId){
+		return reservaDetalleService.misReservas(usuarioId);
+	}
 
 	
 }
