@@ -37,7 +37,7 @@ public class SpaAppApplication implements CommandLineRunner{
 			System.out.println(passwordBCrypt);
 		}
 		//fileService.deleteAll();
-		fileService.init();
+		//fileService.init();
 	}
 
 	
