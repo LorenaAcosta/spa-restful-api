@@ -99,8 +99,8 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "telefono")
     private String telefono;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
+    //@NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "sexo")
     private String sexo;
