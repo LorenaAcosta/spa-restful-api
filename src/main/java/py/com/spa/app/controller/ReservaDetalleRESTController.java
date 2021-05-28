@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.HorarioService;
@@ -54,8 +55,9 @@ public class ReservaDetalleRESTController {
 	}
 	
 	@PostMapping("/agregar")
-	public void agregarReservaDetalle(@RequestBody ReservaDetalle reservadetalle) {
+	public ResponseEntity<?>  agregarReservaDetalle(@RequestBody ReservaDetalle reservadetalle) {
 		reservaDetalleService.addReservaDetalle(reservadetalle);
+		return new ResponseEntity<ReservaDetalle>(reservadetalle, HttpStatus.OK);
 	}
 	
 	@GetMapping("/encontrar/{id}")
