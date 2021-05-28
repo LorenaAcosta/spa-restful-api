@@ -105,7 +105,7 @@ public class Empleados implements Serializable {
     @Column(name = "funcion")
     private String funcion;
     @Column(name = "sueldo")
-    private String sueldo;
+    private Integer sueldo;
     @Column(name = "ciudad")
     private String ciudad;
     @Column(name = "nacionalidad")
@@ -136,7 +136,7 @@ public class Empleados implements Serializable {
 			@NotNull @Size(min = 1, max = 2147483647) String telefono,
 			@NotNull @Size(min = 1, max = 2147483647) String fechaNac, @Size(max = 2147483647) String imageName,
 			@NotNull @Size(min = 1, max = 2147483647) String correo, String estadoCivil, String estado,
-			String fechaIngreso, String celular, String funcion, String sueldo, String ciudad, String nacionalidad) {
+			String fechaIngreso, String celular, String funcion, Integer sueldo, String ciudad, String nacionalidad) {
 		super();
 		this.empleadoId = empleadoId;
 		this.cedula = cedula;
@@ -277,11 +277,11 @@ public class Empleados implements Serializable {
 		this.funcion = funcion;
 	}
 
-	public String getSueldo() {
+	public Integer getSueldo() {
 		return sueldo;
 	}
 
-	public void setSueldo(String sueldo) {
+	public void setSueldo(Integer sueldo) {
 		this.sueldo = sueldo;
 	}
 
