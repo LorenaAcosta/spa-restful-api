@@ -44,7 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.authorizeRequests()
 		//se debe poner la barra(/) en la ruta pero sin /api
 		.antMatchers("/oauth/token", "/**", "/usuarios/agregar", "/empleado/**", "/usuarios/listar", "/categoria/**").permitAll()
-		.antMatchers("/usuarios/encontrar/**", "/usuarios/eliminar/{id}", "/usuarios/modificar", "/categoria/agregar", "/categoria/listar").hasRole("ADMIN")
+		.antMatchers("/usuarios/encontrar/**", "/usuarios/eliminar/{id}", "/usuarios/modificar", "/categoria/agregar", "/categoria/listar", "/planilla/**").hasRole("ADMIN")
 		//.antMatchers().permitAll()
 		.anyRequest().authenticated()
 		.and().cors().configurationSource(corsConfigurationSource())

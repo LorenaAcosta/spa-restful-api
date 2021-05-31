@@ -55,9 +55,11 @@ public class Planilla implements Serializable {
     @Column(name = "mes_pago")
     private String mesPago;
     
+    @Column(name = "anho_pago")
+    private String anhoPago;
+    
     @Column(name = "total")
     private Integer total;
-    
     
     @Column(name = "descuento")
     private Integer descuento;
@@ -71,8 +73,8 @@ public class Planilla implements Serializable {
     @ManyToOne(optional = false)
     private Empleados empleadoId;
     
-    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id",  nullable = false)
+    @ManyToOne()
     private Usuario usuarioId;
     
     
@@ -83,23 +85,42 @@ public class Planilla implements Serializable {
 
 
 
-
-
-
 	public Planilla(Integer planillaId, Integer numeroPatronal, Integer numeroPatronalips, Date fechaPago,
-			String mesPago, Integer total, Integer descuento, Integer saldo, Empleados empleadoId, Usuario usuarioId) {
+			String mesPago, String anhoPago, Integer total, Integer descuento, Integer saldo, Empleados empleadoId,
+			Usuario usuarioId) {
 		super();
 		this.planillaId = planillaId;
 		this.numeroPatronal = numeroPatronal;
 		this.numeroPatronalips = numeroPatronalips;
 		this.fechaPago = fechaPago;
 		this.mesPago = mesPago;
+		this.anhoPago = anhoPago;
 		this.total = total;
 		this.descuento = descuento;
 		this.saldo = saldo;
 		this.empleadoId = empleadoId;
 		this.usuarioId = usuarioId;
 	}
+
+
+
+
+
+	public String getanhoPago() {
+		return anhoPago;
+	}
+
+
+
+
+
+
+
+	public void setanhoPago(String anhoPago) {
+		this.anhoPago = anhoPago;
+	}
+
+
 
 
 
@@ -113,12 +134,9 @@ public class Planilla implements Serializable {
 
 
 
-
 	public void setPlanillaId(Integer planillaId) {
 		this.planillaId = planillaId;
 	}
-
-
 
 
 	public Integer getNumeroPatronal() {
@@ -127,18 +145,14 @@ public class Planilla implements Serializable {
 
 
 
-
 	public void setNumeroPatronal(Integer numeroPatronal) {
 		this.numeroPatronal = numeroPatronal;
 	}
 
 
-
-
 	public Integer getNumeroPatronalips() {
 		return numeroPatronalips;
 	}
-
 
 
 
@@ -148,18 +162,24 @@ public class Planilla implements Serializable {
 
 
 
-
 	public Date getFechaPago() {
 		return fechaPago;
 	}
-
-
 
 
 	public void setFechaPago(Date fechaPago) {
 		this.fechaPago = fechaPago;
 	}
 
+
+	public String getMesPago() {
+		return mesPago;
+	}
+
+
+	public void setMesPago(String mesPago) {
+		this.mesPago = mesPago;
+	}
 
 
 
@@ -168,13 +188,9 @@ public class Planilla implements Serializable {
 	}
 
 
-
-
 	public void setTotal(Integer total) {
 		this.total = total;
 	}
-
-
 
 
 	public Integer getDescuento() {
@@ -182,19 +198,14 @@ public class Planilla implements Serializable {
 	}
 
 
-
-
 	public void setDescuento(Integer descuento) {
 		this.descuento = descuento;
 	}
 
 
-
-
 	public Integer getSaldo() {
 		return saldo;
 	}
-
 
 
 
@@ -204,11 +215,9 @@ public class Planilla implements Serializable {
 
 
 
-
 	public Empleados getEmpleadoId() {
 		return empleadoId;
 	}
-
 
 
 
@@ -216,6 +225,16 @@ public class Planilla implements Serializable {
 		this.empleadoId = empleadoId;
 	}
 
+
+	public Usuario getUsuarioId() {
+		return usuarioId;
+	}
+
+
+
+	public void setUsuarioId(Usuario usuarioId) {
+		this.usuarioId = usuarioId;
+	}
 
 
 
