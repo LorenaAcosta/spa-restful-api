@@ -25,4 +25,26 @@ public class ConceptosService {
 		return (List<Conceptos>) conceptosDao.findAll();
 	}
 
+
+	public List<Conceptos> listarConceptos(String tipo) {
+		return (List<Conceptos>) conceptosDao.listarConceptos(tipo);
+	}
+
+
+	public Conceptos addConceptos(Conceptos c) {
+		return conceptosDao.save(c);
+	}
+
+
+
+	public void deleteConcepto(Integer id) {
+		conceptosDao.deleteById(id);
+		
+	}
+
+
+	public Conceptos findByConceptoId(Integer id) {
+		return (Conceptos) conceptosDao.findById(id).orElse(null);
+	}
+
 }

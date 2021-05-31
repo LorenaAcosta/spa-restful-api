@@ -27,10 +27,12 @@ public class PlanillaRESTController  {
 	@Autowired
 	public PlanillaService planillaService;
 	
+
 	@GetMapping("/listar")
 	public List<Planilla> listarPlanilla(){
 		return planillaService.findAll();
 	}
+	
 	
 	@PostMapping("/agregar")
 	public void agregarPlanilla(@RequestBody Planilla planilla) {
