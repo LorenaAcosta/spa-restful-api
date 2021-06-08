@@ -22,8 +22,8 @@ public class PlanillaService {
 	}
 	
 	@Transactional
-	public void addPlanilla(Planilla planilla) {
-		planillaDao.save(planilla);
+	public Planilla addPlanilla(Planilla planilla) {
+		return planillaDao.save(planilla);
 	}
 	
 	@Transactional(readOnly=true)
@@ -39,6 +39,10 @@ public class PlanillaService {
 	@Transactional
 	public void deletePlanilla(Integer id) {
 		planillaDao.deleteById(id);
+	}
+
+	public List<Planilla> listarpormes(String id) {
+		return (List<Planilla>) planillaDao.listarpormes(id);
 	}
 }
 

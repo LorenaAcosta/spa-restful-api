@@ -26,7 +26,8 @@ public interface IDisponibleDao  extends JpaRepository<Disponible, Integer>{
 	 @Query(value = "select distinct hora from reserva_detalle rd\r\n" + 
 		 		"	join disponible d on d.empleado_id = rd.empleado\r\n" + 
 		 		"	join servicios s on s.servicio_id = d.servicio_id\r\n" + 
-		 		"	where rd.empleado = :id and rd.fecha_reserva = :fecha" ,  nativeQuery = true)
+		 		"	where rd.empleado = :id and rd.fecha_reserva = :fecha\r\n" + 
+		 		"   and rd.estado !='ANULADO'" ,  nativeQuery = true)
 	 List<Time> findHorasOcupadas(@Param("id") Integer id, @Param("fecha") Date fecha);
 
 }

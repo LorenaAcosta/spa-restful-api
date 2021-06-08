@@ -9,6 +9,7 @@ public class DisponibleDatosResult {
 	
 	public Disponible disponible;
 	public List<Horario> horario;
+	
 	public DisponibleDatosResult() {
 		
 	}
