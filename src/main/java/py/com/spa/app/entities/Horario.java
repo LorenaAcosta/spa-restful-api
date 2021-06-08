@@ -50,7 +50,7 @@ public class Horario implements Serializable {
     private Integer horarioId;
     
     @Basic(optional = false)
-    @Column(name = "dia_trabajo")
+    @Column(name = "dia_trabajo", unique=true)
     private String diaTrabajo; 
     
     @Basic(optional = false)

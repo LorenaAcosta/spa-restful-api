@@ -110,11 +110,11 @@ public class Servicios implements Serializable {
     /**/
 
     @JsonBackReference(value="disponible")
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<Disponible> disponibleCollection;
     
     @JsonBackReference(value="disponibleBoxes")
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<Disponible> disponibleBoxesCollection;
 
     public Servicios() {
