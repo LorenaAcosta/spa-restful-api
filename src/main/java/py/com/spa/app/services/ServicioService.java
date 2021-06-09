@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.dao.IServicioDao;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.Servicios;
 
 import py.com.spa.app.enumeraciones.EstadoServicio;
@@ -58,6 +59,11 @@ public class ServicioService {
 	@Transactional(readOnly=true)
 	public List<Servicios> findActivos(){
 		return (List<Servicios>) servicioDao.findActivos(); 
+	}
+	
+	@Transactional
+	public Servicios busquedaPorNombre(String nombre) {
+		return servicioDao.busquedaPorNombre(nombre);
 	}
 	
 	

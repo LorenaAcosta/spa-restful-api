@@ -66,6 +66,24 @@ public class UsuarioRestControler {
 		return (Usuario) usuarioService.findByUsuarioId(id);
 	}
 
+	@PutMapping("/habilitar-deshabilitar/{id}")
+	public ResponseEntity<Void> habilitarDeshabilitarUsuario(@PathVariable(value = "id") Integer usuarioId,
+			@RequestBody String valor) {
+		Usuario us = null;
+
+		us = usuarioService.findByUsuarioId(usuarioId);
+		System.out.println("valor enviado "+ valor);
+		if (us != null) {
+			us.setEnabled(Boolean.parseBoolean(valor));
+			System.out.println("valor "+ us.getEnabled());
+			usuarioService.updateUsuario(us);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+		}
+	}
+	
 	@PutMapping("/modificar/{id}")
 	public ResponseEntity<Void> modificarReserva(@PathVariable(value = "id") Integer usuarioId,
 			@RequestBody Usuario usuario) {
@@ -77,16 +95,11 @@ public class UsuarioRestControler {
 			System.out.println(us.getEmail());
 			System.out.println(usuario.getEmail());
 			us.setApellido(usuario.getApellido());
-			us.setEmail(usuario.getEmail());
-			//us.setEnabled(usuario.getEnabled());
-			//us.setUsuarioId(us.getUsuarioId());
-			us.setNombre(usuario.getNombre());
-			//us.setPassword(us.getPassword());
-			//us.setRoles(usuario.getRoles());
-			us.setUsername(usuario.getUsername());
 			us.setRuc(usuario.getRuc());
-			us.setSexo(usuario.getSexo());
 			us.setTelefono(usuario.getTelefono());
+			us.setCedula(usuario.getCedula());
+			us.setNombre(usuario.getNombre());
+
 			usuarioService.updateUsuario(us);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 

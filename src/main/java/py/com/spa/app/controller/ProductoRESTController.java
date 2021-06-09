@@ -146,6 +146,11 @@ public class ProductoRESTController {
 		return (Productos) productoService.findProductoById(id);
 	}
 	
+	@GetMapping("/producto-por-nombre/{id}")
+	public Productos busquedaPorNombre(@PathVariable(value="id") String nombre) {
+		return (Productos) productoService.busquedaPorNombre(nombre);
+	}
+	
 	@GetMapping("/busqueda-productos/{id}")
 	public ResponseEntity<?>  busquedaProductos(@PathVariable(value="id") String termino)  {
 		List<Productos> lista = null;

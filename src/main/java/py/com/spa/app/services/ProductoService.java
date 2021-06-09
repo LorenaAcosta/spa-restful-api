@@ -72,6 +72,11 @@ public class ProductoService {
 		return productoDao.save(producto);
 	}
 	
+	@Transactional
+	public Productos busquedaPorNombre(String nombre) {
+		return productoDao.busquedaPorNombre(nombre);
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public Categorias findByCategoriaId(Integer id) {
