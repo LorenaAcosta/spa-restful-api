@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.reportes.CategoriaReporte;
+import py.com.spa.app.reportes.Datos;
 
 
 public interface ICategoriaDao extends JpaRepository<Categorias, Integer>{
@@ -32,4 +33,11 @@ public interface ICategoriaDao extends JpaRepository<Categorias, Integer>{
 	@Query(value="Select ROW_NUMBER() OVER (ORDER BY c.categoria_id ) as item, data_type as tipo, descripcion "
 			+ "from categorias c", nativeQuery = true)
 	List<CategoriaReporte> getAllReporte();
+
+	@Query(value=" select count(servicio_id) as data, 'servicios' as descripcion from servicios\r\n"
+			+ "union \r\n"
+			+ "select count(producto_id) as data  , 'productos' as descripcion from productos\r\n"
+			+ "union \r\n"
+			+ "select count(reserva_id) as data, 'reservas' as descripcion from reserva_detalle", nativeQuery = true)
+	List<Datos> getdatos();
 }

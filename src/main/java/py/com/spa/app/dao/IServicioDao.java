@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.enumeraciones.EstadoServicio;
 import py.com.spa.app.enumeraciones.TipoCategoria;
@@ -35,6 +36,10 @@ public interface IServicioDao extends JpaRepository<Servicios, Integer>{
 			+ "where UPPER(c.nombre) like CONCAT('%',UPPER(:id),'%') or  "
 			+ " UPPER(c.descripcion) like CONCAT('%',UPPER(:id),'%') ",  nativeQuery = true)
 	  List<Servicios> busquedaServicios(@Param("id") String termino);
+	
+	@Query(value = "select * from servicios c \n"
+			+ "where UPPER(c.nombre) = UPPER(:nombre) ",  nativeQuery = true)
+	  Servicios busquedaPorNombre(@Param("nombre") String termino);
 
 	
 	@Query(value = "select * from servicios s\r\n"

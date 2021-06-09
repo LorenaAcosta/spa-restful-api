@@ -29,12 +29,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.reportes.Datos;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
 
 @RestController
 @RequestMapping("/categoria" )
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class CategoriaRESTController  {
 	
 	@Autowired
@@ -231,5 +232,11 @@ public class CategoriaRESTController  {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\""+file.getFilename() + "\"").body(file);
     }
+    
+    
+    @GetMapping("/datos")
+	public List<Datos> getdatos(){
+		return categoriaService.getdatos();
+	}
 
 }

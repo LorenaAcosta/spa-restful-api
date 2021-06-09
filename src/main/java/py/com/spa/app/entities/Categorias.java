@@ -78,10 +78,10 @@ public class Categorias implements Serializable {
     private String imageName;
        
     
-    @OneToMany( mappedBy = "categoriaId")
+    @OneToMany( mappedBy = "categoriaId", cascade = CascadeType.PERSIST)
     private Collection<Servicios> serviciosCollection;
     
-    @OneToMany( mappedBy = "categoriaId")
+    @OneToMany( mappedBy = "categoriaId", cascade = CascadeType.PERSIST)
     private Collection<Productos> productosCollection;
     
     

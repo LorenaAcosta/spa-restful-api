@@ -5,12 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Rol;
 import py.com.spa.app.reportes.ReservaReporte;
+import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 
 
 public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integer>{
@@ -59,7 +62,21 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 				"join boxes b on b.boxes_id = db.boxes_id\r\n" + 
 				"where r.fecha_reserva = :fecha", nativeQuery = true)
 		List<ReservaReporte> getPorFechaReporte(@Param("fecha") Date fecha);
-	
+		
+		
+		 @Query(value = "select rd.reserva_id as reserva, s.nombre as servicio\r\n" + 
+		 		"from servicios s\r\n" + 
+		 		"join disponible d on d.servicio_id = s.servicio_id\r\n" + 
+		 		"join reserva_detalle rd on rd.disponible_id = d.disponible_id\r\n" + 
+		 		"where  upper(rd.estado) = upper('Confirmado') and rd.usuario_id = :id\r\n" + 
+		 		"and (to_char(rd.fecha_reserva, 'YYY-MM-DD') = to_char(CURRENT_DATE,'YYY-MM-DD')) ",  nativeQuery = true)
+		 List<ServiciosReservadosPorClienteFecha> serviciosReservadosPorClienteFecha(@Param("id") Integer usuarioId );
+		 
+		 
+		@Modifying
+		@Transactional
+		@Query(value = "update reserva_detalle set estado = 'Pagado' where reserva_id = :id", nativeQuery = true)
+		void cambiarEstadoPagado(@Param("id") Integer reservaId);
 	
 	
 }

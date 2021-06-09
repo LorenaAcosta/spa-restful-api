@@ -18,28 +18,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Planilla;
+import py.com.spa.app.entities.PlanillaDetalle;
+import py.com.spa.app.reportes.DetallesConceptos;
+import py.com.spa.app.reportes.RankingP;
+import py.com.spa.app.services.PlanillaDetalleService;
 import py.com.spa.app.services.PlanillaService;
-
 @RestController
-@RequestMapping("/planilla")
+@RequestMapping("/planilla-detalle")
 @CrossOrigin(origins = "*")
-public class PlanillaRESTController  {
+public class PlanillaDetalleRESTController  {
 	
 	@Autowired
-	public PlanillaService planillaService;
+	public PlanillaDetalleService planillaService;
 	
 
 	@GetMapping("/listar")
-	public List<Planilla> listarPlanilla(){
+	public List<PlanillaDetalle> listarPlanilla(){
 		return planillaService.findAll();
 	}
 	
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<?> agregarPlanilla(@RequestBody Planilla planilla) {
-		Planilla planillares = null;
+	public ResponseEntity<?> agregarPlanilla(@RequestBody PlanillaDetalle planilla) {
+		PlanillaDetalle planillares = null;
 		Map<String, Object> response =  new HashMap<>();
 		try {
 			planillares = planillaService.addPlanilla(planilla);	
@@ -50,7 +55,7 @@ public class PlanillaRESTController  {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		response.put("mensaje", "Planilla ha sido creado con exito.");
+		response.put("mensaje", "PlanillaDetalle ha sido creado con exito.");
 		response.put("planilla", planillares);
 		return new ResponseEntity< Map<String, Object> >(response, HttpStatus.CREATED);		
 		
@@ -59,26 +64,35 @@ public class PlanillaRESTController  {
 
 	
 	@GetMapping("/encontrar/{id}")
-	public Planilla obtenerPlanillaId(@PathVariable(value="id") Integer id) {
-		return (Planilla) planillaService.findByPlanillaId(id);
+	public PlanillaDetalle obtenerPlanillaId(@PathVariable(value="id") Integer id) {
+		return (PlanillaDetalle) planillaService.findByPlanillaId(id);
 	}
 	
 	
-	@PutMapping("/modificar/{id}")
-	public ResponseEntity<?> modificarCategoria (@PathVariable(value="id") Integer id, @RequestBody Planilla planilla) {
-		Planilla c = planillaService.findByPlanillaId(id);
-		if(c!=null) {
-			c.setEmpleadoId(planilla.getEmpleadoId());
-			planillaService.updatePlanilla(c);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}
+	@GetMapping("/get-by-planilla/{id}")
+	public List<PlanillaDetalle> getPlanillaId(@PathVariable(value="id") Integer id) {
+		return (List<PlanillaDetalle>) planillaService.findByPlanillaId2(id);
+	}
+	
+	@GetMapping("/get-comisiones/{id}")
+	public Integer getComisiones(@PathVariable(value="id") Integer id) {
+		return (Integer) planillaService.getComisiones(id);
+	}
+	
+	@GetMapping("/get-salario/{id}")
+	public Integer getSalario(@PathVariable(value="id") Integer id) {
+		return (Integer) planillaService.getSalario(id);
+	}
+		
+
+	@GetMapping("/get-detalles/{id}")
+	public List<DetallesConceptos> getDetalles(@PathVariable(value="id") Integer id) {
+		return (List<DetallesConceptos>) planillaService.getDetalles(id);
 	}
 	
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarPlanilla(@PathVariable(value="id") Integer id) {
-		Planilla c = planillaService.findByPlanillaId(id);
+		PlanillaDetalle c = planillaService.findByPlanillaId(id);
 		if (c!=null) {
 			planillaService.deletePlanilla(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -88,10 +102,6 @@ public class PlanillaRESTController  {
 		
 	}
 	
-	@GetMapping("/listarpormes/{id}")
-	public  List<Planilla> listarpormes(@PathVariable(value="id") String id) {
-		return ( List<Planilla>) planillaService.listarpormes(id);
-	}
 
 	
 	

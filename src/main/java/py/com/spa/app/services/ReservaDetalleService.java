@@ -33,7 +33,9 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import py.com.spa.app.dao.IReservaDetalleDao;
 import py.com.spa.app.entities.ReservaDetalle;
+import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.reportes.ReservaReporte;
+import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 
 @Service
 public class ReservaDetalleService {
@@ -103,6 +105,15 @@ public class ReservaDetalleService {
 		return reservaDao.findByFechaReservaAndHora(fecha, hora);
 	}
 	
+	@Transactional(readOnly=true)
+	public List<ServiciosReservadosPorClienteFecha> serviciosReservadosPorClienteFecha(Integer id){
+		return (List<ServiciosReservadosPorClienteFecha>) reservaDao.serviciosReservadosPorClienteFecha(id);
+	}
+	
+	@Transactional
+	public void cambiarEstadoPagado(Integer reservaId) {
+		reservaDao.cambiarEstadoPagado(reservaId);
+	}
 	
 	
 	/*Reporte*/

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.services.CategoriaService;
 import py.com.spa.app.services.ServicioService;
@@ -232,6 +233,12 @@ public class ServicioRESTController {
 		}
 		return new ResponseEntity<List<Servicios>>(lista, HttpStatus.OK);
 	}
+	
+	@GetMapping("/servicio-por-nombre/{id}")
+	public Servicios busquedaPorNombre(@PathVariable(value="id") String nombre) {
+		return (Servicios) servicioService.busquedaPorNombre(nombre);
+	}
+	
 	
 	
     @GetMapping("/reporte")

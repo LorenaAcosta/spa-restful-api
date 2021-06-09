@@ -23,7 +23,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "planilla_detalle")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PlanillaDetalle.findAll", query = "SELECT p FROM Planilla p")})
+    @NamedQuery(name = "PlanillaDetalle.findAll", query = "SELECT p FROM PlanillaDetalle p"),
+    @NamedQuery(name = "PlanillaDetalle.findByPlanillaDetalleId", query = "SELECT v FROM PlanillaDetalle v WHERE v.planillaDetalleId = :planillaDetalleId")})
 public class PlanillaDetalle implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -32,7 +33,6 @@ public class PlanillaDetalle implements Serializable {
     @Basic(optional = false)
     @Column(name = "planilla_detalle_id")
     private Integer planillaDetalleId;
-   
    
     @Column(name = "monto_debe")
     private Integer montoDebe;
@@ -43,26 +43,32 @@ public class PlanillaDetalle implements Serializable {
     @Column(name = "concepto_id")
     private Integer conceptoId;
 
+ 
     @JoinColumn(name = "reserva_id", referencedColumnName = "reserva_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private ReservaDetalle reservas;
 
-    
+
     @JsonBackReference(value="detalle-planilla")
-    @JoinColumn(name = "planilla_id", referencedColumnName = "planilla_id", insertable = false, updatable = false)
+    @JoinColumn(name = "planilla_id", referencedColumnName = "planilla_id")
     @ManyToOne(optional = false)
-    private Planilla planillaId;
-    
+    private Planilla planilla;
 
 	public PlanillaDetalle() {
 		super();
 	}
 
-	public PlanillaDetalle(Integer planillaDetalleId,  ReservaDetalle reservas) {
+	public PlanillaDetalle(Integer planillaDetalleId, Integer montoDebe, Integer montoHaber, Integer conceptoId,
+			ReservaDetalle reservas, Planilla planilla) {
 		super();
 		this.planillaDetalleId = planillaDetalleId;
+		this.montoDebe = montoDebe;
+		this.montoHaber = montoHaber;
+		this.conceptoId = conceptoId;
 		this.reservas = reservas;
+		this.planilla = planilla;
 	}
+
 
 	public Integer getPlanillaDetalleId() {
 		return planillaDetalleId;
@@ -73,6 +79,32 @@ public class PlanillaDetalle implements Serializable {
 	}
 
 
+	public Integer getMontoDebe() {
+		return montoDebe;
+	}
+
+
+	public void setMontoDebe(Integer montoDebe) {
+		this.montoDebe = montoDebe;
+	}
+
+
+	public Integer getMontoHaber() {
+		return montoHaber;
+	}
+
+	public void setMontoHaber(Integer montoHaber) {
+		this.montoHaber = montoHaber;
+	}
+
+
+	public Integer getConceptoId() {
+		return conceptoId;
+	}
+
+	public void setConceptoId(Integer conceptoId) {
+		this.conceptoId = conceptoId;
+	}
 
 	public ReservaDetalle getReservas() {
 		return reservas;
@@ -81,8 +113,24 @@ public class PlanillaDetalle implements Serializable {
 	public void setReservas(ReservaDetalle reservas) {
 		this.reservas = reservas;
 	}
+
+
+	public Planilla getPlanilla() {
+		return planilla;
+	}
+
+	public void setPlanilla(Planilla planilla) {
+		this.planilla = planilla;
+	}
+
+
+	@Override
+	public String toString() {
+		return "PlanillaDetalle [planillaDetalleId=" + planillaDetalleId + ", montoDebe=" + montoDebe + ", montoHaber="
+				+ montoHaber + ", conceptoId=" + conceptoId + ", reservas=" + reservas + ", planilla=" + planilla + "]";
+	}
     
-    
+  
     
 
 }

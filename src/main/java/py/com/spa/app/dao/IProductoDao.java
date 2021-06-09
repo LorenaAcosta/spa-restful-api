@@ -20,6 +20,10 @@ public interface IProductoDao extends JpaRepository<Productos, Integer>{
 			+ "where UPPER(c.descripcion) like CONCAT('%',UPPER(:id),'%') ",  nativeQuery = true)
 	  List<Productos> busquedaProductos(@Param("id") String termino);
 	
+	@Query(value = "select * from productos c \n"
+			+ "where UPPER(c.descripcion) = UPPER(:nombre) ",  nativeQuery = true)
+	  Productos busquedaPorNombre(@Param("nombre") String termino);
+	
 	
 	/*dao para reporte*/
 	@Query(value="Select ROW_NUMBER() OVER (ORDER BY p.categoria_id ) as item,\r\n" + 

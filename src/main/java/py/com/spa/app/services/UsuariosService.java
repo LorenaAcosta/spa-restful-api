@@ -33,6 +33,10 @@ public class UsuariosService {
 		
 		@Transactional
 		public void addUsuario(Usuario usuario) {
+			usuario.setNombres(usuario.getNombre().concat(" ").concat(usuario.getApellido()));
+			if (usuario.getRuc() == null || usuario.getRuc() == "") {
+				usuario.setRuc(usuario.getCedula());
+			}
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			usuario.setPassword(encoder.encode(usuario.getPassword()));
 			usuarioDao.save(usuario);

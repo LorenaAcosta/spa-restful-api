@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
+import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Usuario;
+import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.HorarioService;
@@ -111,6 +113,10 @@ public class ReservaDetalleRESTController {
 		return (List<ReservaDetalle>) reservaDetalleService.busquedaReservas(termino);
 	}
 	
+	@GetMapping("/servicios-re-by-usuario/{id}")
+	public List <ServiciosReservadosPorClienteFecha> getServiciosReservadosPorClienteFecha(@PathVariable(value="id") Integer usuarioId) {
+		return (List <ServiciosReservadosPorClienteFecha>) reservaDetalleService.serviciosReservadosPorClienteFecha(usuarioId);
+	}
 	
 	@GetMapping("/encontrar-reservas-fecha-hora/{fecha}/{hora}")
 	public List<ReservaDetalle> findByFechaReservaAndHora(
@@ -155,5 +161,11 @@ public class ReservaDetalleRESTController {
 		return reservaDetalleService.misReservas(usuarioId);
 	}
 
+	@GetMapping("/cambiar-estado-pagado/{reservaId}")
+	public void cambiarEstadoPagado(@PathVariable Integer reservaId){	
+		ReservaDetalle r = reservaDetalleService.findByReservaDetalleId(reservaId);
+		r.setEstado("Pagado");
+		reservaDetalleService.updateReserva(r);
+	}
 	
 }

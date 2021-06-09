@@ -73,6 +73,10 @@ public class Usuario implements Serializable {
 	@Column(unique = true, length = 20)
 	private String username;
 	/**/
+	@Basic(optional = true)
+	@Column(unique = false, length = 100)
+	private String nombres;
+	/**/
 	@Column(length = 60)
 	private String password;
     /**/
@@ -85,7 +89,7 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cedula")
-    private int cedula;
+    private String cedula;
   
     @Size(min = 1, max = 2147483647)
     @Column(name = "direccion")
@@ -139,7 +143,7 @@ public class Usuario implements Serializable {
     }
 
 	public Usuario(Integer usuarioId, @NotNull String nombre, @NotNull @Size(min = 1, max = 2147483647) String apellido,
-			String username, String password, @Email String email, Boolean enabled, @NotNull int cedula,
+			String username, String password, @Email String email, Boolean enabled, @NotNull String cedula,
 			@Size(min = 1, max = 2147483647) String direccion, String ciudad, String nacionalidad,
 			@NotNull @Size(min = 1, max = 2147483647) String telefono,
 			@NotNull @Size(min = 1, max = 2147483647) String sexo, String ruc, String tarjeta, String fechaNac,
@@ -149,6 +153,7 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.username = username;
+		this.nombres = nombre + ' ' + apellido;
 		this.password = password;
 		this.email = email;
 		this.enabled = enabled;
@@ -189,6 +194,14 @@ public class Usuario implements Serializable {
 		this.apellido = apellido;
 	}
 
+	public String getNombres() {
+		return nombres;
+	}
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -221,11 +234,11 @@ public class Usuario implements Serializable {
 		this.enabled = enabled;
 	}
 
-	public int getCedula() {
+	public String getCedula() {
 		return cedula;
 	}
 
-	public void setCedula(int cedula) {
+	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
 
