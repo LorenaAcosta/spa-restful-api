@@ -33,6 +33,7 @@ import py.com.spa.app.dao.ICategoriaDao;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 import py.com.spa.app.reportes.CategoriaReporte;
+import py.com.spa.app.reportes.Datos;
 
 @Service
 public class CategoriaService {
@@ -145,6 +146,11 @@ public class CategoriaService {
 	@Transactional(readOnly=true)
 	public List<Categorias> findByDataTypee (String dataType){
 		return categoriaDao.findByDataTypee(TipoCategoria.valueOf(dataType.toUpperCase()));
+	}
+
+	@Transactional(readOnly=true)
+	public List<Datos> getdatos() {
+		return categoriaDao.getdatos();
 	}
 
 

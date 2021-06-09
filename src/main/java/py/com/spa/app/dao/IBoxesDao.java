@@ -32,7 +32,7 @@ public interface IBoxesDao extends JpaRepository<Boxes, Integer>{
 	 		+ "from disponible_boxes d\r\n"
 	 		+ "where d.disponible_boxes_id not in (select r.disponible_boxes_id \r\n"
 	 		+ "									from reserva_detalle r \r\n"
-	 		+ "									where r.fecha_reserva= :fecha and r.hora= :hora) \r\n"
+	 		+ "									where r.fecha_reserva= :fecha and r.hora= :hora and r.estado!='ANULADO') \r\n"
 	 		+ "and d.servicio_id= :servicioId",  nativeQuery = true)
 	List<Integer> obtenerBoxLibre(@PathVariable(value="fecha") Date fecha
 			,@PathVariable(value="hora") Time hora,
