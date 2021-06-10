@@ -41,7 +41,7 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 	 @Query(value = "select * from reserva_detalle r  \r\n"
 		 		+ "inner join disponible d on r.disponible_id= d.disponible_id \r\n"
 		 		+ "--inner join ventas_detalle v on v.servicio_id = d.servicio_id \r\n"
-		 		+ "where r.estado='Confirmado' and d.empleado_id= :id \r\n"
+		 		+ "where UPPER(r.estado) = UPPER('Pagado') and d.empleado_id= :id \r\n"
 		 		+ "and EXTRACT(MONTH FROM r.fecha_reserva)= :mes order by fecha_reserva ASC",  nativeQuery = true)
 	    List<ReservaDetalle> reservasConfirmadas(@Param("id") Integer empleadoId, @Param("mes") Integer mes );
 	 
