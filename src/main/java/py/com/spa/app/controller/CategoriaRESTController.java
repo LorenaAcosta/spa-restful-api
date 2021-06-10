@@ -35,7 +35,7 @@ import py.com.spa.app.services.ServicioService;
 
 @RestController
 @RequestMapping("/categoria" )
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class CategoriaRESTController  {
 	
 	@Autowired
