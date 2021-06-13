@@ -127,11 +127,11 @@ public class Usuario implements Serializable {
 	private List <Rol> roles;
 	/**/
 	@JsonBackReference(value="ventas-usuario")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "usuarioId")
     private Collection<Ventas> ventasCollection;
     /**/
     @JsonBackReference(value="reservas-usuario")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "usuarioId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
     /**/
 

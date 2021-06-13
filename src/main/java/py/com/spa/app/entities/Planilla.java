@@ -81,7 +81,7 @@ public class Planilla implements Serializable {
     @ManyToOne()
     private Usuario usuarioId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "planilla")  
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "planilla")  
     private Collection<PlanillaDetalle>  planillaDetalleCollection;
 
     public Planilla() {

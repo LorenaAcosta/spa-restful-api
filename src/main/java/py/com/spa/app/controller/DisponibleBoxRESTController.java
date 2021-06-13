@@ -53,7 +53,7 @@ public class DisponibleBoxRESTController {
 			disp = disponibleBoxesService.addDisponible(disponible);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "Se ha creado con exito.");
@@ -74,7 +74,7 @@ public class DisponibleBoxRESTController {
 			disponibleBoxesService.deleteCategoria(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -92,7 +92,7 @@ public class DisponibleBoxRESTController {
 			lista = disponibleBoxesService.findAllByCategoriaId(s);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (lista==null) {

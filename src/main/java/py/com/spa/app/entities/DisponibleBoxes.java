@@ -57,7 +57,7 @@ public class DisponibleBoxes implements Serializable {
     
 
     @JsonBackReference(value="dispo-reserva")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "disponibleBoxesId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "disponibleBoxesId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
     
     
