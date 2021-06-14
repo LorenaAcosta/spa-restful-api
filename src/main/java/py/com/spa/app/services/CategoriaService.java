@@ -16,6 +16,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,12 @@ public class CategoriaService {
 	@Transactional(readOnly=true)
 	public List<Categorias> findAll(){
 		return (List<Categorias>) categoriaDao.findAll();
+	}
+	
+	//listar con paginado
+	@Transactional(readOnly=true)
+	public Page<Categorias> findAll(Pageable pageable){
+		return (Page<Categorias>) categoriaDao.findAll(pageable);
 	}
 	
 	@Transactional(readOnly=true)
