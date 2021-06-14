@@ -67,7 +67,7 @@ public class EmpleadoRESTController {
 		} catch (DataAccessException e) {
 			// TODO: handle exception
 			response.put("mensaje", "Error al realizar el insert");
-			response.put("error", e.getMostSpecificCause().getMessage()  );
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -112,7 +112,7 @@ public class EmpleadoRESTController {
 			empleado = empleadoService.updateEmpleado(emp);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -136,7 +136,7 @@ public class EmpleadoRESTController {
 			empleadoService.deleteEmpleado(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);

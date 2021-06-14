@@ -88,7 +88,7 @@ public class ServicioRESTController {
 			nuevo = servicioService.updateServicio(s);
 		} catch (DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "Servicio actualizado.");
@@ -109,7 +109,7 @@ public class ServicioRESTController {
 		  servicioService.deleteServicio(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -126,7 +126,7 @@ public class ServicioRESTController {
 			lista= servicioService.findAllByCategoriaId(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (lista==null) {
@@ -145,7 +145,7 @@ public class ServicioRESTController {
 		}
 		catch(DataAccessException e ){
 		response.put("mensaje",  "Error al realizar la consulta");
-		response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+		response.put("error", e.getMostSpecificCause().getMessage() );
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (lista==null) {
@@ -166,7 +166,7 @@ public class ServicioRESTController {
 			lista= servicioService.getServiciosActivos(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (lista==null) {
@@ -184,7 +184,7 @@ public class ServicioRESTController {
 			service = servicioService.findServicioById(id);
 		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -205,7 +205,7 @@ public class ServicioRESTController {
 			servicios = (List<Servicios>)servicioService.getServiciosDisponibles(empleadoId);
 		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

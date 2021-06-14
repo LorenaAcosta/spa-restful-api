@@ -71,7 +71,7 @@ public class Compras implements Serializable {
     @ManyToOne(optional = false)
     private Proveedor proveedorId;
     @Column(nullable = true)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compras")  
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "compras")  
     private Collection<ComprasDetalle> detallesCollection;
 
     public Compras() {

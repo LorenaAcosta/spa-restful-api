@@ -111,11 +111,11 @@ public class Empleados implements Serializable {
     @Column(name = "nacionalidad")
     private String nacionalidad;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Horario> horarioCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Disponible> disponibleCollection;
 
     public Empleados() {

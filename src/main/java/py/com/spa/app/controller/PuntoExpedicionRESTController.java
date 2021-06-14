@@ -47,7 +47,7 @@ public class PuntoExpedicionRESTController  {
 			imp = puntoExpedicionService.addPuntoExpedicion(puntoExpedicion);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "Punto expedición guardado.");
