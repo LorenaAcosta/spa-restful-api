@@ -59,7 +59,7 @@ public class Compras implements Serializable {
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "monto_total")
-    private String montoTotal;
+    private Integer montoTotal;
     
     
     @Column(name = "numero_factura", unique = true  )
@@ -81,7 +81,7 @@ public class Compras implements Serializable {
         this.comprasId = comprasId;
     }
 
-    public Compras(Integer comprasId, Date fecha, String montoTotal, String numeroFactura, int timbrado) {
+    public Compras(Integer comprasId, Date fecha, Integer montoTotal, String numeroFactura, int timbrado) {
         this.comprasId = comprasId;
         this.fecha = fecha;
         this.montoTotal = montoTotal;
@@ -105,11 +105,11 @@ public class Compras implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getMontoTotal() {
+    public Integer getMontoTotal() {
         return montoTotal;
     }
 
-    public void setMontoTotal(String montoTotal) {
+    public void setMontoTotal(Integer montoTotal) {
         this.montoTotal = montoTotal;
     }
     public Proveedor getProveedorId() {
