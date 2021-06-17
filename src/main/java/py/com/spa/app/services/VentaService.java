@@ -30,10 +30,14 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import py.com.spa.app.dao.IReservaDetalleDao;
 import py.com.spa.app.dao.IVentasDao;
+import py.com.spa.app.dao.IVentasDetalleDao;
 import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
+import py.com.spa.app.entities.VentasDetalle;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
 import py.com.spa.app.reportes.VentaFooterReportInterface;
@@ -42,6 +46,15 @@ import py.com.spa.app.reportes.VentaFooterReportInterface;
 public class VentaService {
 	@Autowired
 	private IVentasDao ventasDao;
+	
+	@Autowired
+	private IVentasDetalleDao ventasDetalleDao;
+	
+	@Autowired
+	private ProductoService productoService;
+	
+	@Autowired
+	private IReservaDetalleDao reservaDetalleDao;
 	
 	private final Path rootReportes = Paths.get("reportes/ventas");
 	
@@ -67,9 +80,27 @@ public class VentaService {
 		return (Integer) ventasDao.getNextIdVal();
 	}
 
+	//cambiar a anulado
 	@Transactional
 	public void updateVentas(Ventas venta) {
 		ventasDao.save(venta);
+		
+		/* actualizar stock de productos */
+		List<VentasDetalle> detalles = ventasDetalleDao.findByVentas(venta);
+		Productos p;
+		for (VentasDetalle detalle : detalles) {
+			if (detalle.getProductoId() != null) {
+				p = productoService.findProductoById(detalle.getProductoId().getProductoId());
+				p.setStockActual(p.getStockActual() + detalle.getCantidad());
+				productoService.updateProducto(p);
+			}
+		}
+		
+		/***********Cambiar estado reserva relacionada********************/
+		List<ReservaDetalle> reservas = reservaDetalleDao.findByVentasId(venta);
+		for (ReservaDetalle reserva : reservas) {
+			reservaDetalleDao.cambiarEstadoConfirmado(reserva.getReservaId());
+		}
 	}
 	
 	@Transactional
