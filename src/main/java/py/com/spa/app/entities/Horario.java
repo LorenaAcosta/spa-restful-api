@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,7 +35,7 @@ import py.com.spa.result.SqlTimeDeserializer;
  * @author Lore
  */
 @Entity
-@Table(name = "horario")
+@Table(name = "horario" , uniqueConstraints=@UniqueConstraint(columnNames={"dia_trabajo", "empleado_id"}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Horario.findAll", query = "SELECT h FROM Horario h"),
@@ -50,7 +51,7 @@ public class Horario implements Serializable {
     private Integer horarioId;
     
     @Basic(optional = false)
-    @Column(name = "dia_trabajo", unique=true)
+    @Column(name = "dia_trabajo")
     private String diaTrabajo; 
     
     @Basic(optional = false)

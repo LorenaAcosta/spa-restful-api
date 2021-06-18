@@ -54,7 +54,7 @@ public class MediosPago implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion", unique=true)
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medioPagoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "medioPagoId")
     private Collection<Ventas> ventasCollection;
 
     public MediosPago() {

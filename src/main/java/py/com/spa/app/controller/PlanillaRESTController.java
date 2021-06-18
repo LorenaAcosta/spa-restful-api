@@ -46,7 +46,7 @@ public class PlanillaRESTController  {
 			
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error",  e.getMostSpecificCause().getMessage()   )  ;
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

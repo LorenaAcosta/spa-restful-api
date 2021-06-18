@@ -12,6 +12,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +52,20 @@ public class CategoriaRESTController  {
 	@GetMapping("/listar")
 	public List<Categorias> listarCategorias(){
 		return categoriaService.findAll();
+	}
+	
+	@GetMapping("/paginado")
+	public Page<Categorias> listarCategorias(@RequestParam(name="page", defaultValue="0") int page, @RequestParam(name="elementos", defaultValue="5") int elementos, @RequestParam(name="filtro", defaultValue="filtro") String ordenadoPor, @RequestParam(name="orden", defaultValue="asc") String orden){
+		Pageable pageRequest = null;
+		if (orden.equalsIgnoreCase("asc")) {
+			pageRequest = PageRequest.of(page, elementos, Sort.by(ordenadoPor).ascending());
+		} else if (orden.equalsIgnoreCase("desc")) {
+			pageRequest = PageRequest.of(page, elementos, Sort.by(ordenadoPor).descending());
+		} else {
+			pageRequest = PageRequest.of(page, elementos, Sort.by(ordenadoPor).descending());
+		}
+		//Pageable pageRequest = PageRequest.of(page, elementos, Sort.by(ordenadoPor).descending());
+		return categoriaService.findAll(pageRequest);
 	}
 	
 	@GetMapping("/descripcion")
@@ -128,7 +146,7 @@ public class CategoriaRESTController  {
 			
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMostSpecificCause().getMessage()   )  ;
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -152,7 +170,7 @@ public class CategoriaRESTController  {
 		
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMostSpecificCause().getMessage()   )  ;
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
@@ -176,7 +194,7 @@ public class CategoriaRESTController  {
 			lista= categoriaService.obtenerCategorias(id);
 		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMostSpecificCause().getMessage())  ;
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -196,7 +214,7 @@ public class CategoriaRESTController  {
 			lista= categoriaService.findByDataTypee(id);
 		}catch( DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error",  e.getMostSpecificCause().getMessage() )  ;
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

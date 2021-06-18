@@ -80,7 +80,7 @@ public class Proveedor implements Serializable {
     @Column(name = "estado") 
     private String estado;
     @JsonBackReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedorId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "proveedorId")
     private Collection<Compras> comprasCollection;
 
     public Proveedor() {

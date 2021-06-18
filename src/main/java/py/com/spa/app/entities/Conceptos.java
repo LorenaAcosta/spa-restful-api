@@ -49,7 +49,7 @@ public class Conceptos implements Serializable {
 	    private Integer valor;
 	   
 	    
-	    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")  
+	    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "ventas")  
 	    private Collection<VentasDetalle> ventasDetalleCollection;
 
 		public Conceptos() {

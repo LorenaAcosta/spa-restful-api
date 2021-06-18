@@ -63,7 +63,7 @@ public class ProductoRESTController {
 			productoA = productoService.addProducto(producto);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la BD");
-			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "El producto ha sido creado con exito.");
@@ -94,7 +94,7 @@ public class ProductoRESTController {
 			p = productoService.updateProducto(prod);		
 		} catch (DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "Producto actualizado.");
@@ -115,7 +115,7 @@ public class ProductoRESTController {
 			 productoService.deleteProducto(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);

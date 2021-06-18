@@ -59,7 +59,10 @@ public class Compras implements Serializable {
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "monto_total")
-    private String montoTotal;
+    private Integer montoTotal;
+    
+    @Column(name = "estado")
+    private String estado;
     
     
     @Column(name = "numero_factura", unique = true  )
@@ -71,7 +74,7 @@ public class Compras implements Serializable {
     @ManyToOne(optional = false)
     private Proveedor proveedorId;
     @Column(nullable = true)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "compras")  
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "compras")  
     private Collection<ComprasDetalle> detallesCollection;
 
     public Compras() {
@@ -81,7 +84,7 @@ public class Compras implements Serializable {
         this.comprasId = comprasId;
     }
 
-    public Compras(Integer comprasId, Date fecha, String montoTotal, String numeroFactura, int timbrado) {
+    public Compras(Integer comprasId, Date fecha, Integer montoTotal, String numeroFactura, int timbrado) {
         this.comprasId = comprasId;
         this.fecha = fecha;
         this.montoTotal = montoTotal;
@@ -105,11 +108,19 @@ public class Compras implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getMontoTotal() {
+    public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		estado = estado;
+	}
+
+	public Integer getMontoTotal() {
         return montoTotal;
     }
 
-    public void setMontoTotal(String montoTotal) {
+    public void setMontoTotal(Integer montoTotal) {
         this.montoTotal = montoTotal;
     }
     public Proveedor getProveedorId() {

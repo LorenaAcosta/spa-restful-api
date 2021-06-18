@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Rol;
+import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.reportes.ReservaReporte;
 import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 
@@ -19,6 +20,8 @@ import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integer>{
 	
 	List<ReservaDetalle> findByEmpleado(Integer empleado);
+	
+	List<ReservaDetalle> findByVentasId(Ventas ventasId);
 	
 	List<ReservaDetalle> findByFechaReservaAndHora(Date fecha, Time hora);
 	
@@ -77,6 +80,11 @@ public interface IReservaDetalleDao  extends JpaRepository<ReservaDetalle, Integ
 		@Transactional
 		@Query(value = "update reserva_detalle set estado = 'Pagado' where reserva_id = :id", nativeQuery = true)
 		void cambiarEstadoPagado(@Param("id") Integer reservaId);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "update reserva_detalle set estado = 'Confirmado', ventas_id = null where reserva_id = :id", nativeQuery = true)
+		void cambiarEstadoConfirmado(@Param("id") Integer reservaId);
 	
 	
 }

@@ -138,10 +138,10 @@ public class Ventas implements Serializable {
     private MediosPago medioPagoId;
     /**/
     //@JsonBackReference(value="ventas-detalle")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")  
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "ventas")  
     private Collection<VentasDetalle> ventasDetalleCollection;
     /**/
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventas")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "ventas")
     private Collection<PlanPago> planPagoCollection;
 
     public Ventas() {

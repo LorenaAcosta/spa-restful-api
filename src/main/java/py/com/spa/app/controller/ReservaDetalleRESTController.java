@@ -28,11 +28,13 @@ import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Usuario;
+import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.reportes.ServiciosReservadosPorClienteFecha;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.DisponibleService;
 import py.com.spa.app.services.HorarioService;
 import py.com.spa.app.services.ReservaDetalleService;
+import py.com.spa.app.services.VentaService;
 
 @RestController
 @RequestMapping(value="/reserva-detalle")
@@ -47,8 +49,12 @@ public class ReservaDetalleRESTController {
 	
 	@Autowired
 	public HorarioService horarioService;
+	
 	@Autowired
 	public DisponibleService disponibleService;
+	
+	@Autowired
+	public VentaService ventasService;
 	
 	@GetMapping("/listar")
 	public List<ReservaDetalle> listarReservaDetalle(){
@@ -165,6 +171,14 @@ public class ReservaDetalleRESTController {
 	public void cambiarEstadoPagado(@PathVariable Integer reservaId){	
 		ReservaDetalle r = reservaDetalleService.findByReservaDetalleId(reservaId);
 		r.setEstado("Pagado");
+		reservaDetalleService.updateReserva(r);
+	}
+	
+	@GetMapping("/asignar-venta/{reservaId}/{ventasId}")
+	public void relacionarCobranza(@PathVariable Integer reservaId, @PathVariable Integer ventasId){	
+		ReservaDetalle r = reservaDetalleService.findByReservaDetalleId(reservaId);
+		Ventas v = ventasService.findByVentasId(ventasId);
+		r.setVentasId(v);
 		reservaDetalleService.updateReserva(r);
 	}
 	

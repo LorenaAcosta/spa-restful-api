@@ -95,7 +95,7 @@ public class Servicios implements Serializable {
     @JsonDeserialize(using = SqlTimeDeserializer.class)
     @Column(name = "duracion")
     private Time  duracion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "servicioId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "servicioId")
     private Collection<EmpleadoDisponible> empleadoDisponibleCollection;*/

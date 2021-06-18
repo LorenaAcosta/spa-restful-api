@@ -90,10 +90,14 @@ public class ReservaDetalle implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuarioId;
     
+    @JoinColumn(name = "ventas_id", referencedColumnName = "ventas_id")
+    @ManyToOne(optional = true)
+    private Ventas ventasId;
+    
 
 
     public ReservaDetalle(Integer reservaId, @NotNull Integer empleado, @NotNull Date fechaReserva, @NotNull Time hora,
-			String estado, Disponible disponibleId, DisponibleBoxes disponibleBoxesId, Usuario usuarioId) {
+			String estado, Disponible disponibleId, DisponibleBoxes disponibleBoxesId, Usuario usuarioId, Ventas ventasId) {
 		super();
 		this.reservaId = reservaId;
 		this.empleado = empleado;
@@ -103,6 +107,7 @@ public class ReservaDetalle implements Serializable {
 		this.disponibleId = disponibleId;
 		this.disponibleBoxesId = disponibleBoxesId;
 		this.usuarioId = usuarioId;
+		this.ventasId = ventasId;
 	}
 
 	public ReservaDetalle() {
@@ -162,7 +167,13 @@ public class ReservaDetalle implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    
+    public Ventas getVentasId() {
+        return ventasId;
+    }
+
+    public void setVentasId(Ventas ventasId) {
+        this.ventasId = ventasId;
+    }
 
 
 	public DisponibleBoxes getDisponibleBoxesId() {

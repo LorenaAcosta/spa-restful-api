@@ -58,7 +58,7 @@ public class Empleados implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "cedula", unique=true)
-    private int cedula;
+    private String cedula;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -111,11 +111,11 @@ public class Empleados implements Serializable {
     @Column(name = "nacionalidad")
     private String nacionalidad;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Horario> horarioCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Planilla> planillaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleadoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "empleadoId")
     private Collection<Disponible> disponibleCollection;
 
     public Empleados() {
@@ -130,7 +130,7 @@ public class Empleados implements Serializable {
 
 
 
-	public Empleados(Integer empleadoId, @NotNull int cedula, @NotNull @Size(min = 1, max = 2147483647) String nombre,
+	public Empleados(Integer empleadoId, @NotNull String cedula, @NotNull @Size(min = 1, max = 2147483647) String nombre,
 			@NotNull @Size(min = 1, max = 2147483647) String apellido,
 			@NotNull @Size(min = 1, max = 2147483647) String direccion,
 			@NotNull @Size(min = 1, max = 2147483647) String telefono,
@@ -165,11 +165,11 @@ public class Empleados implements Serializable {
 		this.empleadoId = empleadoId;
 	}
 
-	public int getCedula() {
+	public String getCedula() {
 		return cedula;
 	}
 
-	public void setCedula(int cedula) {
+	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
 

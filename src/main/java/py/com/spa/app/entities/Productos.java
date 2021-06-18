@@ -92,10 +92,10 @@ public class Productos implements Serializable {
     @Column(length = 8)
     private EstadoProducto estado;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "productoId")
     private Collection<VentasDetalle> ventasDetalleCollection;
     /**/
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "productoId")
     private Collection<ComprasDetalle> comprasDetalleCollection;
     /**/
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")

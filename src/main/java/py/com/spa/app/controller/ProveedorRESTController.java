@@ -44,7 +44,7 @@ public class ProveedorRESTController {
 			proveedor = proveedorService.add(pv);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar el insert en la bd");
-			response.put("error",  e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "El cliente ha sido creado con exito.");
@@ -68,7 +68,7 @@ public class ProveedorRESTController {
 			nuevo = proveedorService.update(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "Proveedor actualizado");
@@ -89,7 +89,7 @@ public class ProveedorRESTController {
 			proveedorService.delete(id);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getMessage()));
+			response.put("error", e.getMostSpecificCause().getMessage() );
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);	
