@@ -67,10 +67,7 @@ public class CompraRESTController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
-			c.setFecha(compra.getFecha());
-			c.setMontoTotal(compra.getMontoTotal());
-			c.setMontoTotal(compra.getMontoTotal());
-			//-c.setEstado(compra.getEstado());
+			c.setEstado("ANULADO");
 			cNuevo = compraService.updateCompras(c);
 		}catch(DataAccessException e ){
 			response.put("mensaje",  "Error al realizar la consulta");

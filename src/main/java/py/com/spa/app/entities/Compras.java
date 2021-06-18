@@ -61,6 +61,9 @@ public class Compras implements Serializable {
     @Column(name = "monto_total")
     private Integer montoTotal;
     
+    @Column(name = "estado")
+    private String estado;
+    
     
     @Column(name = "numero_factura", unique = true  )
     private String numeroFactura;
@@ -105,7 +108,15 @@ public class Compras implements Serializable {
         this.fecha = fecha;
     }
 
-    public Integer getMontoTotal() {
+    public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		estado = estado;
+	}
+
+	public Integer getMontoTotal() {
         return montoTotal;
     }
 
