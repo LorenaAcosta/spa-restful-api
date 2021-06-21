@@ -1,11 +1,14 @@
 package py.com.spa.app.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,9 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import py.com.spa.app.entities.Categorias;
+import net.sf.jasperreports.engine.JRException;
 import py.com.spa.app.entities.Proveedor;
-import py.com.spa.app.entities.Usuario;
 import py.com.spa.app.services.ProveedorService;
 
 @RestController
@@ -120,5 +122,18 @@ public class ProveedorRESTController {
 		}
 		return new ResponseEntity<List<Proveedor>>(lista, HttpStatus.OK);
 	}
+	
+    @GetMapping("/reporte")
+    public void generateReport() throws FileNotFoundException, JRException {
+        String r = proveedorService.exportReport();
+        System.out.print(r);
+    }
+	
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename){
+        Resource file = proveedorService.load(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\""+file.getFilename() + "\"").body(file);
+    }
 
 }
