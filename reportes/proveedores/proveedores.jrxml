@@ -215,6 +215,7 @@ SAN LORENZO - PARAGUAY]]></text>
 						<jr:detailCell style="Table 3_TD" height="15">
 							<textField>
 								<reportElement x="0" y="0" width="140" height="15" uuid="54feddbb-c2a9-4d68-b502-43508d051ecd"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -233,6 +234,7 @@ SAN LORENZO - PARAGUAY]]></text>
 						<jr:detailCell style="Table 3_TD" height="15">
 							<textField>
 								<reportElement x="0" y="0" width="140" height="15" uuid="a7b5cd4d-4bd4-4b80-aab5-600cb6862b95"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{razonsocial}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -251,6 +253,7 @@ SAN LORENZO - PARAGUAY]]></text>
 						<jr:detailCell style="Table 3_TD" height="15">
 							<textField>
 								<reportElement x="0" y="0" width="130" height="15" uuid="87846aaf-1c86-42f5-a4af-f70db1cd8788"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{ruc}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -269,6 +272,7 @@ SAN LORENZO - PARAGUAY]]></text>
 						<jr:detailCell style="Table 3_TD" height="15">
 							<textField>
 								<reportElement x="0" y="0" width="90" height="15" uuid="26756816-c67f-472a-871b-7616ad38e1d7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -287,6 +291,7 @@ SAN LORENZO - PARAGUAY]]></text>
 						<jr:detailCell style="Table 3_TD" height="15">
 							<textField>
 								<reportElement x="0" y="0" width="150" height="15" uuid="0436be37-f3bf-48ef-9037-81c74a0b68f0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -298,7 +303,7 @@ SAN LORENZO - PARAGUAY]]></text>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Listado de servicios]]></text>
+				<text><![CDATA[Listado de proveedores]]></text>
 			</staticText>
 		</band>
 	</detail>
