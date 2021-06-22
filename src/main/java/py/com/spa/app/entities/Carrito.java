@@ -62,7 +62,7 @@ public class Carrito implements Serializable {
     private Integer carritoId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "producto_id", unique=true)
+    @Column(name = "producto_id", unique=false)
     private Integer productoId;
     @Column(name = "nombre")
     private String nombre;
