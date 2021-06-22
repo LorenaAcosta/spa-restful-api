@@ -50,7 +50,7 @@ public class Disponible implements Serializable {
     @NotNull
     @Column(name = "comision")
     private double comision;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "disponibleId")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "disponibleId")
     private Collection<ReservaDetalle> reservaDetalleCollection;
     @JoinColumn(name = "empleado_id", referencedColumnName = "empleado_id")
     @ManyToOne(optional = false)
