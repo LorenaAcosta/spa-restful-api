@@ -165,6 +165,7 @@ public class ReservaDetalleRESTController {
     @GetMapping("/mis-reservas/{id}")
 	public List<ReservaDetalle> misReservas(@PathVariable(value="id") Integer usuarioId){
 		return reservaDetalleService.misReservas(usuarioId);
+		
 	}
 
 	@GetMapping("/cambiar-estado-pagado/{reservaId}")

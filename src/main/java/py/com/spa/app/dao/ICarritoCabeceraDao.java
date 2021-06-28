@@ -15,16 +15,20 @@ import py.com.spa.app.entities.CarritoCabecera;
 import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Disponible;
 import py.com.spa.app.entities.Horario;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Servicios;
 import py.com.spa.app.enumeraciones.TipoCategoria;
 
 
-public interface ICarritoDao extends JpaRepository<Carrito, Integer>{
+public interface ICarritoCabeceraDao extends JpaRepository<CarritoCabecera, Integer>{
 
-	List<Carrito> findByOrdenId(Integer id);
+	@Query(value = "select  coalesce (max(orden) +1 , 1) from carrito_cabecera" ,  nativeQuery = true)
+	Integer getmaxid();
 
 
-
+	@Query(value = "select * from carrito_cabecera where usuario_id =:usuarioId",  nativeQuery = true)
+	List<CarritoCabecera> findByUsuario(Integer usuarioId);
+	
 	
 
 	

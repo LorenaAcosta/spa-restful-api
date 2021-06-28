@@ -10,6 +10,7 @@ import py.com.spa.app.entities.Compras;
 import py.com.spa.app.entities.ComprasDetalle;
 
 public interface IComprasDetalleDao extends JpaRepository<ComprasDetalle, Integer> {
+	
 	List<ComprasDetalle> findByCompras(Compras compra);
 
 	

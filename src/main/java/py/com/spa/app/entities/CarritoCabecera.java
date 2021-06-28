@@ -46,109 +46,99 @@ import py.com.spa.result.SqlTimeDeserializer;
  * @author Lore
  */
 @Entity
-@Table(name = "carrito")
+@Table(name = "carrito_cabecera")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Carrito.findAll", query = "SELECT s FROM Servicios s"),
-    @NamedQuery(name = "Carrito.findByBoxesId", query = "SELECT s FROM Boxes s WHERE s.boxesId = :boxesId"),
-    @NamedQuery(name = "Carrito.findByNombre", query = "SELECT s FROM Boxes s WHERE s.nombre = :nombre"),
-    @NamedQuery(name = "Carrito.findByEstado", query = "SELECT s FROM Boxes s WHERE s.estado = :estado")})
-public class Carrito implements Serializable {
+    @NamedQuery(name = "CarritoCabecera.findAll", query = "SELECT s FROM Servicios s"),
+    @NamedQuery(name = "CarritoCabecera.findByBoxesId", query = "SELECT s FROM Boxes s WHERE s.boxesId = :boxesId"),
+    @NamedQuery(name = "CarritoCabecera.findByNombre", query = "SELECT s FROM Boxes s WHERE s.nombre = :nombre"),
+    @NamedQuery(name = "CarritoCabecera.findByEstado", query = "SELECT s FROM Boxes s WHERE s.estado = :estado")})
+public class CarritoCabecera implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "carrito_id")
-    private Integer carritoId;
-    @Column(name = "orden_id")
-    private Integer ordenId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "producto_id")
-    private Integer productoId;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "cant")
-    private Integer cant;
-    @Column(name = "subtotal")
-    private Integer subtotal;
+    @Column(name = "carrito_cabecera_id")
+    private Integer carritoCabeceraId;
+    @Column(name = "orden")
+    private Integer orden;
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE ) 
+    private Date fecha;
+    @Column(name = "total")
+    private Integer total;
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioId;
     
-    public Carrito() {
+    public CarritoCabecera() {
     	
     }
-    
-  
 
-	public Carrito(Integer carritoId, Integer ordenId, @NotNull Integer productoId, String nombre, Integer cant,
-			Integer subtotal) {
+   
+
+	public CarritoCabecera(Integer carritoCabeceraId, Integer orden, Date fecha, Integer total, Usuario usuarioId) {
 		super();
-		this.carritoId = carritoId;
-		this.ordenId = ordenId;
-		this.productoId = productoId;
-		this.nombre = nombre;
-		this.cant = cant;
-		this.subtotal = subtotal;
+		this.carritoCabeceraId = carritoCabeceraId;
+		this.orden = orden;
+		this.fecha = fecha;
+		this.total = total;
+		this.usuarioId = usuarioId;
 	}
 
 
-	public Integer getOrdenId() {
-		return ordenId;
-	}
-
-
-	public void setOrdenId(Integer ordenId) {
-		this.ordenId = ordenId;
+	public Usuario getUsuarioId() {
+		return usuarioId;
 	}
 
 
 
-	public Integer getCarritoId() {
-		return carritoId;
-	}
-
-	public void setCarritoId(Integer carritoId) {
-		this.carritoId = carritoId;
-	}
-
-	public Integer getProductoId() {
-		return productoId;
-	}
-
-	public void setProductoId(Integer productoId) {
-		this.productoId = productoId;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public Integer getCant() {
-		return cant;
-	}
-
-	public void setCant(Integer cant) {
-		this.cant = cant;
-	}
-
-	public Integer getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(Integer subtotal) {
-		this.subtotal = subtotal;
+	public void setUsuarioId(Usuario usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 
+
+
+
+	public Integer getCarritoCabeceraId() {
+		return carritoCabeceraId;
+	}
+
+	public void setCarritoCabeceraId(Integer carritoCabeceraId) {
+		this.carritoCabeceraId = carritoCabeceraId;
+	}
+
+	public Integer getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
     
 	
+    
     
 
     
