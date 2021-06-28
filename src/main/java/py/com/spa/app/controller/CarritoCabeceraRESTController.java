@@ -25,39 +25,48 @@ import org.springframework.web.bind.annotation.RestController;
 import py.com.spa.app.entities.Boxes;
 import py.com.spa.app.entities.Carrito;
 import py.com.spa.app.entities.CarritoCabecera;
-import py.com.spa.app.entities.Compras;
-import py.com.spa.app.entities.ComprasDetalle;
+import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.services.BoxesService;
 import py.com.spa.app.services.CarritoCabeceraService;
 import py.com.spa.app.services.CarritoService;
 
 @RestController
-@RequestMapping("/carrito" )
+@RequestMapping("/carrito-cabecera" )
 @CrossOrigin(origins = "*")
-public class CarritoRESTController  {
+public class CarritoCabeceraRESTController  {
 	
 	@Autowired
-	public CarritoService carritoService;
-	@Autowired
-	public CarritoCabeceraService carritoCabService;
+	public CarritoCabeceraService carritoService;
 	
 
 	
 	@GetMapping("/listar")
-	public List<Carrito> listarCategorias(){
+	public List<CarritoCabecera> listarCategorias(){
 		return carritoService.findAll();
 	}
 	
-	@GetMapping("/encontrar-detalles/{id}")
-	public List<Carrito> obtenerPorOrdenId(@PathVariable Integer id) {
-		return (List<Carrito>) carritoService.findByOrdenId(id);
+	@GetMapping("/getmaxid")
+	public Integer getmaxid(){
+		return carritoService.getmaxid();
+	}
+	
+	@GetMapping("/encontrar/{id}")
+	public CarritoCabecera encontrarCategoria(@PathVariable Integer id) {
+		return (CarritoCabecera) carritoService.findByCarritoCabeceraId(id);
+	}
+	
+	  
+    @GetMapping("/mis-ordenes/{id}")
+	public List<CarritoCabecera> misReservas(@PathVariable(value="id") Integer usuarioId){
+		return carritoService.misOrdenes(usuarioId);
 	}
 
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<?> agregarCategoria(@RequestBody Carrito  c) {
+	public ResponseEntity<?> agregarCategoria(@RequestBody CarritoCabecera  c) {
 	
-		Carrito carrito = null;
+		CarritoCabecera carrito = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
 			carrito= carritoService.addCategoria(c);
@@ -77,7 +86,7 @@ public class CarritoRESTController  {
 	@DeleteMapping("/eliminar/{id}")
 	public ResponseEntity<?> eliminarCategoria(@PathVariable(value="id") Integer id) {
 		Map<String, Object> response = new HashMap<>();
-		Carrito c = carritoService.findByCategoriaId(id);
+		CarritoCabecera c = carritoService.findByCategoriaId(id);
 
 		if (c == null) {
 			response.put("mensaje",  "Error, No se pudo eliminar. La categoria no existe en la base de datos.");
