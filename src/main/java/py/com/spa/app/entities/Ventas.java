@@ -141,6 +141,10 @@ public class Ventas implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "ventas")  
     private Collection<VentasDetalle> ventasDetalleCollection;
     /**/
+    @JoinColumn(name = "arqueo_id", referencedColumnName = "arqueo_id")
+    @ManyToOne(optional = true)
+    private ArqueoCaja arqueoId;
+    /**/
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "ventas")
     private Collection<PlanPago> planPagoCollection;
 
@@ -185,7 +189,7 @@ public class Ventas implements Serializable {
 			@NotNull @Size(min = 1, max = 2147483647) String montoTotalLetras, @NotNull Long ivaCinco,
 			@NotNull Long ivaDiez, @NotNull Long ivaTotal, @NotNull Long subTotalCinco, @NotNull Long subTotalDiez,
 			@NotNull Long subTotalExenta, @NotNull Long subTotalTotal, @NotNull Long totalDescuento,
-			@NotNull @Size(min = 1, max = 2147483647) String estado, Usuario usuarioId, MediosPago medioPagoId,
+			@NotNull @Size(min = 1, max = 2147483647) String estado, ArqueoCaja arqueoId, Usuario usuarioId, MediosPago medioPagoId,
 			Collection<VentasDetalle> ventasDetalleCollection, Collection<PlanPago> planPagoCollection) {
 		super();
 		this.ventasId = ventasId;
@@ -204,6 +208,7 @@ public class Ventas implements Serializable {
 		this.subTotalTotal = subTotalTotal;
 		this.totalDescuento = totalDescuento;
 		this.estado = estado;
+		this.arqueoId = arqueoId;
 		this.usuarioId = usuarioId;
 		this.medioPagoId = medioPagoId;
 		this.ventasDetalleCollection = ventasDetalleCollection;
@@ -216,6 +221,14 @@ public class Ventas implements Serializable {
 
 	public void setComprobanteId(Comprobante comprobanteId) {
 		this.comprobanteId = comprobanteId;
+	}
+
+	public ArqueoCaja getArqueoId() {
+		return arqueoId;
+	}
+
+	public void setArqueoId(ArqueoCaja arqueoId) {
+		this.arqueoId = arqueoId;
 	}
 
 	public Collection<VentasDetalle> getVentasDetalleCollection() {
