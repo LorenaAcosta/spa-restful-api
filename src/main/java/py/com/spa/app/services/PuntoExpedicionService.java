@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import py.com.spa.app.dao.IPuntoExpedicionDao;
 import py.com.spa.app.entities.PuntoExpedicion;
+import py.com.spa.app.entities.Usuario;
+import py.com.spa.app.reportes.Cajero;
 
 @Service
 public class PuntoExpedicionService {
@@ -44,6 +46,11 @@ public class PuntoExpedicionService {
 	@Transactional(readOnly=true)
 	public Integer getNextId() {
 		return (Integer) puntoExpedicionDao.getNextIdVal();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Cajero> getCajeros() {
+		return (List<Cajero>) puntoExpedicionDao.getCajeros();
 	}
 
 }

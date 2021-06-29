@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Joel
  */
 @Entity
-@Table(name = "punto_expedicion")
+@Table(name = "punto_expedicion", uniqueConstraints=@UniqueConstraint(columnNames={"usuario_id"}))
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PuntoExpedicion.findAll", query = "SELECT i FROM PuntoExpedicion i"),
@@ -43,17 +46,20 @@ public class PuntoExpedicion implements Serializable {
     @Column(name = "descripcion", unique=true )
     private String descripcion;
     /**/
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
+    @ManyToOne(optional = true)
+    private Usuario usuarioId;
     
     public PuntoExpedicion(Integer puntoExpedicionId, @NotNull @Size(min = 1, max = 2147483647) String codigo,
-			@NotNull @Size(min = 1, max = 2147483647) String descripcion) {
+			@NotNull @Size(min = 1, max = 2147483647) String descripcion, Usuario usuarioId) {
 		super();
 		this.puntoExpedicionId = puntoExpedicionId;
 		this.codigo = codigo;
 		this.descripcion = descripcion;
+		this.usuarioId = usuarioId;
 	}
    
 	public PuntoExpedicion(Integer puntoExpedicionId) {
-		super();
 		this.puntoExpedicionId = puntoExpedicionId;
 	}
 
@@ -82,6 +88,14 @@ public class PuntoExpedicion implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Usuario getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Usuario usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 
 	@Override

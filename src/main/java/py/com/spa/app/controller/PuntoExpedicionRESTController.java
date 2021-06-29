@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import py.com.spa.app.entities.PuntoExpedicion;
+import py.com.spa.app.entities.Usuario;
+import py.com.spa.app.reportes.Cajero;
 import py.com.spa.app.services.PuntoExpedicionService;
 
 @RestController
@@ -84,4 +86,9 @@ public class PuntoExpedicionRESTController  {
 		}
 		
 	}	
+	
+	@GetMapping("/obtener-cajeros")
+	public List<Cajero> getCajeros() {
+		return (List<Cajero>) puntoExpedicionService.getCajeros();
+	}
 }
