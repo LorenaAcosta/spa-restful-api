@@ -30,10 +30,11 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import py.com.spa.app.dao.IArqueoCajaDao;
 import py.com.spa.app.dao.IReservaDetalleDao;
 import py.com.spa.app.dao.IVentasDao;
 import py.com.spa.app.dao.IVentasDetalleDao;
-import py.com.spa.app.entities.Categorias;
+import py.com.spa.app.entities.ArqueoCaja;
 import py.com.spa.app.entities.Productos;
 import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
@@ -55,6 +56,9 @@ public class VentaService {
 	
 	@Autowired
 	private IReservaDetalleDao reservaDetalleDao;
+	
+	@Autowired
+	private IArqueoCajaDao arqueoDao;
 	
 	private final Path rootReportes = Paths.get("reportes/ventas");
 	
@@ -110,10 +114,14 @@ public class VentaService {
 	
 	@Transactional
 	public List<Ventas> getVentasPorPuntoExpedicion(Integer id) {
-		return ventasDao.ventasActivasPorPuntoExpedicion(id);
+		ArqueoCaja a = arqueoDao.getCajaActiva(id);
+		return ventasDao.ventasActivasPorPuntoExpedicion(id, a.getArqueoId());
 	}
 	
-	
+	@Transactional
+	public Long getTotalVentasPorArqueo(Integer id) {
+		return ventasDao.getTotalVentasPorArqueo(id);
+	}
 	
 	//REPORTES
 	public String exportReport(Integer ventaId) throws FileNotFoundException, JRException {

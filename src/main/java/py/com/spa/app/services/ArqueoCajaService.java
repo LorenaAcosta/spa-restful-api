@@ -41,4 +41,16 @@ public class ArqueoCajaService {
 	public void deleteArqueoCaja(Integer id) {
 		arqueoDao.deleteById(id);
 	}
+	
+	@Transactional(readOnly=true)
+	public ArqueoCaja getCajaActiva(Integer punto) {
+		ArqueoCaja arqueo = (ArqueoCaja) arqueoDao.getCajaActiva(punto);
+		if (arqueo != null) {
+			return arqueo;
+		} else {
+			arqueo = null;
+			return arqueo;
+		}
+		
+	}
 }

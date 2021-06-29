@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRException;
-import py.com.spa.app.entities.Categorias;
 import py.com.spa.app.entities.Comprobante;
 import py.com.spa.app.entities.PuntoExpedicion;
-import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.services.ComprobanteService;
 import py.com.spa.app.services.PuntoExpedicionService;
@@ -155,7 +153,10 @@ public class VentaRESTController {
 		return ventaService.getVentasPorPuntoExpedicion(id);		
 	}
 	
-	
+	@GetMapping("/get-total/{id}")
+	public Long getTotalVentasPorArqueo(@PathVariable(value="id") Integer id) {
+		return ventaService.getTotalVentasPorArqueo(id);		
+	}
 	
 	//reportes
 	

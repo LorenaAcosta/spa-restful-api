@@ -64,6 +64,10 @@ public class ArqueoCaja implements Serializable {
     private Long totalCaja;
     
     @Basic(optional = true)
+    @Column(name = "saldo_cierre")
+    private Long saldoCierre;
+    
+    @Basic(optional = true)
     @Column(name = "estado")
     private String estado;
        
@@ -81,7 +85,7 @@ public class ArqueoCaja implements Serializable {
 	}
 	
 	public ArqueoCaja(Integer arqueoId, Date fechaApertura, Time horaApertura, Date fechaCierre, Time horaCierre,
-			Long totalVentas, Long totalCaja, String estado, PuntoExpedicion puntoExpedicionId) {
+			Long totalVentas, Long totalCaja, Long saldoCierre, String estado, PuntoExpedicion puntoExpedicionId) {
 		super();
 		this.arqueoId = arqueoId;
 		this.fechaApertura = fechaApertura;
@@ -90,6 +94,7 @@ public class ArqueoCaja implements Serializable {
 		this.horaCierre = horaCierre;
 		this.totalVentas = totalVentas;
 		this.totalCaja = totalCaja;
+		this.saldoCierre = saldoCierre;
 		this.estado = estado;
 		this.puntoExpedicionId = puntoExpedicionId;
 	}
@@ -157,6 +162,15 @@ public class ArqueoCaja implements Serializable {
 
 	public Long getTotalCaja() {
 		return totalCaja;
+	}
+
+	public Long getSaldoCierre() {
+		return saldoCierre;
+	}
+
+
+	public void setSaldoCierre(Long saldoCierre) {
+		this.saldoCierre = saldoCierre;
 	}
 
 

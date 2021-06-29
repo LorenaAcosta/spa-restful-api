@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import py.com.spa.app.entities.Categorias;
-import py.com.spa.app.entities.ReservaDetalle;
 import py.com.spa.app.entities.Ventas;
 import py.com.spa.app.reportes.DetalleVentaReportInterface;
 import py.com.spa.app.reportes.VentaEncabezadoReportInterface;
@@ -27,12 +25,14 @@ public interface IVentasDao extends JpaRepository<Ventas, Integer>{
 			"ventas v\r\n" + 
 			"join comprobante c on c.comprobante_id = v.comprobante_id \r\n" + 
 			"join punto_expedicion pe on pe.punto_expedicion_id = c.punto_expedicion_id\r\n" + 
-			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId and v.fecha = current_date \r\n" + 
+			"where upper(v.estado) = 'ACTIVO' and pe.punto_expedicion_id =:peId and v.arqueo_id =:arqueoId \r\n" + 
 			"order by v.numero_comprobante desc", nativeQuery = true)
-	List <Ventas> ventasActivasPorPuntoExpedicion(@Param("peId") Integer puntoExpedicionId);
+	List <Ventas> ventasActivasPorPuntoExpedicion(@Param("peId") Integer puntoExpedicionId, @Param("arqueoId") Integer arqueoId);
 	
 	List<Ventas> findByFecha(Date fecha);
 	
+	@Query(value="select coalesce(sum(monto_total), 0) from ventas where arqueo_id =:arqueo and upper(estado) = 'ACTIVO'", nativeQuery = true)
+	Long getTotalVentasPorArqueo(@Param("arqueo") Integer arqueoId);
 	
 	Ventas findByVentasId(Integer id);
 	

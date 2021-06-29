@@ -61,7 +61,12 @@ public class ArqueoCajaRESTController  {
 	public ResponseEntity<?> modificarhorario (@PathVariable(value="id") Integer id, @RequestBody ArqueoCaja arqueo) {
 		ArqueoCaja c = arqueoService.findByArqueoCajaId(id);
 		if(c!=null) {
-			c.setFechaApertura(arqueo.getFechaApertura());
+			c.setFechaCierre(arqueo.getFechaCierre());
+			c.setHoraCierre(arqueo.getHoraCierre());
+			c.setTotalCaja(arqueo.getTotalCaja());
+			c.setTotalVentas(arqueo.getTotalVentas());
+			c.setSaldoCierre(arqueo.getSaldoCierre());
+			c.setEstado(arqueo.getEstado());
 			arqueoService.updateArqueoCaja(c);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}else {
@@ -81,6 +86,9 @@ public class ArqueoCajaRESTController  {
 		
 	}
 
-	
+	@GetMapping("/obtener-caja-activa/{id}")
+	public ArqueoCaja getCajaActiva(@PathVariable(value="id") Integer id) {
+		return (ArqueoCaja) arqueoService.getCajaActiva(id);
+	}
 	
 }
