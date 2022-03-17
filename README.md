@@ -10,6 +10,7 @@ Project is created with:
 	
 ## Setup
 To run this project, clon the project locally:
+Use the branch: desarrollo-pre-actual
 
 ```
 $ cd ../spa-restful-api/src/main/resources/application.properties  
